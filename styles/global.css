@@ -1,0 +1,77 @@
+@import 'tailwindcss/tailwind.css';
+@tailwind utilities;
+@tailwind base;
+
+@layer utilities {
+  .contained {
+    @apply mx-auto max-w-screen-2xl;
+  }
+}
+
+@layer base {
+  @font-face {
+    font-family: 'Vollkorn';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../public/fonts/Vollkorn-Regular.ttf');
+  }
+
+  @font-face {
+    font-family: 'Vollkorn';
+    font-weight: 600;
+    font-style: bold;
+    src: url('../public/fonts/Vollkorn-SemiBold.ttf');
+  }
+
+  @font-face {
+    font-family: 'PT-Sans';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../public/fonts/PTSans-Regular.ttf');
+  }
+
+  @font-face {
+    font-family: 'PT-Sans';
+    font-weight: 400;
+    font-style: italic;
+    src: url('../public/fonts/PTSans-Italic.ttf');
+  }
+
+  @font-face {
+    font-family: 'PT-Sans';
+    font-weight: 600;
+    font-style: bold;
+    src: url('../public/fonts/PTSans-Bold.ttf');
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  p,
+  a {
+    @apply antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: Vollkorn;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+}
