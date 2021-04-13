@@ -1,6 +1,6 @@
 import { AppProvider } from '../contexts/AppContext'
-import 'tailwindcss/tailwind.css'
 import { MainLayout } from '../layouts/MainLayout'
+import '../styles/global.css'
 
 function MyApp({ Component, pageProps }) {
   return (
