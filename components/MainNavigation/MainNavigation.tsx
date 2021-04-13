@@ -8,13 +8,15 @@ interface Props {
 
 export default function MainNavigation({ menuItems }: Props): ReactElement {
   return (
-    <nav className="flex justify-between p-5">
+    <nav className="flex justify-between p-5 contained border-b border-gray-200">
       <div>
         <Link href="/">ICON</Link>
       </div>
-      <div>
-        {menuItems.map((menuItem) => (
-          <Link href={menuItem.href}>{menuItem.label}</Link>
+      <div className="space-x-5">
+        {menuItems.map((menuItem, i) => (
+          <Link key={i} href={menuItem.href}>
+            {menuItem.label}
+          </Link>
         ))}
       </div>
     </nav>
