@@ -19,4 +19,6 @@ export type Obituary = {
   type: ObituaryType
   description: string
   relative: string
+  city: string
+  size: 'regular' | 'large'
 }

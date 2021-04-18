@@ -4,7 +4,10 @@ import { Props as ObituaryProps } from '../components/Obituary'
 const between = (min: number, max: number) =>
   min + Math.floor(Math.random() * max)
 
-export const createObitary = (): ObituaryProps & { id: number | string } => ({
+export const createObitary = (
+  size: ObituaryProps['size'] = 'regular'
+): ObituaryProps & { id: number | string } => ({
+  size,
   id: faker.datatype.number(1000),
   name: faker.name.findName(),
   personalMessage: faker.lorem.lines(between(0, 3)) || undefined,
@@ -19,4 +22,6 @@ export const createObitary = (): ObituaryProps & { id: number | string } => ({
 })
 
 export const createObituaries = (amount: number) =>
-  Array(amount).fill(0).map(createObitary)
+  Array(amount)
+    .fill(0)
+    .map((_, i) => createObitary(i % 6 === 0 ? 'large' : 'regular'))
