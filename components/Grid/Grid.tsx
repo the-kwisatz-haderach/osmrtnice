@@ -1,9 +1,17 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
-
-interface Props {}
+import cx from 'classnames'
+import styles from './Grid.module.css'
 
 export default function Grid({
   children,
-}: PropsWithChildren<Props>): ReactElement {
-  return <div className="grid gap-7 grid-cols-4">{children}</div>
+  className,
+  ...props
+}: PropsWithChildren<
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+>): ReactElement {
+  return (
+    <div {...props} className={cx(styles.gridContainer, className)}>
+      {children}
+    </div>
+  )
 }
