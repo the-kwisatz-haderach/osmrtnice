@@ -3,10 +3,6 @@ import { MenuItem } from '../lib/types'
 
 const menuItems = [
   {
-    href: '/',
-    label: 'Home',
-  },
-  {
     href: '/services',
     label: 'Services',
   },
