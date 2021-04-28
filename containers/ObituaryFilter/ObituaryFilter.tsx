@@ -23,7 +23,7 @@ export default function ObituaryFilter({}: Props): ReactElement {
     { value: string; label: string }[]
   >([])
   return (
-    <div className="p-5 flex justify-center items-center bg-primary-300 space-x-5">
+    <div className="p-5 flex justify-center items-center bg-primary-200 space-x-5">
       <div className="w-1/4">
         <label className="flex flex-col">
           Name
