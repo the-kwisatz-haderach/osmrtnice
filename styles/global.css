@@ -1,6 +1,8 @@
 @import 'tailwindcss/tailwind.css';
-@tailwind utilities;
+
 @tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer utilities {
   .contained {
