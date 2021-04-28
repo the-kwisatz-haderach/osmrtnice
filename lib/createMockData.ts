@@ -8,7 +8,7 @@ export const createObitary = (
   size: ObituaryProps['size'] = 'regular'
 ): ObituaryProps & { id: number | string } => ({
   size,
-  id: faker.datatype.number(1000),
+  id: faker.datatype.number(100000),
   name: faker.name.findName(),
   personalMessage: faker.lorem.lines(between(0, 3)) || undefined,
   preamble: faker.lorem.lines(between(0, 2)) || undefined,
