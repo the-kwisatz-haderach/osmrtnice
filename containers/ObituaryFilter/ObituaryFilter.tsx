@@ -1,6 +1,11 @@
 import React, { ReactElement, useState } from 'react'
-import Select from 'react-select'
+import dynamic from 'next/dynamic'
 import { Input } from '../../components/Input'
+import { SelectComponentsProps } from 'react-select/src/Select'
+
+const Select = dynamic<SelectComponentsProps>(() => import('react-select'), {
+  ssr: false,
+})
 
 interface Props {}
 
