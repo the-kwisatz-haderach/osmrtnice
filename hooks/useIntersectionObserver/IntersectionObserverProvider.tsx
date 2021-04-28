@@ -27,7 +27,7 @@ export const IntersectionObserverProvider = ({
   children,
   ...options
 }: PropsWithChildren<IntersectionObserverOptions>) => {
-  const [observer, setObserver] = useState<IntersectionObserver>(null)
+  const [observer, setObserver] = useState<IntersectionObserver | null>(null)
   const [values, setValues] = useState<ObserverTargetValues>({})
   const elements = useRef<Record<string, Element>>({})
 

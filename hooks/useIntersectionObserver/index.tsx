@@ -8,7 +8,7 @@ const useIntersectionObserver = () => {
   const { observe, unobserve, getValues } = useContext(
     IntersectionObserverContext
   )
-  const registered = useRef([])
+  const registered = useRef<string[]>([])
 
   useEffect(() => {
     return () => {
