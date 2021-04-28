@@ -1,0 +1,26 @@
+.container {
+  @apply bg-white;
+  @apply border-b;
+  @apply border-gray-200;
+  @apply sticky;
+  @apply inset-0;
+  @apply z-10;
+
+  height: 65px;
+  margin-top: -65px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.container a {
+  @apply text-lg;
+}
+
+.alternate {
+  @apply bg-transparent;
+
+  border: none;
+}
+
+.alternate a {
+  color: white;
+}
