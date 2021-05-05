@@ -1,26 +1,62 @@
 .container {
   @apply bg-white;
-  @apply border-b;
-  @apply border-gray-200;
   @apply sticky;
   @apply inset-0;
   @apply z-10;
+  @apply shadow;
 
   height: 65px;
   margin-top: -65px;
   transition: background-color 0.2s ease-in-out;
 }
 
-.container a {
-  @apply text-lg;
+.alternate {
+  @apply md:bg-transparent;
+  @apply md:shadow-none;
 }
 
-.alternate {
-  @apply bg-transparent;
-
-  border: none;
+.container a {
+  @apply text-base;
+  @apply lg:text-lg;
 }
 
 .alternate a {
-  color: white;
+  @apply md:text-white;
+}
+
+.foldOutMenu {
+  @apply w-screen;
+  @apply flex;
+  @apply flex-col;
+  @apply bg-white;
+  @apply space-y-2;
+  @apply transition-transform;
+  @apply duration-200;
+  @apply ease-in-out;
+  @apply p-5;
+  @apply h-full;
+  @apply border-t;
+  @apply border-gray-200;
+  @apply shadow;
+  @apply space-y-5;
+  @apply md:border-none;
+  @apply md:shadow-none;
+  @apply md:bg-transparent;
+  @apply md:space-y-0;
+  @apply md:flex-row;
+  @apply md:justify-end;
+  @apply md:flex;
+  @apply md:w-1/3;
+  @apply md:space-x-10;
+  @apply md:transition-none;
+}
+
+@media screen and (max-width: 767px) {
+  .foldOutMenu {
+    transform: translateX(0%);
+  }
+
+  .hideMenu {
+    transform: translateX(-100vw);
+  }
 }
