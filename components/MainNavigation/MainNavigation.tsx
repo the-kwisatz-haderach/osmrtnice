@@ -50,6 +50,9 @@ export default function MainNavigation({
           </Link>
         </div>
         <ul className={cx(styles.foldOutMenu, { [styles.hideMenu]: !isOpen })}>
+          <div className="md:hidden">
+            <Link href="/">Home</Link>
+          </div>
           {menuItems.map((menuItem, i) => (
             <li key={i}>
               <Link href={menuItem.href}>{menuItem.label}</Link>

@@ -47,10 +47,12 @@ export default function Footer(
           <div className="flex flex-col mr-20 mb-10">
             <h3 className="mb-2">Sitemap</h3>
             <InfoList
-              items={menuItems.map((menuItem) => ({
-                content: menuItem.label,
-                href: menuItem.href,
-              }))}
+              items={[{ label: 'Home', href: '/' }, ...menuItems].map(
+                (menuItem) => ({
+                  content: menuItem.label,
+                  href: menuItem.href,
+                })
+              )}
             />
           </div>
           <div className="flex flex-col mb-10">
