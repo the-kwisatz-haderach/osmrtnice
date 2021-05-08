@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { MenuItem } from '../lib/types'
+import { MenuItem } from '../lib/domain/types'
 
 const menuItems = [
   {
@@ -16,11 +16,11 @@ const menuItems = [
   },
 ]
 
-interface AppContext {
+interface IAppContext {
   menuItems: MenuItem[]
 }
 
-const defaultAppContext: AppContext = {
+const defaultAppContext: IAppContext = {
   menuItems: [],
 }
 
@@ -38,6 +38,6 @@ export const AppProvider: React.FC = ({ children }) => {
   )
 }
 
-export default function useAppContext() {
+export default function useAppContext(): IAppContext {
   return useContext(AppContext)
 }

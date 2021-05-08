@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import cx from 'classnames'
-import { MenuItem } from '../../lib/types'
+import { MenuItem } from '../../lib/domain/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import styles from './MainNavigation.module.css'
@@ -26,7 +26,9 @@ export default function MainNavigation({
     setIsOpen(false)
   }, [router.pathname])
 
-  const toggleMenu = () => setIsOpen((curr) => !curr)
+  const toggleMenu = (): void => {
+    setIsOpen((curr) => !curr)
+  }
 
   return (
     <div
