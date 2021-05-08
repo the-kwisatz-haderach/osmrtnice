@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { ReactElement } from 'react'
 import { Grid } from '../components/Grid'
 import { Obituary } from '../components/Obituary'
 import { ObituaryFilter } from '../containers/ObituaryFilter'
@@ -8,8 +9,8 @@ import { createObituaries } from '../lib/createMockData'
 
 const obituaries = createObituaries(12)
 
-export default function Home() {
-  const { observe } = useIntersectionObserver()
+export default function Home(): ReactElement {
+  const { observe } = useIntersectionObserver<HTMLDivElement>()
 
   return (
     <div>

@@ -1,6 +1,7 @@
 import Head from 'next/head'
+import { ReactElement } from 'react'
 
-export default function Posts() {
+export default function Posts(): ReactElement {
   return (
     <div>
       <Head>

@@ -1,6 +1,7 @@
 import Head from 'next/head'
+import { ReactElement } from 'react'
 
-export default function Contact() {
+export default function Contact(): ReactElement {
   return (
     <div>
       <Head>

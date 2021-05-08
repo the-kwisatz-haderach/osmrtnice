@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Link } from '../Link'
 
-type InfoItem = {
+interface InfoItem {
   content: string
   label?: string
   href?: string

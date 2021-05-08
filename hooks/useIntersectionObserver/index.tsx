@@ -4,7 +4,16 @@ import {
   IntersectionObserverProvider,
 } from './IntersectionObserverProvider'
 
-const useIntersectionObserver = () => {
+function useIntersectionObserver<T extends Element>(): {
+  observe: (element: T) => void
+  unobserve: (id: string) => void
+  getValues: (
+    id: string
+  ) => {
+    isIntersecting: boolean
+    ratio: number
+  }
+} {
   const { observe, unobserve, getValues } = useContext(
     IntersectionObserverContext
   )
@@ -16,14 +25,14 @@ const useIntersectionObserver = () => {
     }
   }, [])
 
-  const register = <T extends Element>(element: T) => {
-    if (element?.id) {
+  const register = <T extends Element>(element: T): void => {
+    if (element?.id !== undefined) {
       registered.current.push(element.id)
       observe(element)
     }
   }
 
-  const unregister = (id: string) => {
+  const unregister = (id: string): void => {
     registered.current = registered.current.filter(
       (observedId) => observedId !== id
     )

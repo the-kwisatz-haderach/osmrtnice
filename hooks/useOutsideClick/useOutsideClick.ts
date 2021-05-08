@@ -12,7 +12,7 @@ export const useOutsideClick = <E extends Element>(
         onOutsideClick()
       }
     }
-    if (ref.current) {
+    if (ref.current != null) {
       document.addEventListener('click', listener)
     }
     return () => {

@@ -1,6 +1,7 @@
+import { ReactElement } from 'react'
 import Head from 'next/head'
 
-export default function Services() {
+export default function Services(): ReactElement {
   return (
     <div>
       <Head>

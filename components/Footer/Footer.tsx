@@ -6,7 +6,7 @@ import { faCopyright } from '@fortawesome/free-solid-svg-icons'
 import { InfoList } from '../InfoList'
 import useAppContext from '../../contexts/AppContext'
 
-const FooterBottom = () => (
+const FooterBottom = (): ReactElement => (
   <div className="p-5 border-primary-200 border-t-2 flex flex-col sm:flex-row justify-between">
     <div className="flex space-x-5">
       <span className="space-x-2 flex items-center">

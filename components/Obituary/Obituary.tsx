@@ -40,7 +40,7 @@ export default function Obituary({
       {personalMessage && (
         <p className="text-sm text-center">{personalMessage}</p>
       )}
-      {relations && relations.length > 0 && (
+      {(relations != null) && relations.length > 0 && (
         <div className="text-sm flex flex-wrap justify-center">
           {relations.map((relation) => (
             <div className="mr-5 mb-1" key={relation}>

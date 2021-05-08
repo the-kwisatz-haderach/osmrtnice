@@ -1,6 +1,7 @@
 import React, {
   createContext,
   PropsWithChildren,
+  ReactElement,
   useCallback,
   useEffect,
   useRef,
@@ -25,8 +26,10 @@ export const IntersectionObserverContext = createContext<IIntersectionObserverCo
 
 export const IntersectionObserverProvider = ({
   children,
-  ...options
-}: PropsWithChildren<IntersectionObserverOptions>) => {
+  options,
+}: PropsWithChildren<{
+  options: IntersectionObserverOptions
+}>): ReactElement => {
   const [observer, setObserver] = useState<IntersectionObserver | null>(null)
   const [values, setValues] = useState<ObserverTargetValues>({})
   const elements = useRef<Record<string, Element>>({})
@@ -36,24 +39,13 @@ export const IntersectionObserverProvider = ({
     setObserver(intersectionObserver)
     return () => {
       elements.current = {}
-      if (observer) observer.disconnect()
     }
-  }, [])
+  }, [options])
 
   const observe: IIntersectionObserverContext['observe'] = useCallback(
     (element) => {
-      if (observer && element) {
-        if (elements.current[element.id]) {
-          console.error(
-            `Another element with id ${element.id} is already being observed.`
-          )
-          return
-        }
-        if (!element.id) {
-          console.error(
-            "The following element lacks an id and can't be observed: ",
-            element
-          )
+      if (observer && element != null) {
+        if (elements.current[element.id] || !element.id) {
           return
         }
         elements.current[element.id] = element

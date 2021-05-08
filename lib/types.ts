@@ -1,4 +1,4 @@
-export type MenuItem = {
+export interface MenuItem {
   href: string
   label: string
 }
@@ -9,7 +9,7 @@ export enum ObituaryType {
   GRATITUDE_DISPLAY = 'GRATITUDE_DISPLAY',
 }
 
-export type Obituary = {
+export interface Obituary {
   firstname: string
   middlename: string
   surname: string

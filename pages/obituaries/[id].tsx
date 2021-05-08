@@ -1,9 +1,10 @@
+import { ReactElement } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 
-type Props = {}
+interface Props {}
 
-export default function Post(props: Props) {
+export default function Post(props: Props): ReactElement {
   return (
     <div>
       <Head>

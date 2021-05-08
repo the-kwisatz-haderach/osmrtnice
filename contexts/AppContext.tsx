@@ -16,7 +16,7 @@ const menuItems = [
   },
 ]
 
-type AppContext = {
+interface AppContext {
   menuItems: MenuItem[]
 }
 
