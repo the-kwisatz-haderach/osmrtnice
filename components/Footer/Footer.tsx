@@ -7,7 +7,7 @@ import { InfoList } from '../InfoList'
 import useAppContext from '../../contexts/AppContext'
 
 const FooterBottom = (): ReactElement => (
-  <div className="p-5 border-primary-200 border-t-2 flex flex-col sm:flex-row justify-between">
+  <div className="p-5 border-gray-200 border-t-2 flex flex-col sm:flex-row justify-between">
     <div className="flex space-x-5">
       <span className="space-x-2 flex items-center">
         <FontAwesomeIcon icon={faCopyright} />
@@ -27,7 +27,7 @@ export default function Footer(
 ): ReactElement {
   const { menuItems } = useAppContext()
   return (
-    <footer {...props} className={cx('bg-primary-100', props.className)}>
+    <footer {...props} className={cx('bg-gray-100', props.className)}>
       <div className="flex justify-between flex-wrap">
         <div className="w-full lg:w-3/5 flex-wrap flex px-10 pt-10">
           <div className="flex flex-col mr-20 mb-10">

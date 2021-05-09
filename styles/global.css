@@ -64,16 +64,25 @@
   h4,
   h5,
   h6 {
-    font-family: Vollkorn;
+    font-family: Vollkorn, sans-serif;
   }
 
   h1 {
-    @apply text-2xl;
+    @apply text-3xl;
+    @apply md:text-6xl;
   }
+
   h2 {
     @apply text-xl;
+    @apply md:text-3xl;
   }
+
   h3 {
     @apply text-lg;
+  }
+
+  .subtitle {
+    @apply md:text-xl;
+    @apply opacity-70;
   }
 }

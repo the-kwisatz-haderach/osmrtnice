@@ -6,7 +6,6 @@
   @apply shadow;
 
   height: 65px;
-  margin-top: -65px;
   transition: background-color 0.2s ease-in-out;
 }
 

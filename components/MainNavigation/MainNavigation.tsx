@@ -3,11 +3,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import cx from 'classnames'
-import { MenuItem } from '../../lib/domain/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import styles from './MainNavigation.module.css'
+import { MenuItem } from '../../lib/domain/types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
+import styles from './MainNavigation.module.css'
 
 interface Props {
   menuItems: MenuItem[]
@@ -31,37 +31,44 @@ export default function MainNavigation({
   }
 
   return (
-    <div
-      ref={ref}
-      className={cx(styles.container, { [styles.alternate]: alternate })}
-    >
-      <nav className="flex flex-wrap justify-between contained">
-        <div className="w-1/3 p-5">
-          <div className="hidden md:block">
-            <Link href="/">Home</Link>
-          </div>
-          <div className="md:hidden">
-            <FontAwesomeIcon onClick={toggleMenu} icon={faBars} size="lg" />
-          </div>
-        </div>
-        <div className="w-1/3 flex justify-center">
-          <Link href="/">
-            <div className="cursor-pointer relative w-full">
-              <Image src="/icons/logo.svg" alt="logo" layout="fill" />
+    <>
+      <div
+        ref={ref}
+        className={cx(styles.container, { [styles.alternate]: alternate })}
+      >
+        <nav className="flex flex-wrap justify-between contained z-10 relative">
+          <div className="w-1/3 p-5">
+            <div className="hidden md:block">
+              <Link href="/">Home</Link>
             </div>
-          </Link>
-        </div>
-        <ul className={cx(styles.foldOutMenu, { [styles.hideMenu]: !isOpen })}>
-          <div className="md:hidden">
-            <Link href="/">Home</Link>
+            <div className="md:hidden">
+              <FontAwesomeIcon onClick={toggleMenu} icon={faBars} size="lg" />
+            </div>
           </div>
-          {menuItems.map((menuItem, i) => (
-            <li key={i}>
-              <Link href={menuItem.href}>{menuItem.label}</Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </div>
+          <div className="w-1/3 flex justify-center">
+            <Link href="/">
+              <div className="cursor-pointer relative w-full">
+                <Image src="/icons/logo.svg" alt="logo" layout="fill" />
+              </div>
+            </Link>
+          </div>
+          <ul
+            className={cx(styles.foldOutMenu, { [styles.hideMenu]: !isOpen })}
+          >
+            <div className="md:hidden">
+              <Link href="/">Home</Link>
+            </div>
+            {menuItems.map((menuItem, i) => (
+              <li key={i}>
+                <Link href={menuItem.href}>{menuItem.label}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+      {isOpen && (
+        <div className="h-screen md:hidden bg-black opacity-50 fixed inset-0" />
+      )}
+    </>
   )
 }

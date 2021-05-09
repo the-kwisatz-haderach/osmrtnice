@@ -1,16 +1,16 @@
 import React, { ReactElement } from 'react'
 import SbEditable from 'storyblok-react'
-import { StoryBlokComponent, StoryBlokComponentType } from '../../lib/blokTypes'
+import { StoryBlokComponent } from '../../../lib/blokTypes'
 import { RichTextBlok } from '../RichTextBlok'
+import { PageHeaderBlok } from '../PageHeaderBlok'
 
 export interface Props {
   blok: StoryBlokComponent
 }
 
-const components: {
-  [key in StoryBlokComponentType]: React.FC<any>
-} = {
-  'rich-text': RichTextBlok,
+const components = {
+  rich_text: RichTextBlok,
+  page_header: PageHeaderBlok,
 }
 
 export default function DynamicBlokComponent({ blok }: Props): ReactElement {
