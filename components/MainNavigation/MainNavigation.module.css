@@ -1,6 +1,6 @@
 .container {
   @apply bg-white;
-  @apply sticky;
+  @apply fixed;
   @apply inset-0;
   @apply z-10;
   @apply shadow;

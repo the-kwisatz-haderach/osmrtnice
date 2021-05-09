@@ -25,7 +25,7 @@ export default function MainLayout({
       }}
     >
       <MainNavigation menuItems={menuItems} alternate={useAlternateMenu} />
-      <main>{children}</main>
+      <main style={{ marginTop: 65 }}>{children}</main>
       <Footer className="flex-grow" />
     </div>
   )

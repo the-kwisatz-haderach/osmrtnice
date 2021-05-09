@@ -31,7 +31,7 @@ export default function Home({ story }: Props): ReactElement {
           id="image"
           ref={observe}
           style={{
-            height: '66vh',
+            height: '75vh',
             marginTop: -65,
           }}
           className="w-full relative filter brightness-75"
