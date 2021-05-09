@@ -15,7 +15,7 @@ export default function Link({
     <span
       className={cx(
         className,
-        'text-secondary-900 underline hover:no-underline'
+        'underline hover:no-underline text-primary-800 font-bold'
       )}
     >
       <NextLink {...props}>{children}</NextLink>

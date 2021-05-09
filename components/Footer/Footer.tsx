@@ -28,10 +28,10 @@ export default function Footer(
   const { menuItems } = useAppContext()
   return (
     <footer {...props} className={cx('bg-gray-100', props.className)}>
-      <div className="flex justify-between flex-wrap">
+      <div className="flex justify-between flex-wrap pb-10 pt-5">
         <div className="w-full lg:w-3/5 flex-wrap flex px-10 pt-10">
           <div className="flex flex-col mr-20 mb-10">
-            <h3 className="mb-2">Contact details</h3>
+            <h3 className="mb-2 text-2xl">Contact details</h3>
             <InfoList
               items={[
                 { label: 'Address', content: 'Vegagatan 30B' },
@@ -45,7 +45,7 @@ export default function Footer(
             />
           </div>
           <div className="flex flex-col mr-20 mb-10">
-            <h3 className="mb-2">Sitemap</h3>
+            <h3 className="mb-2 text-2xl">Sitemap</h3>
             <InfoList
               items={[{ label: 'Home', href: '/' }, ...menuItems].map(
                 (menuItem) => ({
@@ -56,7 +56,7 @@ export default function Footer(
             />
           </div>
           <div className="flex flex-col mb-10">
-            <h3 className="mb-2">Get in touch</h3>
+            <h3 className="mb-2 text-2xl">Get in touch</h3>
           </div>
         </div>
         <div className="flex flex-grow justify-center items-center">

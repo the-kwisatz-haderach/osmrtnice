@@ -19,8 +19,8 @@ module.exports = {
       '2xl': '1920px',
     },
     fontFamily: {
-      sans: ['PT-Sans', 'sans-serif'],
-      serif: ['Vollkorn', 'serif'],
+      sans: ['Open-Sans', 'sans-serif'],
+      serif: ['Dancing Script', 'serif'],
     },
     container: {
       center: true,

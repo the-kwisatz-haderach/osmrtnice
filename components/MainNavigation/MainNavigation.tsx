@@ -32,12 +32,15 @@ export default function MainNavigation({
 
   return (
     <>
+      {isOpen && (
+        <div className="h-screen md:hidden z-10 bg-black opacity-50 fixed inset-0" />
+      )}
       <div
         ref={ref}
         className={cx(styles.container, { [styles.alternate]: alternate })}
       >
-        <nav className="flex flex-wrap justify-between contained z-10 relative">
-          <div className="w-1/3 p-5">
+        <nav className="flex flex-wrap justify-between contained z-20 relative">
+          <div className="w-1/3 py-5 px-10">
             <div className="hidden md:block">
               <Link href="/">Home</Link>
             </div>
@@ -66,9 +69,6 @@ export default function MainNavigation({
           </ul>
         </nav>
       </div>
-      {isOpen && (
-        <div className="h-screen md:hidden bg-black opacity-50 fixed inset-0" />
-      )}
     </>
   )
 }

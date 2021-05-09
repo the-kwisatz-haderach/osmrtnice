@@ -28,9 +28,9 @@ export default function Obituary({
       <Image src={imgSrc} width={100} height={100} />
       <div className="text-center space-y-3">
         {preamble && <p className="text-center text-sm italic">{preamble}</p>}
-        <div>
-          <h2>{name}</h2>
-          <div className="flex justify-center align-center space-x-2 font-bold">
+        <div className="my-2">
+          <h2 className="text-md mb-2">{name}</h2>
+          <div className="text-sm flex justify-center align-center space-x-2 font-bold">
             <p>{dateOfBirth}</p>
             <p>-</p>
             <p>{dateOfDeath}</p>
@@ -40,8 +40,8 @@ export default function Obituary({
       {personalMessage && (
         <p className="text-sm text-center">{personalMessage}</p>
       )}
-      {(relations != null) && relations.length > 0 && (
-        <div className="text-sm flex flex-wrap justify-center">
+      {relations != null && relations.length > 0 && (
+        <div className="text-xs flex flex-wrap justify-center">
           {relations.map((relation) => (
             <div className="mr-5 mb-1" key={relation}>
               {relation}
