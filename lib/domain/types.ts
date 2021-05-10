@@ -1,8 +1,3 @@
-export interface MenuItem {
-  href: string
-  label: string
-}
-
 export enum ObituaryType {
   IN_MEMORIAM = 'IN_MEMORIAM',
   OBITUARY = 'OBITUARY',

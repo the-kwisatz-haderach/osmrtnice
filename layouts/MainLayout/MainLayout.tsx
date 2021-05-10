@@ -5,11 +5,9 @@ import { MainNavigation } from '../../components/MainNavigation'
 import useAppContext from '../../contexts/AppContext'
 import useIntersectionObserver from '../../hooks/useIntersectionObserver'
 
-interface Props {}
-
 export default function MainLayout({
   children,
-}: PropsWithChildren<Props>): ReactElement {
+}: PropsWithChildren<any>): ReactElement {
   const { menuItems } = useAppContext()
   const { getValues } = useIntersectionObserver()
   const router = useRouter()
@@ -26,7 +24,7 @@ export default function MainLayout({
     >
       <MainNavigation menuItems={menuItems} alternate={useAlternateMenu} />
       <main style={{ marginTop: 65 }}>{children}</main>
-      <Footer className="flex-grow" />
+      <Footer menuItems={menuItems} className="flex-grow" />
     </div>
   )
 }

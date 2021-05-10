@@ -5,6 +5,6 @@ module.exports = {
     defaultLocale: 'en',
   },
   images: {
-    domains: ['picsum.photos'],
+    domains: ['picsum.photos', 'a.storyblok.com'],
   },
 }

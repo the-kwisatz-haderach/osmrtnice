@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, ReactElement } from 'react'
-import { default as NextLink, LinkProps } from 'next/link'
+import NextLink, { LinkProps } from 'next/link'
 import cx from 'classnames'
 
 interface Props extends React.PropsWithChildren<LinkProps> {

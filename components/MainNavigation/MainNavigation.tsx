@@ -5,7 +5,7 @@ import Image from 'next/image'
 import cx from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { MenuItem } from '../../lib/domain/types'
+import { MenuItem } from '../../lib/types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import styles from './MainNavigation.module.css'
 
@@ -18,6 +18,7 @@ export default function MainNavigation({
   menuItems,
   alternate = true,
 }: Props): ReactElement {
+  const [homeLink, ...links] = menuItems
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const ref = useOutsideClick<HTMLDivElement>(() => setIsOpen(false))
@@ -42,7 +43,7 @@ export default function MainNavigation({
         <nav className="flex flex-wrap justify-between contained z-20 relative">
           <div className="w-1/3 py-5 px-10">
             <div className="hidden md:block">
-              <Link href="/">Home</Link>
+              <Link href={homeLink.href}>{homeLink.label}</Link>
             </div>
             <div className="md:hidden">
               <FontAwesomeIcon onClick={toggleMenu} icon={faBars} size="lg" />
@@ -61,7 +62,7 @@ export default function MainNavigation({
             <div className="md:hidden">
               <Link href="/">Home</Link>
             </div>
-            {menuItems.map((menuItem, i) => (
+            {links.map((menuItem, i) => (
               <li key={i}>
                 <Link href={menuItem.href}>{menuItem.label}</Link>
               </li>

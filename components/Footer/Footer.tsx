@@ -1,31 +1,19 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
 import cx from 'classnames'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopyright } from '@fortawesome/free-solid-svg-icons'
 import { InfoList } from '../InfoList'
-import useAppContext from '../../contexts/AppContext'
+import { FooterBottom } from './components/FooterBottom'
+import { MenuItem } from '../../lib/types'
 
-const FooterBottom = (): ReactElement => (
-  <div className="p-5 border-gray-200 border-t-2 flex flex-col sm:flex-row justify-between">
-    <div className="flex space-x-5">
-      <span className="space-x-2 flex items-center">
-        <FontAwesomeIcon icon={faCopyright} />
-        <p>Copyright</p>
-      </span>
-      <p>Privacy policy</p>
-    </div>
-    <ul className="flex space-x-5">
-      <li>Facebook</li>
-      <li>LinkedIn</li>
-    </ul>
-  </div>
-)
+interface Props
+  extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLElement>,
+    HTMLElement
+  > {
+  menuItems: MenuItem[]
+}
 
-export default function Footer(
-  props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
-): ReactElement {
-  const { menuItems } = useAppContext()
+export default function Footer({ menuItems, ...props }: Props): ReactElement {
   return (
     <footer {...props} className={cx('bg-gray-100', props.className)}>
       <div className="flex justify-between flex-wrap pb-10 pt-5">
@@ -47,12 +35,10 @@ export default function Footer(
           <div className="flex flex-col mr-20 mb-10">
             <h3 className="mb-2 text-2xl">Sitemap</h3>
             <InfoList
-              items={[{ label: 'Home', href: '/' }, ...menuItems].map(
-                (menuItem) => ({
-                  content: menuItem.label,
-                  href: menuItem.href,
-                })
-              )}
+              items={menuItems.map((menuItem) => ({
+                content: menuItem.label,
+                href: menuItem.href,
+              }))}
             />
           </div>
           <div className="flex flex-col mb-10">

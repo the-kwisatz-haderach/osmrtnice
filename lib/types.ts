@@ -12,8 +12,9 @@ export interface StoryBlokLink {
   position: number
   uuid: string
   is_startpage: boolean
+  path: string
   real_path: string
-  alternates: Array<{ path: string; name: null | string; lang: string }>
+  alternates?: Array<{ path: string; name: null | string; lang: string }>
 }
 
 export type Color =
@@ -59,13 +60,10 @@ export interface SocialChannelLink {
 }
 
 export interface MenuItem {
-  title: string
-  url: string
+  href: string
+  label: string
 }
 
 export interface GlobalSettings {
   logo: string
-  facebook: string
-  instagram: string
-  twitter: string
 }
