@@ -10,9 +10,11 @@ export default function PageHeaderBlok({
   subtitle,
 }: Props): ReactElement {
   return (
-    <div className="bg-primary-800 p-10 text-white">
-      <h1 className="relative right-1">{title}</h1>
-      {subtitle && <p className="subtitle">{subtitle}</p>}
+    <div className="bg-primary-800 text-white">
+      <div className="contained p-10">
+        <h1 className="relative right-1">{title}</h1>
+        {subtitle && <p className="subtitle">{subtitle}</p>}
+      </div>
     </div>
   )
 }

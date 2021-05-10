@@ -30,12 +30,6 @@ export interface Post {
   long_text: Richtext
 }
 
-export interface Headline {
-  title: string
-  description: string
-  color: Color
-}
-
 export interface RichTextBlok {
   text: Richtext
 }
@@ -45,12 +39,6 @@ export interface HeroImage {
   subtitle: string
   description: string
   image: string
-}
-
-export interface Grid {
-  columns: StoryBlokComponent[]
-  col_count: number
-  grid_gap: number
 }
 
 export interface SocialChannelLink {
@@ -66,4 +54,10 @@ export interface MenuItem {
 
 export interface GlobalSettings {
   logo: string
+}
+
+export interface Grid {
+  columns: StoryBlokComponent[]
+  col_count: number
+  grid_gap: number
 }

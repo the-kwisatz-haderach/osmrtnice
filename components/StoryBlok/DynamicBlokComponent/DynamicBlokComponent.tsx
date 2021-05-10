@@ -3,6 +3,7 @@ import SbEditable from 'storyblok-react'
 import { StoryBlokComponent } from '../../../lib/blokTypes'
 import { RichTextBlok } from '../RichTextBlok'
 import { PageHeaderBlok } from '../PageHeaderBlok'
+import { GridBlok } from '../GridBlok'
 
 export interface Props {
   blok: StoryBlokComponent
@@ -11,14 +12,15 @@ export interface Props {
 const components = {
   rich_text: RichTextBlok,
   page_header: PageHeaderBlok,
-}
+  grid: GridBlok,
+} as const
 
 export default function DynamicBlokComponent({ blok }: Props): ReactElement {
   if (!components[blok.component]) {
     console.error(`Missing component: ${blok.component}.`)
     return <div>There is no component defined for type: {blok.component}.</div>
   }
-  const Component = components[blok.component]
+  const Component: any = components[blok.component]
   return (
     <SbEditable content={blok}>
       <Component {...blok} />
