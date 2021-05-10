@@ -21,7 +21,9 @@ export default function MainNavigation({
   const [homeLink, ...links] = menuItems
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  const ref = useOutsideClick<HTMLDivElement>(() => setIsOpen(false))
+  const ref = useOutsideClick<HTMLDivElement>(() => {
+    setIsOpen(false)
+  })
 
   useEffect(() => {
     setIsOpen(false)
@@ -60,7 +62,7 @@ export default function MainNavigation({
             className={cx(styles.foldOutMenu, { [styles.hideMenu]: !isOpen })}
           >
             <div className="md:hidden">
-              <Link href="/">Home</Link>
+              <Link href={homeLink.href}>{homeLink.label}</Link>
             </div>
             {links.map((menuItem, i) => (
               <li key={i}>

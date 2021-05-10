@@ -1,24 +1,25 @@
-import { useEffect, useRef } from 'react'
+import { RefObject, useEffect, useRef } from 'react'
 
 export const useOutsideClick = <E extends Element>(
   onOutsideClick: () => void
-) => {
+): RefObject<E> => {
   const ref = useRef<E>(null)
+  const memoizedOnOutsideClick = useRef(onOutsideClick).current
 
   useEffect(() => {
-    const listener = (e: PointerEvent) => {
+    const listener = (e: PointerEvent): void => {
       const isOutsideClick = e.composedPath().every((el) => el !== ref.current)
       if (isOutsideClick) {
-        onOutsideClick()
+        memoizedOnOutsideClick()
       }
     }
     if (ref.current != null) {
-      document.addEventListener('click', listener)
+      document.addEventListener('touchend', listener)
     }
     return () => {
-      document.removeEventListener('click', listener)
+      document.removeEventListener('touchend', listener)
     }
-  }, [ref])
+  }, [ref, memoizedOnOutsideClick])
 
   return ref
 }
