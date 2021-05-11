@@ -61,3 +61,8 @@ export interface Grid {
   col_count: number
   grid_gap: number
 }
+
+export interface IGridColumn {
+  content: StoryBlokComponent[]
+  col_span: number
+}
