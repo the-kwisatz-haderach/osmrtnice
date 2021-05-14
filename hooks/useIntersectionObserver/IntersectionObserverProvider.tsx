@@ -37,9 +37,6 @@ export const IntersectionObserverProvider = ({
   useEffect(() => {
     const intersectionObserver = createIntersectionObserver(options, setValues)
     setObserver(intersectionObserver)
-    return () => {
-      elements.current = {}
-    }
   }, [options])
 
   const observe: IIntersectionObserverContext['observe'] = useCallback(

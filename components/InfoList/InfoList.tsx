@@ -16,9 +16,7 @@ export default function InfoList({ items }: Props): ReactElement {
     <ul className="space-y-2">
       {items.map((item, i) => (
         <li key={i} className="flex">
-          {item.label && (
-            <label className="font-bold mr-2">{item.label}:</label>
-          )}
+          {item.label && <p className="font-bold mr-2">{item.label}:</p>}
           {item.href ? (
             <Link href={item.href}>{item.content}</Link>
           ) : (

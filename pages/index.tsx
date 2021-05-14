@@ -1,12 +1,9 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import { ReactElement } from 'react'
 import { Grid } from '../components/Grid'
 import { Obituary } from '../components/Obituary'
-import { ObituaryFilter } from '../containers/ObituaryFilter'
-import useIntersectionObserver from '../hooks/useIntersectionObserver'
-import useStoryblok from '../hooks/useStoryBlok/useStoryBlok'
+import { ObituarySearch } from '../containers/ObituarySearch'
 import { createObituaries } from '../lib/createMockData'
 import Storyblok from '../lib/storyblok'
 import { PageStory } from '../lib/storyTypes'
@@ -18,44 +15,34 @@ interface Props {
 }
 
 export default function Home({ story }: Props): ReactElement {
-  const { observe } = useIntersectionObserver<HTMLDivElement>()
-  const storyContent = useStoryblok(story)
-
   return (
     <div>
       <Head>
         <title>Home</title>
       </Head>
-      <section>
-        <div
-          id="image"
-          ref={observe}
-          style={{
-            height: '75vh',
-            marginTop: -65,
-          }}
-          className="w-full relative filter brightness-75"
-        >
-          <Image src="https://picsum.photos/1000/1600" layout="fill" />
-        </div>
-        <div>
-          <ObituaryFilter />
-        </div>
-        <div className="contained">
-          <Grid>
-            {obituaries.map((obituary) => (
-              <div
-                key={obituary.id}
-                className={
-                  obituary.size === 'large' ? 'sm:col-span-2' : 'col-span-1'
-                }
-              >
-                <Obituary {...obituary} />
-              </div>
-            ))}
-          </Grid>
-        </div>
-      </section>
+      <div
+        className="w-full bg-gradient-to-b from-primary-900 to-primary-600 flex justify-end items-center flex-col pb-40"
+        style={{
+          height: '65vh',
+        }}
+      >
+        <p className="m-0 font-bold text-white text-3xl">Search here</p>
+        <ObituarySearch />
+      </div>
+      <div className="contained">
+        <Grid>
+          {obituaries.map((obituary) => (
+            <div
+              key={obituary.id}
+              className={
+                obituary.size === 'large' ? 'sm:col-span-2' : 'col-span-1'
+              }
+            >
+              <Obituary {...obituary} />
+            </div>
+          ))}
+        </Grid>
+      </div>
     </div>
   )
 }

@@ -11,9 +11,18 @@ interface Props
     HTMLElement
   > {
   menuItems: MenuItem[]
+  address: string
+  phone: string
+  email: string
 }
 
-export default function Footer({ menuItems, ...props }: Props): ReactElement {
+export default function Footer({
+  menuItems,
+  address,
+  phone,
+  email,
+  ...props
+}: Props): ReactElement {
   return (
     <footer {...props} className={cx('bg-gray-100', props.className)}>
       <div className="flex justify-between flex-wrap pb-10 pt-5 contained">
@@ -22,12 +31,12 @@ export default function Footer({ menuItems, ...props }: Props): ReactElement {
             <h3 className="mb-2 text-2xl">Contact details</h3>
             <InfoList
               items={[
-                { label: 'Address', content: 'Vegagatan 30B' },
-                { label: 'Phone', content: '+46732 000 444' },
+                { label: 'Address', content: address },
+                { label: 'Phone', content: phone },
                 {
                   label: 'E-mail',
-                  content: 'something@mail.com',
-                  href: 'mailto:something@mail.com',
+                  content: email,
+                  href: `mailto:${email}`,
                 },
               ]}
             />

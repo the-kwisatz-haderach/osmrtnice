@@ -15,19 +15,17 @@ const cities = [
   { value: 'gothenburg', label: 'Gothenburg' },
 ]
 
-export default function ObituaryFilter(): ReactElement {
+export default function ObituarySearch(): ReactElement {
   const [selectedCities, setSelectedCities] = useState<
     Array<{ value: string; label: string }>
   >([])
   return (
-    <div className="p-5 flex justify-center items-center bg-primary-200 space-x-5">
-      <div className="w-1/4">
-        <label className="flex flex-col">
-          Name
-          <Input onChange={(value) => console.log(value)} />
-        </label>
-      </div>
-      <div className="w-1/4">
+    <div className="p-5 flex justify-center items-center space-x-5 w-full">
+      <Input
+        placeholder="Type something..."
+        onChange={(value) => console.log(value)}
+      />
+      {/* <div className="w-1/4">
         <label>
           City
           <Select
@@ -37,7 +35,7 @@ export default function ObituaryFilter(): ReactElement {
             onChange={setSelectedCities}
           />
         </label>
-      </div>
+      </div> */}
     </div>
   )
 }

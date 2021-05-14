@@ -5,12 +5,14 @@ interface Props {
   defaultValue?: string
   debounced?: boolean
   placeholder?: string
+  autoFocus?: boolean
   onChange: (value: string) => void
 }
 
 export default function Input({
   defaultValue = '',
   debounced = true,
+  autoFocus = true,
   onChange,
   placeholder,
 }: Props): ReactElement {
@@ -23,7 +25,8 @@ export default function Input({
 
   return (
     <input
-      className="p-1 rounded-sm"
+      autoFocus={autoFocus}
+      className="px-5 py-3 rounded-sm md:w-5/12 text-2xl"
       type="text"
       value={value}
       placeholder={placeholder}

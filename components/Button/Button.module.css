@@ -1,0 +1,17 @@
+.button {
+  @apply rounded-sm;
+
+  transition: opacity 0.2s ease-in-out;
+  padding: 0.8rem 2rem;
+  color: white;
+}
+
+.button:hover {
+  @apply opacity-90;
+}
+
+.button:focus {
+  @apply opacity-90;
+
+  outline: none;
+}

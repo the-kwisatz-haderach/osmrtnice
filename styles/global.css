@@ -80,12 +80,13 @@
   h6 {
     font-family: Dancing Script, sans-serif;
 
+    @apply my-2;
     @apply font-bold;
   }
 
   h1 {
-    @apply text-3xl;
-    @apply md:text-6xl;
+    @apply text-5xl;
+    @apply md:text-9xl;
   }
 
   h2 {
@@ -98,7 +99,29 @@
   }
 
   .subtitle {
-    @apply md:text-xl;
+    @apply text-xl;
+    @apply md:text-3xl;
     @apply opacity-70;
+  }
+
+  input,
+  textarea {
+    @apply bg-primary-50 rounded-sm p-2 border border-primary-200 outline-none text-sm;
+  }
+
+  label {
+    @apply w-max px-2;
+
+    letter-spacing: 0.1rem;
+    transition: all 0.1s ease-in-out;
+  }
+
+  input::placeholder {
+    @apply text-gray-400;
+  }
+
+  input:focus + label,
+  textarea:focus + label {
+    @apply text-primary-50 bg-primary-700;
   }
 }

@@ -5,6 +5,7 @@ import { RichTextBlok } from '../RichTextBlok'
 import { PageHeaderBlok } from '../PageHeaderBlok'
 import { GridBlok } from '../GridBlok'
 import { GridColumn } from '../GridColumn'
+import { Teaser } from '../Teaser'
 
 export interface Props {
   blok: StoryBlokComponent
@@ -15,6 +16,7 @@ const components = {
   page_header: PageHeaderBlok,
   grid: GridBlok,
   grid_column: GridColumn,
+  teaser: Teaser,
 } as const
 
 export default function DynamicBlokComponent({ blok }: Props): ReactElement {

@@ -54,6 +54,9 @@ export interface MenuItem {
 
 export interface GlobalSettings {
   logo: string
+  address: string
+  phone: string
+  email: string
 }
 
 export interface Grid {
@@ -65,4 +68,30 @@ export interface Grid {
 export interface IGridColumn {
   content: StoryBlokComponent[]
   col_span: number
+}
+
+export interface ITeaser {
+  title: string
+  description: string
+  image: ImageField
+  link: LinkField
+}
+
+export interface LinkField {
+  cached_url: string
+  fieldtype: 'multilink'
+  id: string
+  linktype: 'url'
+  url: string
+}
+
+export interface ImageField {
+  alt: string
+  copyright: string
+  fieldtype: 'asset'
+  filename: string
+  focus: null
+  id: number
+  name: string
+  title: string
 }

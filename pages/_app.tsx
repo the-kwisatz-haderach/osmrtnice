@@ -1,4 +1,4 @@
-import { ComponentType, PropsWithChildren, ReactElement } from 'react'
+import { ComponentProps, ComponentType, ReactElement } from 'react'
 import { AppProvider, IAppContext } from '../contexts/AppContext'
 import { IntersectionObserverProvider } from '../hooks/useIntersectionObserver'
 import { MainLayout } from '../layouts/MainLayout'
@@ -8,26 +8,28 @@ import { GlobalStory } from '../lib/storyTypes'
 import { StoryBlokLink } from '../lib/types'
 import '../styles/global.css'
 
-interface Props extends IAppContext {
-  Component: ComponentType
-  pageProps: PropsWithChildren<any>
+interface Props<T extends ComponentType> extends IAppContext {
+  Component: T
+  pageProps: ComponentProps<T>
 }
 
-const observerOptions = { threshold: 0.5 }
+const observerOptions = { threshold: 0.8 }
 
-const MyApp = ({
+function MyApp<T extends ComponentType<any>>({
   Component,
   pageProps,
   ...appContext
-}: Props): ReactElement => (
-  <AppProvider {...appContext}>
-    <IntersectionObserverProvider options={observerOptions}>
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
-    </IntersectionObserverProvider>
-  </AppProvider>
-)
+}: Props<T>): ReactElement {
+  return (
+    <AppProvider {...appContext}>
+      <IntersectionObserverProvider options={observerOptions}>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </IntersectionObserverProvider>
+    </AppProvider>
+  )
+}
 
 MyApp.getInitialProps = async (): Promise<IAppContext> => {
   const [data, response] = await Promise.all([
@@ -49,7 +51,7 @@ MyApp.getInitialProps = async (): Promise<IAppContext> => {
 
   return {
     menuItems: makeAppLinks('en')(myLinks).en,
-    logoUrl: content.logo,
+    ...content,
   }
 }
 

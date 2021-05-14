@@ -4,7 +4,6 @@
   @apply inset-0;
   @apply z-10;
   @apply shadow;
-  @apply font-bold;
 
   height: 65px;
   transition: background-color 0.2s ease-in-out;
@@ -18,6 +17,10 @@
 .container a {
   @apply text-base;
   @apply lg:text-lg;
+}
+
+.container a:hover {
+  text-decoration: underline;
 }
 
 .alternate a {

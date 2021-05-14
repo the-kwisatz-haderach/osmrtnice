@@ -2,31 +2,24 @@ import { createContext, useContext } from 'react'
 import { MenuItem } from '../lib/types'
 export interface IAppContext {
   menuItems: MenuItem[]
-  logoUrl: string
+  logo: string
+  address: string
+  phone: string
+  email: string
 }
 
 const defaultAppContext: IAppContext = {
   menuItems: [],
-  logoUrl: '',
+  logo: '',
+  address: '',
+  phone: '',
+  email: '',
 }
 
 const AppContext = createContext(defaultAppContext)
 
-export const AppProvider: React.FC<IAppContext> = ({
-  children,
-  menuItems,
-  logoUrl,
-}) => {
-  return (
-    <AppContext.Provider
-      value={{
-        menuItems,
-        logoUrl,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
-  )
+export const AppProvider: React.FC<IAppContext> = ({ children, ...value }) => {
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 
 export default function useAppContext(): IAppContext {

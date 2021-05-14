@@ -17,25 +17,24 @@ function useIntersectionObserver<T extends Element>(): {
   const { observe, unobserve, getValues } = useContext(
     IntersectionObserverContext
   )
-  const registered = useRef<string[]>([])
+  const registered = useRef<Set<string>>(new Set())
 
   useEffect(() => {
+    const { current } = registered
     return () => {
-      registered.current.forEach(unobserve)
+      current.forEach(unobserve)
     }
-  }, [])
+  }, [unobserve])
 
   const register = <T extends Element>(element: T): void => {
-    if (element?.id !== undefined) {
-      registered.current.push(element.id)
+    if (element?.id) {
+      registered.current.add(element.id)
       observe(element)
     }
   }
 
   const unregister = (id: string): void => {
-    registered.current = registered.current.filter(
-      (observedId) => observedId !== id
-    )
+    registered.current.delete(id)
     unobserve(id)
   }
 
