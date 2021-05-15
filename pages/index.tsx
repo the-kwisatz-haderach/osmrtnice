@@ -21,7 +21,7 @@ export default function Home({ story }: Props): ReactElement {
         <title>Home</title>
       </Head>
       <div
-        className="w-full bg-gradient-to-b from-primary-900 to-primary-600 flex justify-end items-center flex-col pb-40"
+        className="w-full bg-gradient-to-b from-primary-900 to-primary-600 flex justify-center items-center flex-col"
         style={{
           height: '65vh',
         }}

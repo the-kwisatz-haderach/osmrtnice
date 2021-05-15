@@ -61,8 +61,8 @@ export interface GlobalSettings {
 
 export interface Grid {
   columns: StoryBlokComponent[]
-  col_count: number
-  grid_gap: number
+  col_count?: number
+  grid_gap?: number
 }
 
 export interface IGridColumn {

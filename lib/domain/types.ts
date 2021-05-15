@@ -1,3 +1,5 @@
+import { Richtext } from 'storyblok-js-client'
+
 export enum ObituaryType {
   IN_MEMORIAM = 'IN_MEMORIAM',
   OBITUARY = 'OBITUARY',
@@ -6,14 +8,17 @@ export enum ObituaryType {
 
 export interface Obituary {
   firstname: string
-  middlename: string
   surname: string
-  dateOfBirth: string | null
-  dateOfDeath: string | null
-  imgUrl: string
+  middlename?: string
+  date_of_birth: string
+  date_of_death: string
+  image?: string
   type: ObituaryType
-  description: string
-  relative: string
-  city: string
-  size: 'regular' | 'large'
+  long_text: Richtext
+  relative?: string
+  city?: string
+  size?: 'regular' | 'large'
+  id: string
+  additional_information?: string
+  preamble?: string
 }

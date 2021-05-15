@@ -86,16 +86,20 @@
 
   h1 {
     @apply text-5xl;
-    @apply md:text-9xl;
+    @apply md:text-7xl;
+    @apply lg:text-9xl;
   }
 
   h2 {
-    @apply text-xl;
-    @apply md:text-3xl;
+    @apply text-3xl;
+    @apply md:text-5xl;
+    @apply lg:text-7xl;
   }
 
   h3 {
     @apply text-lg;
+    @apply md:text-xl;
+    @apply lg:text-3xl;
   }
 
   .subtitle {

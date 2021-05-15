@@ -26,7 +26,7 @@ export default function PageHeaderBlok({
           }}
         >
           <h1 className="relative right-1">{title}</h1>
-          {subtitle && <p className="subtitle relative left-2">{subtitle}</p>}
+          {subtitle && <p className="subtitle mt-5">{subtitle}</p>}
         </div>
       </div>
     </div>

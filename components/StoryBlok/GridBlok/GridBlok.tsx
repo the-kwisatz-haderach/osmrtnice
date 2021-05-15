@@ -6,8 +6,8 @@ import styles from './GridBlok.module.css'
 
 export default function GridBlok({
   columns,
-  grid_gap,
-  col_count,
+  grid_gap = 10,
+  col_count = 1,
 }: Grid): ReactElement {
   const className = cx('contained p-10 grid', styles.grid)
   return (

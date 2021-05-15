@@ -1,26 +1,12 @@
-import React, { HTMLAttributes, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { useForm } from 'react-hook-form'
-import cx from 'classnames'
 import { Button } from '../../Button'
+import { FormField } from '../FormField/FormField'
 
-interface Props {}
-
-const FormField: React.FC<
-  { label: string; htmlFor: string } & HTMLAttributes<HTMLDivElement>
-> = ({ label, htmlFor, children, className, ...props }) => {
-  const cn = cx('flex flex-col-reverse flex-1 r', className)
-  return (
-    <div className={cn} {...props}>
-      {children}
-      <label htmlFor={htmlFor}>{label}</label>
-    </div>
-  )
-}
-
-export default function ContactForm({}: Props): ReactElement {
+export default function ContactForm(): ReactElement {
   const { register } = useForm()
   return (
-    <form className="flex flex-col w-full max-w-2xl shadow-xl space-y-4 bg-primary-100 px-5 md:px-10 py-8 md:py-16">
+    <form className="flex flex-col w-full max-w-2xl shadow-xl space-y-4 bg-primary-100 px-5 md:px-10 py-8 md:py-16 border border-primary-200">
       <div className="flex justify-between sm:space-x-4 flex-wrap space-y-4">
         <FormField htmlFor="firstname" label="Firstname">
           <input
@@ -47,7 +33,7 @@ export default function ContactForm({}: Props): ReactElement {
         <input
           autoComplete="email"
           id="email"
-          type="text"
+          type="email"
           {...register('email', {
             required: true,
           })}

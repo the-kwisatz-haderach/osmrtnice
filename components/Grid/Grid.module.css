@@ -1,7 +1,7 @@
 .gridContainer {
   @apply grid;
-  @apply gap-5;
-  @apply p-5;
+  @apply gap-10;
+  @apply p-10;
 
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
 }
