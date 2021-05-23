@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next'
+import axios from 'axios'
 import Head from 'next/head'
-import React, { ReactElement } from 'react'
+import React, { ChangeEventHandler, ReactElement, useState } from 'react'
 import { Grid } from '../../components/Grid'
 import { Obituary } from '../../components/Obituary'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
@@ -14,15 +15,32 @@ interface Props {
 }
 
 export default function Obituaries({ story, obituaries }: Props): ReactElement {
+  const [currentObituaries, setCurrentObituaries] = useState(obituaries)
+  const [query, setQuery] = useState('')
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setQuery(e.target.value)
+  }
+
+  const handleSearch = async (): Promise<void> => {
+    const { data } = await axios.post('/api/obituaries', { query })
+    setCurrentObituaries(data)
+  }
+
   return (
     <div>
       <Head>
         <title>Obituaries</title>
       </Head>
       <Page story={story} />
+      <div>
+        <p className="m-0 font-bold text-white text-3xl">Search here</p>
+        <input type="text" value={query} onChange={handleChange} />
+        <button onClick={handleSearch}>Search</button>
+      </div>
       <div className="contained">
         <Grid>
-          {obituaries.map(({ content, full_slug, uuid }) => (
+          {currentObituaries.map(({ content, full_slug, uuid }) => (
             <Obituary {...content} slug={full_slug} key={uuid} />
           ))}
         </Grid>

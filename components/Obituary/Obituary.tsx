@@ -1,11 +1,9 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
 import cx from 'classnames'
-import { Obituary as IObituary, ObituaryType } from '../../lib/domain/types'
 import { RichText } from '../RichText'
 import { formatDate } from '../../utils/formatDate'
-import { Link } from '../Link'
-import styles from './Obituary.module.css'
+import { IObituary } from '../../lib/domain/types'
 
 export default function Obituary({
   firstname,
@@ -20,7 +18,7 @@ export default function Obituary({
   additional_information,
   slug,
   size = 'regular',
-  type = ObituaryType.OBITUARY,
+  type = 'OBITUARY',
 }: IObituary & { slug?: string }): ReactElement {
   return (
     <div
@@ -68,11 +66,7 @@ export default function Obituary({
             {additional_information}
           </p>
         )}
-        {slug && <Link href={slug}>Read more</Link>}
       </div>
-      {/* <div className="overflow-hidden h-full">
-        <div className={cx(styles.pattern, 'h-full relative top-2')} />
-      </div> */}
     </div>
   )
 }

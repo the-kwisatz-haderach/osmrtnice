@@ -1,5 +1,5 @@
 import faker from 'faker'
-import { IObituary, ObituaryType } from './domain/types'
+import { IObituary } from './domain/types'
 
 const between = (min: number, max: number): number =>
   min + Math.floor(Math.random() * max)
@@ -21,8 +21,12 @@ export const createObitary = (
   date_of_death: faker.date.recent(2).toDateString(),
   additional_information: faker.lorem.lines(between(0, 4)) || undefined,
   image: 'picsum.photos/200/300',
-  long_text: { content: [] },
-  type: ObituaryType.OBITUARY,
+  long_text: {
+    content: [
+      { type: 'paragraph', content: [faker.lorem.lines(between(1, 5))] },
+    ],
+  },
+  type: 'OBITUARY',
 })
 
 export const createObituaries = (amount: number): IObituary[] =>

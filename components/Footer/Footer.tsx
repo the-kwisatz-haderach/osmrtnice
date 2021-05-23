@@ -3,14 +3,14 @@ import Image from 'next/image'
 import cx from 'classnames'
 import { InfoList } from '../InfoList'
 import { FooterBottom } from './components/FooterBottom'
-import { MenuItem } from '../../lib/types'
+import { IMenuItem } from '../../lib/storyblok/types'
 
 interface Props
   extends React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLElement>,
     HTMLElement
   > {
-  menuItems: MenuItem[]
+  menuItems: IMenuItem[]
   address: string
   phone: string
   email: string
@@ -21,13 +21,10 @@ export default function Footer({
   address,
   phone,
   email,
-  ...props
+  className,
 }: Props): ReactElement {
   return (
-    <footer
-      {...props}
-      className={cx('bg-gray-100 border-gray-200 border-t-2', props.className)}
-    >
+    <footer className={cx('bg-gray-100 border-gray-200 border-t-2', className)}>
       <div className="flex justify-between flex-wrap pb-10 pt-5 contained">
         <div className="w-full lg:w-3/5 flex-wrap flex px-10 pt-10">
           <div className="flex flex-col mr-20 mb-10">

@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { ReactElement } from 'react'
 import { Grid } from '../components/Grid'
 import { Obituary } from '../components/Obituary'
-import { ObituarySearch } from '../containers/ObituarySearch'
 import { createObituaries } from '../lib/createMockData'
 import Storyblok from '../lib/storyblok/client'
 import { PageStory } from '../lib/storyblok/types'
@@ -25,10 +24,7 @@ export default function Home({ story }: Props): ReactElement {
         style={{
           height: '65vh',
         }}
-      >
-        <p className="m-0 font-bold text-white text-3xl">Search here</p>
-        <ObituarySearch />
-      </div>
+      />
       <div className="contained">
         <Grid>
           {obituaries.map((obituary) => (
