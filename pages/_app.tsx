@@ -50,7 +50,7 @@ MyApp.getInitialProps = async (): Promise<IAppContext> => {
   const { content } = data.data.story as Story<IGlobalSettings>
 
   return {
-    menuItems: makeAppLinks('en')(myLinks).en,
+    menuItems: makeAppLinks('en', ['privacy-policy'])(myLinks).en,
     ...content,
   }
 }

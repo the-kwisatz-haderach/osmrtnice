@@ -50,9 +50,6 @@ export default function Footer({
               }))}
             />
           </div>
-          <div className="flex flex-col mb-10">
-            <h3 className="mb-2 text-2xl">Get in touch</h3>
-          </div>
         </div>
         <div className="flex flex-grow justify-center items-center">
           <Image src="/icons/logo.svg" height={200} width={300} />

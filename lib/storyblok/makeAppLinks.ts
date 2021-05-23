@@ -1,10 +1,14 @@
 import { IAppContext } from '../../contexts/AppContext'
 import { StoryBlokLink } from './common/types'
 
-export const makeAppLinks = (defaultLocale: string) => (
-  links: StoryBlokLink[]
-): { [key: string]: IAppContext['menuItems'] } => {
+export const makeAppLinks = (
+  defaultLocale: string,
+  ignorePaths: string[] = []
+) => (links: StoryBlokLink[]): { [key: string]: IAppContext['menuItems'] } => {
   return links.reduce((acc, curr) => {
+    if (ignorePaths.includes(curr.slug)) {
+      return acc
+    }
     if (curr.alternates) {
       curr.alternates.forEach((alternate) => {
         if (!acc[alternate.lang]) {
