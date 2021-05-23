@@ -6,8 +6,7 @@ import { makeAppLinks } from '../lib/storyblok/makeAppLinks'
 import Storyblok from '../lib/storyblok/client'
 import '../styles/global.css'
 import { StoryBlokLink } from '../lib/storyblok/common/types'
-import { Story } from '../lib/storyblok/types'
-import { IGlobalSettings } from '../lib/types'
+import { IGlobalSettings, Story } from '../lib/storyblok/types'
 
 interface Props<T extends ComponentType> extends IAppContext {
   Component: T
