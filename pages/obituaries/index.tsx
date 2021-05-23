@@ -52,7 +52,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
           <Button type="submit">Search</Button>
         </form>
       </div>
-      <div className="contained">
+      <div className="contained my-10">
         <Grid>
           {currentObituaries.map(({ content, full_slug, uuid }) => (
             <Obituary {...content} slug={full_slug} key={uuid} />

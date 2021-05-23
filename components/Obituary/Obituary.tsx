@@ -31,9 +31,9 @@ export default function Obituary({
         style={{
           height: 'fit-content',
         }}
-        className="rounded-sm transition-shadow shadow-sm bg-white hover:shadow-lg p-7 border border-gray-200 space-y-4 flex flex-col items-center"
+        className="rounded-sm transition-shadow shadow-sm bg-white hover:shadow-lg p-7 border border-gray-200 space-y-5 flex flex-col items-center"
       >
-        {image && <Image src={`https://${image}`} width={100} height={100} />}
+        {image && <Image src={`https:${image}`} width={140} height={140} />}
         <div className="text-center space-y-3">
           {preamble && <p className="text-center text-sm italic">{preamble}</p>}
           <div className="my-2">

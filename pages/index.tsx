@@ -20,7 +20,7 @@ export default function Home({ story, obituaries }: Props): ReactElement {
         <title>Home</title>
       </Head>
       <Page story={story} />
-      <div className="contained">
+      <div className="contained my-10">
         <Grid>
           {obituaries.map(({ content }) => (
             <div
