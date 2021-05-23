@@ -18,9 +18,15 @@ export default function Button({
   fluid = false,
   ...props
 }: PropsWithChildren<Props>): ReactElement {
-  const cn = `bg-${color}-800 w-${fluid ? 'full' : 'max'}`
+  const cn = cx(
+    className,
+    style.button,
+    { [style.primary]: color === 'primary' },
+    { [style.secondary]: color === 'secondary' },
+    { [style.fluid]: fluid }
+  )
   return (
-    <button {...props} className={cx(cn, className, style.button)}>
+    <button {...props} className={cn}>
       {children}
     </button>
   )

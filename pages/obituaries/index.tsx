@@ -1,13 +1,20 @@
 import { GetStaticProps } from 'next'
 import axios from 'axios'
 import Head from 'next/head'
-import React, { ChangeEventHandler, ReactElement, useState } from 'react'
+import React, {
+  ChangeEventHandler,
+  FormEventHandler,
+  ReactElement,
+  useState,
+} from 'react'
 import { Grid } from '../../components/Grid'
 import { Obituary } from '../../components/Obituary'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
 import { IObituary } from '../../lib/domain/types'
 import Storyblok from '../../lib/storyblok/client'
 import { PageStory, Story } from '../../lib/storyblok/types'
+import { Button } from '../../components/Button'
+import { Input } from '../../components/Input'
 
 interface Props {
   story: PageStory
@@ -16,15 +23,15 @@ interface Props {
 
 export default function Obituaries({ story, obituaries }: Props): ReactElement {
   const [currentObituaries, setCurrentObituaries] = useState(obituaries)
-  const [query, setQuery] = useState('')
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setQuery(e.target.value)
-  }
-
-  const handleSearch = async (): Promise<void> => {
+  const handleSearch = async (query: string): Promise<void> => {
     const { data } = await axios.post('/api/obituaries', { query })
     setCurrentObituaries(data)
+  }
+
+  const handleSubmit: FormEventHandler = (e) => {
+    e.preventDefault()
+    console.log(e)
   }
 
   return (
@@ -33,10 +40,17 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
         <title>Obituaries</title>
       </Head>
       <Page story={story} />
-      <div>
-        <p className="m-0 font-bold text-white text-3xl">Search here</p>
-        <input type="text" value={query} onChange={handleChange} />
-        <button onClick={handleSearch}>Search</button>
+      <div className="flex bg-gray-100 p-10 justify-center items-center flex-col">
+        <p className="m-0 font-bold text-3xl mb-5">Search here</p>
+        <form onSubmit={handleSubmit} className="space-x-2 flex">
+          <Input
+            onChange={handleSearch}
+            style={{
+              minWidth: 300,
+            }}
+          />
+          <Button type="submit">Search</Button>
+        </form>
       </div>
       <div className="contained">
         <Grid>

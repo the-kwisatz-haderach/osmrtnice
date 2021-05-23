@@ -72,3 +72,11 @@ export interface ITeaser {
   image: ImageField
   link: LinkField
 }
+
+export interface IPageHeader {
+  title: string
+  subtitle?: string
+  align?: 'center' | 'left'
+  image?: ImageField
+  action_label?: string
+}

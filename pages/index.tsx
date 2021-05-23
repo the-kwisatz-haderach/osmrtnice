@@ -3,38 +3,33 @@ import Head from 'next/head'
 import { ReactElement } from 'react'
 import { Grid } from '../components/Grid'
 import { Obituary } from '../components/Obituary'
-import { createObituaries } from '../lib/createMockData'
+import Page from '../components/StoryBlok/PageBlok/PageBlok'
+import { IObituary } from '../lib/domain/types'
 import Storyblok from '../lib/storyblok/client'
-import { PageStory } from '../lib/storyblok/types'
-
-const obituaries = createObituaries(12)
+import { PageStory, Story } from '../lib/storyblok/types'
 
 interface Props {
   story: PageStory
+  obituaries: Array<Story<IObituary>>
 }
 
-export default function Home({ story }: Props): ReactElement {
+export default function Home({ story, obituaries }: Props): ReactElement {
   return (
     <div>
       <Head>
         <title>Home</title>
       </Head>
-      <div
-        className="w-full bg-gradient-to-b from-primary-900 to-primary-600 flex justify-center items-center flex-col"
-        style={{
-          height: '65vh',
-        }}
-      />
+      <Page story={story} />
       <div className="contained">
         <Grid>
-          {obituaries.map((obituary) => (
+          {obituaries.map(({ content }) => (
             <div
-              key={obituary.id}
+              key={content.id}
               className={
-                obituary.size === 'large' ? 'sm:col-span-2' : 'col-span-1'
+                content.size === 'large' ? 'sm:col-span-2' : 'col-span-1'
               }
             >
-              <Obituary {...obituary} />
+              <Obituary {...content} />
             </div>
           ))}
         </Grid>
@@ -49,10 +44,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
     version: 'draft',
     cv: Date.now(),
   })
+  const obituaryStories = await Storyblok.getStories({
+    starts_with: 'obituaries',
+    version: 'draft',
+    is_startpage: 0,
+  })
 
   return {
     props: {
       story: res.data.story as PageStory,
+      obituaries: obituaryStories.data.stories as Array<Story<IObituary>>,
     },
   }
 }

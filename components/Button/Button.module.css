@@ -1,8 +1,10 @@
 .button {
   @apply rounded-sm;
+  @apply w-max;
+  @apply py-3;
+  @apply px-8;
 
   transition: opacity 0.2s ease-in-out;
-  padding: 0.8rem 2rem;
   color: white;
 }
 
@@ -14,4 +16,16 @@
   @apply opacity-90;
 
   outline: none;
+}
+
+.button.primary {
+  @apply bg-primary-500;
+}
+
+.button.secondary {
+  @apply bg-secondary-500;
+}
+
+.button.fluid {
+  @apply w-full;
 }
