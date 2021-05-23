@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, HTMLAttributes, ReactElement } from 'react'
 import useStoryblok from '../../../hooks/useStoryBlok/useStoryBlok'
-import { PageStory } from '../../../lib/storyTypes'
+import { PageStory } from '../../../lib/storyblok/types'
 import { DynamicBlokComponent } from '../DynamicBlokComponent'
 
 export interface Props

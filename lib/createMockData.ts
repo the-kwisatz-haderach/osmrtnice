@@ -1,12 +1,12 @@
 import faker from 'faker'
-import { Obituary, ObituaryType } from './domain/types'
+import { IObituary, ObituaryType } from './domain/types'
 
-const between = (min: number, max: number) =>
+const between = (min: number, max: number): number =>
   min + Math.floor(Math.random() * max)
 
 export const createObitary = (
-  size: Obituary['size'] = 'regular'
-): Obituary => ({
+  size: IObituary['size'] = 'regular'
+): IObituary => ({
   size,
   id: faker.random.alphaNumeric(100),
   firstname: faker.name.firstName(),
@@ -25,7 +25,7 @@ export const createObitary = (
   type: ObituaryType.OBITUARY,
 })
 
-export const createObituaries = (amount: number) =>
+export const createObituaries = (amount: number): IObituary[] =>
   Array(amount)
     .fill(0)
     .map((_, i) => createObitary(i % 6 === 0 ? 'large' : 'regular'))

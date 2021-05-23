@@ -1,65 +1,44 @@
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { Richtext } from 'storyblok-js-client'
-import { StoryBlokComponent } from './blokTypes'
-
-export interface StoryBlokLink {
-  id: number
-  slug: string
-  name: string
-  is_folder: boolean
-  parent_id: number
-  published: boolean
-  position: number
-  uuid: string
-  is_startpage: boolean
-  path: string
-  real_path: string
-  alternates?: Array<{ path: string; name: null | string; lang: string }>
-}
-
-export type Color =
-  | 'primary-dark'
-  | 'primary-light'
-  | 'secondary-dark'
-  | 'secondary-light'
-
-export interface Post {
+import { ImageField, LinkField } from './storyblok/common/types'
+import { StoryBlokComponent } from './storyblok/types'
+export interface IPost {
   title: string
   image: string
   intro: string
   long_text: Richtext
 }
 
-export interface RichTextBlok {
+export interface IRichTextBlok {
   text: Richtext
 }
 
-export interface HeroImage {
+export interface IHeroImage {
   title: string
   subtitle: string
   description: string
   image: string
 }
 
-export interface SocialChannelLink {
+export interface ISocialChannelLink {
   title: string
   url: string
   icon: IconDefinition
 }
 
-export interface MenuItem {
+export interface IMenuItem {
   href: string
   label: string
 }
 
-export interface GlobalSettings {
+export interface IGlobalSettings {
   logo: string
   address: string
   phone: string
   email: string
 }
 
-export interface Grid {
+export interface IGrid {
   columns: StoryBlokComponent[]
   col_count?: number
   grid_gap?: number
@@ -75,23 +54,4 @@ export interface ITeaser {
   description: string
   image: ImageField
   link: LinkField
-}
-
-export interface LinkField {
-  cached_url: string
-  fieldtype: 'multilink'
-  id: string
-  linktype: 'url'
-  url: string
-}
-
-export interface ImageField {
-  alt: string
-  copyright: string
-  fieldtype: 'asset'
-  filename: string
-  focus: null
-  id: number
-  name: string
-  title: string
 }

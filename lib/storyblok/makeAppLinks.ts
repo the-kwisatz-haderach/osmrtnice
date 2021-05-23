@@ -1,5 +1,5 @@
-import { IAppContext } from '../contexts/AppContext'
-import { StoryBlokLink } from './types'
+import { IAppContext } from '../../contexts/AppContext'
+import { StoryBlokLink } from './common/types'
 
 export const makeAppLinks = (defaultLocale: string) => (
   links: StoryBlokLink[]

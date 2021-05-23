@@ -6,7 +6,7 @@ export enum ObituaryType {
   GRATITUDE_DISPLAY = 'GRATITUDE_DISPLAY',
 }
 
-export interface Obituary {
+export interface IObituary {
   firstname: string
   surname: string
   middlename?: string

@@ -1,6 +1,6 @@
 import React, { ReactElement, PropsWithChildren, ComponentProps } from 'react'
 import { Richtext } from 'storyblok-js-client'
-import Storyblok from '../../lib/storyblok'
+import Storyblok from '../../lib/storyblok/client'
 
 export type Props = PropsWithChildren<{ children: Richtext }> &
   ComponentProps<'div'>

@@ -2,9 +2,9 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import React, { ReactElement } from 'react'
 import { PageHeaderBlok } from '../../components/StoryBlok/PageHeaderBlok'
 import { RichTextBlok } from '../../components/StoryBlok/RichTextBlok'
-import { Obituary as IObituary } from '../../lib/domain/types'
-import Storyblok from '../../lib/storyblok'
-import { ObituaryStory } from '../../lib/storyTypes'
+import { IObituary } from '../../lib/domain/types'
+import Storyblok from '../../lib/storyblok/client'
+import { Story } from '../../lib/storyblok/types'
 import { formatDate } from '../../utils/formatDate'
 
 export default function Obituary({
@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps<
   })
 
   return {
-    props: (response.data.story as ObituaryStory).content,
+    props: (response.data.story as Story<IObituary>).content,
   }
 }
 

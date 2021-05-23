@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import SbEditable from 'storyblok-react'
-import { StoryBlokComponent } from '../../../lib/blokTypes'
+import { StoryBlokComponent } from '../../../lib/storyblok/types'
 import { RichTextBlok } from '../RichTextBlok'
 import { PageHeaderBlok } from '../PageHeaderBlok'
 import { GridBlok } from '../GridBlok'

@@ -3,8 +3,8 @@ import Head from 'next/head'
 import { ReactElement } from 'react'
 import { ContactForm } from '../components/Forms/ContactForm'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import Storyblok from '../lib/storyblok'
-import { PageStory } from '../lib/storyTypes'
+import Storyblok from '../lib/storyblok/client'
+import { PageStory } from '../lib/storyblok/types'
 
 interface Props {
   story: PageStory

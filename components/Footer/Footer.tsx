@@ -24,7 +24,10 @@ export default function Footer({
   ...props
 }: Props): ReactElement {
   return (
-    <footer {...props} className={cx('bg-gray-100', props.className)}>
+    <footer
+      {...props}
+      className={cx('bg-gray-100 border-gray-200 border-t-2', props.className)}
+    >
       <div className="flex justify-between flex-wrap pb-10 pt-5 contained">
         <div className="w-full lg:w-3/5 flex-wrap flex px-10 pt-10">
           <div className="flex flex-col mr-20 mb-10">

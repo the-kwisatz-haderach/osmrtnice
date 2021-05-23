@@ -2,11 +2,12 @@ import { ComponentProps, ComponentType, ReactElement } from 'react'
 import { AppProvider, IAppContext } from '../contexts/AppContext'
 import { IntersectionObserverProvider } from '../hooks/useIntersectionObserver'
 import { MainLayout } from '../layouts/MainLayout'
-import { makeAppLinks } from '../lib/makeAppLinks'
-import Storyblok from '../lib/storyblok'
-import { GlobalStory } from '../lib/storyTypes'
-import { StoryBlokLink } from '../lib/types'
+import { makeAppLinks } from '../lib/storyblok/makeAppLinks'
+import Storyblok from '../lib/storyblok/client'
 import '../styles/global.css'
+import { StoryBlokLink } from '../lib/storyblok/common/types'
+import { Story } from '../lib/storyblok/types'
+import { IGlobalSettings } from '../lib/types'
 
 interface Props<T extends ComponentType> extends IAppContext {
   Component: T
@@ -47,7 +48,7 @@ MyApp.getInitialProps = async (): Promise<IAppContext> => {
     .filter((link) => link.slug !== 'global' && link.parent_id === 0)
     .sort((a, b) => b.position - a.position)
 
-  const { content } = data.data.story as GlobalStory
+  const { content } = data.data.story as Story<IGlobalSettings>
 
   return {
     menuItems: makeAppLinks('en')(myLinks).en,

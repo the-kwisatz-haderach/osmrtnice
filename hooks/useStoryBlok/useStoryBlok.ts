@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { StoryData } from 'storyblok-js-client'
-import Storyblok from '../../lib/storyblok'
+import Storyblok from '../../lib/storyblok/client'
 
 export default function useStoryblok<T extends StoryData>(originalStory: T): T {
   let [story, setStory] = useState(originalStory)

@@ -1,9 +1,9 @@
 import { ReactElement } from 'react'
 import Head from 'next/head'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import { PageStory } from '../lib/storyTypes'
 import { GetStaticProps } from 'next'
-import Storyblok from '../lib/storyblok'
+import Storyblok from '../lib/storyblok/client'
+import { PageStory } from '../lib/storyblok/types'
 
 interface Props {
   story: PageStory

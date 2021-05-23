@@ -5,8 +5,8 @@ import { Grid } from '../components/Grid'
 import { Obituary } from '../components/Obituary'
 import { ObituarySearch } from '../containers/ObituarySearch'
 import { createObituaries } from '../lib/createMockData'
-import Storyblok from '../lib/storyblok'
-import { PageStory } from '../lib/storyTypes'
+import Storyblok from '../lib/storyblok/client'
+import { PageStory } from '../lib/storyblok/types'
 
 const obituaries = createObituaries(12)
 

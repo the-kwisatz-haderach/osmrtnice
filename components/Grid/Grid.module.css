@@ -2,6 +2,7 @@
   @apply grid;
   @apply gap-10;
   @apply p-10;
-
-  grid-template-columns: repeat(4, minmax(250px, 1fr));
+  @apply grid-cols-1;
+  @apply md:grid-cols-3;
+  @apply lg:grid-cols-4;
 }

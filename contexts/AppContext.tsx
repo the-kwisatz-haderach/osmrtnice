@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
-import { MenuItem } from '../lib/types'
+import { IMenuItem } from '../lib/types'
 export interface IAppContext {
-  menuItems: MenuItem[]
+  menuItems: IMenuItem[]
   logo: string
   address: string
   phone: string
