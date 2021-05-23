@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { IMenuItem } from '../lib/types'
+import { IMenuItem } from '../lib/storyblok/types'
 export interface IAppContext {
   menuItems: IMenuItem[]
   logo: string
