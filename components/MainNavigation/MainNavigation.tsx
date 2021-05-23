@@ -5,12 +5,12 @@ import Image from 'next/image'
 import cx from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { MenuItem } from '../../lib/types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import styles from './MainNavigation.module.css'
+import { IMenuItem } from '../../lib/storyblok/types'
 
 interface Props {
-  menuItems: MenuItem[]
+  menuItems: IMenuItem[]
   alternate?: boolean
 }
 
