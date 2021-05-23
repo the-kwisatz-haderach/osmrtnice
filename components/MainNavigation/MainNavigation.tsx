@@ -61,7 +61,14 @@ export default function MainNavigation({
           <ul
             className={cx(styles.foldOutMenu, { [styles.hideMenu]: !isOpen })}
           >
-            <div className="md:hidden">
+            <div
+              className="md:hidden"
+              onClick={() => {
+                if (router.pathname === '/') {
+                  setIsOpen(false)
+                }
+              }}
+            >
               <Link href={homeLink.href}>{homeLink.label}</Link>
             </div>
             {links.map((menuItem, i) => (
