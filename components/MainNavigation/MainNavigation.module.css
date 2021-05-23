@@ -16,6 +16,7 @@
 
 .container a {
   @apply text-base;
+  @apply font-bold;
   @apply lg:text-lg;
 }
 

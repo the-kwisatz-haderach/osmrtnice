@@ -1,7 +1,7 @@
 .gridContainer {
   @apply grid;
   @apply gap-10;
-  @apply p-10;
+  @apply p-5;
   @apply grid-cols-1;
   @apply md:grid-cols-3;
   @apply lg:grid-cols-4;

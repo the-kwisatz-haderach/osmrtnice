@@ -42,7 +42,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
       <Page story={story} />
       <div className="flex bg-gray-100 p-10 justify-center items-center flex-col">
         <p className="m-0 font-bold text-3xl mb-5">Search here</p>
-        <form onSubmit={handleSubmit} className="space-x-2 flex">
+        <form onSubmit={handleSubmit} className="space-x-2 flex flex-wrap">
           <Input
             onChange={handleSearch}
             style={{
