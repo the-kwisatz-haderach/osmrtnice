@@ -1,14 +1,14 @@
 import React, { ReactElement } from 'react'
 import cx from 'classnames'
-import { Grid } from '../../../lib/types'
 import { DynamicBlokComponent } from '../DynamicBlokComponent'
 import styles from './GridBlok.module.css'
+import { IGrid } from '../../../lib/storyblok/types'
 
 export default function GridBlok({
   columns,
   grid_gap = 10,
   col_count = 1,
-}: Grid): ReactElement {
+}: IGrid): ReactElement {
   const className = cx('contained p-10 grid', styles.grid)
   return (
     <div

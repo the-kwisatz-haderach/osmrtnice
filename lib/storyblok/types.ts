@@ -79,5 +79,5 @@ export interface IPageHeader {
   align?: 'center' | 'left'
   image?: ImageField
   action_label?: string
-  height: 'normal' | 'large'
+  height?: 'normal' | 'large'
 }

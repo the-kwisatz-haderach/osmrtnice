@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { IGridColumn } from '../../../lib/types'
+import { IGridColumn } from '../../../lib/storyblok/types'
 import { DynamicBlokComponent } from '../DynamicBlokComponent'
 
 export default function GridColumn({

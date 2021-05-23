@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
-import { ITeaser } from '../../../lib/types'
 import { Link } from '../../Link'
+import { ITeaser } from '../../../lib/storyblok/types'
 
 export default function Teaser({
   title,

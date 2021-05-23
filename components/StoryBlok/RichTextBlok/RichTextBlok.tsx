@@ -1,7 +1,11 @@
 import React, { ReactElement } from 'react'
-import type { RichTextBlok as RichTextBlokType } from '../../../lib/types'
+import { Richtext } from 'storyblok-js-client'
 import { RichText } from '../../RichText'
 
-export default function RichTextBlok({ text }: RichTextBlokType): ReactElement {
+export default function RichTextBlok({
+  text,
+}: {
+  text: Richtext
+}): ReactElement {
   return <RichText>{text}</RichText>
 }
