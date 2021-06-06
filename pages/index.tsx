@@ -1,8 +1,10 @@
 import { GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 import { Grid } from '../components/Grid'
 import { Obituary } from '../components/Obituary'
+import { SearchInput } from '../components/SearchInput'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
 import { IObituary } from '../lib/domain/types'
 import Storyblok from '../lib/storyblok/client'
@@ -14,11 +16,36 @@ interface Props {
 }
 
 export default function Home({ story, obituaries }: Props): ReactElement {
+  const [query, setQuery] = useState('')
+  const router = useRouter()
+
+  const handleSubmitSearch = async (): Promise<void> => {
+    await router.push(`/obituaries?search=${query}`)
+  }
+
   return (
     <div>
       <Head>
         <title>Home</title>
       </Head>
+      <div
+        className="bg-gradient-to-b from-primary-900 to-primary-700 text-white"
+        style={{
+          height: '75vh',
+          backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%),
+            url(/images/candles.jpg)`,
+        }}
+      >
+        <div className="flex flex-col items-center justify-center w-3/4 m-auto h-full">
+          <h1 className="mb-10">Search our obituaries</h1>
+          <SearchInput
+            value={query}
+            onChange={setQuery}
+            onSubmit={handleSubmitSearch}
+            placeholder="Firstname, lastname, city..."
+          />
+        </div>
+      </div>
       <Page story={story} />
       <div className="contained my-10">
         <Grid>

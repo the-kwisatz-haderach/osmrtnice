@@ -25,7 +25,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
   const [currentObituaries, setCurrentObituaries] = useState(obituaries)
 
   const handleSearch = async (query: string): Promise<void> => {
-    const { data } = await axios.post('/api/obituaries', { query })
+    const { data } = await axios.post('/api/obituaries/search', { query })
     setCurrentObituaries(data)
   }
 

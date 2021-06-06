@@ -110,7 +110,7 @@
 
   input,
   textarea {
-    @apply bg-primary-50 rounded-sm p-2 border border-primary-200 outline-none text-sm;
+    @apply rounded-sm p-2 border outline-none text-sm text-black;
   }
 
   label {
@@ -121,12 +121,12 @@
   }
 
   input::placeholder {
-    @apply text-gray-400;
+    @apply text-gray-300;
   }
 
   input:focus + label,
   textarea:focus + label {
-    @apply text-primary-50 bg-primary-700;
+    @apply text-primary-50 bg-primary-600;
   }
 
   .pattern {

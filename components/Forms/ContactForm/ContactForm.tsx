@@ -1,12 +1,21 @@
+import axios from 'axios'
 import React, { ReactElement } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '../../Button'
 import { FormField } from '../FormField/FormField'
 
 export default function ContactForm(): ReactElement {
-  const { register } = useForm()
+  const { register, handleSubmit } = useForm()
+
+  const onSubmit = () => {
+    return axios.post('/api/obituaries', { test: 'hello ' }).then(console.log)
+  }
+
   return (
-    <form className="flex flex-col w-full max-w-2xl shadow-xl space-y-4 bg-primary-100 px-5 md:px-10 py-8 md:py-16 border border-primary-200">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col w-full max-w-2xl shadow-xl space-y-4 bg-primary-100 px-5 md:px-10 py-8 md:py-16 border border-primary-200"
+    >
       <div className="flex justify-between sm:space-x-4 flex-wrap space-y-4">
         <FormField htmlFor="firstname" label="Firstname">
           <input
