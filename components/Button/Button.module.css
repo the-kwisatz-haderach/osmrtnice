@@ -22,6 +22,10 @@
   @apply bg-primary-500;
 }
 
+.button.white {
+  @apply bg-white text-black;
+}
+
 .button.secondary {
   @apply bg-secondary-500;
 }

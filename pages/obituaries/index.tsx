@@ -1,12 +1,8 @@
 import { GetStaticProps } from 'next'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
-import React, {
-  ChangeEventHandler,
-  FormEventHandler,
-  ReactElement,
-  useState,
-} from 'react'
+import React, { FormEventHandler, ReactElement, useState } from 'react'
 import { Grid } from '../../components/Grid'
 import { Obituary } from '../../components/Obituary'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
@@ -22,6 +18,7 @@ interface Props {
 }
 
 export default function Obituaries({ story, obituaries }: Props): ReactElement {
+  const router = useRouter()
   const [currentObituaries, setCurrentObituaries] = useState(obituaries)
 
   const handleSearch = async (query: string): Promise<void> => {
@@ -44,6 +41,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
         <p className="m-0 font-bold text-3xl mb-5">Search here</p>
         <form onSubmit={handleSubmit} className="space-x-2 flex flex-wrap">
           <Input
+            defaultValue={(router?.query?.search as string) ?? ''}
             onChange={handleSearch}
             style={{
               minWidth: 300,

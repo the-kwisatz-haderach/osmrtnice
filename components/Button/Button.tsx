@@ -7,7 +7,7 @@ import cx from 'classnames'
 import style from './Button.module.css'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: 'primary' | 'secondary'
+  color?: 'primary' | 'secondary' | 'white'
   fluid?: boolean
 }
 
@@ -23,6 +23,7 @@ export default function Button({
     style.button,
     { [style.primary]: color === 'primary' },
     { [style.secondary]: color === 'secondary' },
+    { [style.white]: color === 'white' },
     { [style.fluid]: fluid }
   )
   return (

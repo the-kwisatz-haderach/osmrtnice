@@ -37,7 +37,7 @@ export default function Home({ story, obituaries }: Props): ReactElement {
         }}
       >
         <div className="flex flex-col items-center justify-center w-3/4 m-auto h-full">
-          <h1 className="mb-10">Search our obituaries</h1>
+          <h1 className="text-center mb-10">Search our obituaries</h1>
           <SearchInput
             value={query}
             onChange={setQuery}
