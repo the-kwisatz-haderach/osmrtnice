@@ -46,6 +46,7 @@ export interface ISocialChannelLink {
 export interface IMenuItem {
   href: string
   label: string
+  isCTA: boolean
 }
 
 export interface IGlobalSettings {

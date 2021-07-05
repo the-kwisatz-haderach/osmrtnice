@@ -4,12 +4,8 @@
   @apply py-3;
   @apply px-8;
 
-  transition: opacity 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
   color: white;
-}
-
-.button:hover {
-  @apply opacity-90;
 }
 
 .button:focus {
@@ -22,12 +18,24 @@
   @apply bg-primary-500;
 }
 
+.button.primary:hover {
+  @apply bg-primary-600;
+}
+
 .button.white {
   @apply bg-white text-black;
 }
 
+.button.white:hover {
+  @apply bg-primary-500 text-white;
+}
+
 .button.secondary {
   @apply bg-secondary-500;
+}
+
+.button.secondary:hover {
+  @apply bg-secondary-600 text-white;
 }
 
 .button.fluid {

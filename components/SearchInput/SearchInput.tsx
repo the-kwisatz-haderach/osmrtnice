@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Props
@@ -10,15 +10,17 @@ interface Props
     >,
     'onChange' | 'value'
   > {
-  value: string
-  onSubmit: () => void
+  defaultValue?: string
+  onSubmit?: () => void
   onChange: (value: string) => void
+  isLoading?: boolean
 }
 
 export default function SearchInput({
-  value = '',
+  defaultValue,
   onChange,
   onSubmit,
+  isLoading = false,
   ...props
 }: Props): ReactElement {
   return (
@@ -26,19 +28,32 @@ export default function SearchInput({
       className="flex"
       onSubmit={(e) => {
         e.preventDefault()
-        onSubmit()
+        if (onSubmit) {
+          onSubmit()
+        }
       }}
     >
       <input
         {...props}
-        value={value}
+        defaultValue={defaultValue}
         onChange={(e) => {
           onChange(e.target.value)
         }}
-        className="h-14 w-96 text-xl"
+        className="h-14 sm:w-96 text-xl"
       />
-      <button type="submit" className="bg-primary-500 border-none h-14 w-16">
-        <FontAwesomeIcon icon={faSearch} size="lg" />
+      <button
+        type="submit"
+        className="bg-primary-500 hover:bg-primary-600 transition-colors text-white border-none h-14 w-16"
+      >
+        {isLoading ? (
+          <FontAwesomeIcon
+            className="animate-spin"
+            icon={faSpinner}
+            size="lg"
+          />
+        ) : (
+          <FontAwesomeIcon icon={faSearch} size="lg" />
+        )}
       </button>
     </form>
   )

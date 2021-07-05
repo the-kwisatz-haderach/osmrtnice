@@ -1,16 +1,16 @@
-import { GetStaticProps } from 'next'
+import { debounce } from 'lodash'
 import axios from 'axios'
+import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import React, { FormEventHandler, ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { Grid } from '../../components/Grid'
 import { Obituary } from '../../components/Obituary'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
 import { IObituary } from '../../lib/domain/types'
 import Storyblok from '../../lib/storyblok/client'
 import { PageStory, Story } from '../../lib/storyblok/types'
-import { Button } from '../../components/Button'
-import { Input } from '../../components/Input'
+import { SearchInput } from '../../components/SearchInput'
 
 interface Props {
   story: PageStory
@@ -21,15 +21,22 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
   const router = useRouter()
   const [currentObituaries, setCurrentObituaries] = useState(obituaries)
 
-  const handleSearch = async (query: string): Promise<void> => {
-    const { data } = await axios.post('/api/obituaries/search', { query })
-    setCurrentObituaries(data)
-  }
+  const handleSearch = useRef(
+    debounce(
+      async (query: string): Promise<void> => {
+        const { data } = await axios.post('/api/obituaries/search', { query })
+        setCurrentObituaries(data)
+      },
+      1000,
+      { leading: true }
+    )
+  ).current
 
-  const handleSubmit: FormEventHandler = (e) => {
-    e.preventDefault()
-    console.log(e)
-  }
+  useEffect(() => {
+    if (typeof router?.query?.search === 'string') {
+      handleSearch(router.query.search).catch(console.error)
+    }
+  }, [handleSearch, router])
 
   return (
     <div>
@@ -38,17 +45,12 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
       </Head>
       <Page story={story} />
       <div className="flex bg-gray-100 p-10 justify-center items-center flex-col">
-        <p className="m-0 font-bold text-3xl mb-5">Search here</p>
-        <form onSubmit={handleSubmit} className="space-x-2 flex flex-wrap">
-          <Input
-            defaultValue={(router?.query?.search as string) ?? ''}
-            onChange={handleSearch}
-            style={{
-              minWidth: 300,
-            }}
-          />
-          <Button type="submit">Search</Button>
-        </form>
+        <SearchInput
+          autoFocus
+          defaultValue={(router?.query?.search as string) ?? ''}
+          onChange={handleSearch}
+          placeholder="Firstname, lastname, city..."
+        />
       </div>
       <div className="contained my-10">
         <Grid>

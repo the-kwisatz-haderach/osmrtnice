@@ -19,7 +19,7 @@ module.exports = {
       '2xl': '1920px',
     },
     fontFamily: {
-      sans: ['Open-Sans', 'sans-serif'],
+      sans: ['Nunito', 'sans-serif'],
       serif: ['Dancing Script', 'serif'],
     },
     container: {

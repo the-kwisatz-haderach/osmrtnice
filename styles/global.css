@@ -26,38 +26,38 @@
   }
 
   @font-face {
-    font-family: 'Open-Sans';
+    font-family: 'Nunito';
     font-weight: 300;
     font-style: normal;
-    src: url('../public/fonts/OpenSans-Light.ttf');
+    src: url('../public/fonts/Nunito-Light.ttf');
   }
 
   @font-face {
-    font-family: 'Open-Sans';
+    font-family: 'Nunito';
     font-weight: 400;
     font-style: normal;
-    src: url('../public/fonts/OpenSans-Regular.ttf');
+    src: url('../public/fonts/Nunito-Regular.ttf');
   }
 
   @font-face {
-    font-family: 'Open-Sans';
+    font-family: 'Nunito';
     font-weight: 400;
     font-style: italic;
-    src: url('../public/fonts/OpenSans-Italic.ttf');
+    src: url('../public/fonts/Nunito-Italic.ttf');
   }
 
   @font-face {
-    font-family: 'Open-Sans';
+    font-family: 'Nunito';
     font-weight: 700;
     font-style: bold;
-    src: url('../public/fonts/OpenSans-SemiBold.ttf');
+    src: url('../public/fonts/Nunito-SemiBold.ttf');
   }
 
   @font-face {
-    font-family: 'Open-Sans';
+    font-family: 'Nunito';
     font-weight: 700;
     font-style: italic;
-    src: url('../public/fonts/OpenSans-SemiBoldItalic.ttf');
+    src: url('../public/fonts/Nunito-SemiBoldItalic.ttf');
   }
 
   h1,

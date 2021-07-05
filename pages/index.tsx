@@ -36,10 +36,10 @@ export default function Home({ story, obituaries }: Props): ReactElement {
             url(/images/candles.jpg)`,
         }}
       >
-        <div className="flex flex-col items-center justify-center w-3/4 m-auto h-full">
+        <div className="flex flex-col items-center justify-center w-5/6 m-auto h-full">
           <h1 className="text-center mb-10">Search our obituaries</h1>
           <SearchInput
-            value={query}
+            defaultValue={query}
             onChange={setQuery}
             onSubmit={handleSubmitSearch}
             placeholder="Firstname, lastname, city..."
