@@ -19,6 +19,7 @@ interface Props {
 
 export default function Obituaries({ story, obituaries }: Props): ReactElement {
   const router = useRouter()
+  const searchRef = useRef<HTMLDivElement>(null)
   const [currentObituaries, setCurrentObituaries] = useState(obituaries)
 
   const handleSearch = useRef(
@@ -38,13 +39,25 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
     }
   }, [handleSearch, router])
 
+  useEffect(() => {
+    if (router?.query?.search && searchRef.current) {
+      window.scrollTo({
+        top: searchRef.current.getBoundingClientRect().top - 50,
+        behavior: 'smooth',
+      })
+    }
+  }, [searchRef, router])
+
   return (
     <div>
       <Head>
         <title>Obituaries</title>
       </Head>
       <Page story={story} />
-      <div className="flex bg-gray-100 p-10 justify-center items-center flex-col">
+      <div
+        ref={searchRef}
+        className="flex bg-gray-100 p-10 justify-center items-center flex-col"
+      >
         <SearchInput
           autoFocus
           defaultValue={(router?.query?.search as string) ?? ''}
@@ -53,11 +66,17 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
         />
       </div>
       <div className="contained my-10">
-        <Grid>
-          {currentObituaries.map(({ content, full_slug, uuid }) => (
-            <Obituary {...content} slug={full_slug} key={uuid} />
-          ))}
-        </Grid>
+        {currentObituaries.length > 0 ? (
+          <Grid>
+            {currentObituaries.map(({ content, full_slug, uuid }) => (
+              <Obituary {...content} slug={full_slug} key={uuid} />
+            ))}
+          </Grid>
+        ) : (
+          <div className="contained p-10 flex items-center justify-center h-56 text-xl">
+            <p>There are no results. Try changing your search query.</p>
+          </div>
+        )}
       </div>
     </div>
   )
