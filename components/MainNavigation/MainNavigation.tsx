@@ -58,26 +58,24 @@ export default function MainNavigation({
               </div>
             </Link>
           </div>
-          <ul
-            className={cx(styles.foldOutMenu, { [styles.hideMenu]: !isOpen })}
-          >
-            <div
-              className="md:hidden"
-              onClick={() => {
-                if (router.pathname === '/') {
-                  setIsOpen(false)
-                }
-              }}
-            >
-              <Link href={homeLink.href}>{homeLink.label}</Link>
-            </div>
-            {links.map((menuItem, i) => (
-              <li key={i}>
-                <Link href={menuItem.href}>{menuItem.label}</Link>
-              </li>
-            ))}
-          </ul>
         </nav>
+        <ul className={cx(styles.foldOutMenu, { [styles.hideMenu]: !isOpen })}>
+          <div
+            className="md:hidden"
+            onClick={() => {
+              if (router.pathname === '/') {
+                setIsOpen(false)
+              }
+            }}
+          >
+            <Link href={homeLink.href}>{homeLink.label}</Link>
+          </div>
+          {links.map((menuItem, i) => (
+            <li key={i}>
+              <Link href={menuItem.href}>{menuItem.label}</Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   )
