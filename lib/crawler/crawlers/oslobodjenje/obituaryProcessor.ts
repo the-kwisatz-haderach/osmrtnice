@@ -1,6 +1,6 @@
 import { ElementHandle } from 'puppeteer'
 import nameFormatter from '../../../../utils/nameFormatter/nameFormatter'
-import { Obituary } from '../../../domain/obituary/types'
+import { IObituary } from '../../../domain/types'
 import { createItemProcessor } from '../../helpers/createItemProcessor'
 import { getElementProperty } from '../../helpers/getElementProperty'
 import { getInnerText } from '../../helpers/getInnerText'
@@ -22,7 +22,7 @@ const getDates = async (
     .then(getInnerText('p'))
     .then((dateText: string) => dateText.split(/\D+/).filter((year) => year))
 
-const obituaryProcessor = createItemProcessor<HTMLDivElement, Obituary>(
+const obituaryProcessor = createItemProcessor<HTMLDivElement, IObituary>(
   obituaryDefaults,
   {
     firstname: async (root) =>

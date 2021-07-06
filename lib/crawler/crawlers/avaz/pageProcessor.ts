@@ -1,9 +1,9 @@
-import { Obituary } from '../../../domain/obituary/types'
+import { IObituary } from '../../../domain/types'
 import type { PageProcessor } from '../../types'
 import obituaryProcessor from './obituaryProcessor'
 
-const pageProcessor: PageProcessor<Obituary[]> = async (page) => {
-  const obituaries: Obituary[] = []
+const pageProcessor: PageProcessor<IObituary[]> = async (page) => {
+  const obituaries: IObituary[] = []
   try {
     const obituary = await obituaryProcessor(await page.$('.obituary'))
 

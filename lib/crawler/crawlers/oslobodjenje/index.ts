@@ -3,7 +3,7 @@ import { createSiteProcessor } from '../../helpers/createSiteProcessor'
 import { nextPageNavigator } from './pageNavigator'
 import pageProcessor from './pageProcessor'
 import SiteCrawler from '../../SiteCrawler'
-import { Obituary } from '../../../domain/obituary/types'
+import { IObituary } from '../../../domain/types'
 
 const siteProcessor = createSiteProcessor(
   pageProcessor,
@@ -11,7 +11,7 @@ const siteProcessor = createSiteProcessor(
   (_, pageIndex) => pageIndex >= 10
 )
 
-export default new SiteCrawler<Obituary[]>({
+export default new SiteCrawler<IObituary[]>({
   url: process.env.OSLOBODJENJE_URL,
   outputHandler: createOutputWriter('oslobodjenje'),
   documentProcessor: siteProcessor,

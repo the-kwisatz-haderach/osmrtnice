@@ -1,6 +1,8 @@
-import { Obituary } from '../../../domain/obituary/types'
+import { IObituary } from '../../../domain/types'
 
-const obituaryIdGenerator = (obituary: Obituary): string =>
+const obituaryIdGenerator = (
+  obituary: Pick<IObituary, 'firstname' | 'middlename' | 'surname' | 'relative'>
+): string =>
   [obituary.firstname, obituary.middlename, obituary.surname, obituary.relative]
     .flatMap((val) => [...val].map((char) => char.charCodeAt(0)))
     .join('')

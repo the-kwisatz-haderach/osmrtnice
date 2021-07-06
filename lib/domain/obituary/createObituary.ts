@@ -1,13 +1,15 @@
-import { Obituary, ObituaryInput, ObituaryType } from './types'
+import { obituaryIdGenerator } from '../../crawler/helpers/obituaryIdGenerator'
+import { IObituary, IObituaryInput } from '../types'
 
-export default function createObituary(input: ObituaryInput): Obituary {
+export default function createObituary(input: IObituaryInput): IObituary {
   return {
+    id: obituaryIdGenerator(input),
     firstname: input.firstname,
     surname: input.surname,
-    dateOfBirth: input.dateOfBirth,
-    dateOfDeath: input.dateOfDeath,
-    imgUrl: input.imgUrl ?? '',
-    type: input.type ?? ObituaryType.OBITUARY,
+    date_of_birth: input.date_of_birth,
+    date_of_death: input.date_of_death,
+    image: input.image ?? '',
+    type: input.type ?? 'OBITUARY',
     description: input.description ?? '',
     middlename: input.middlename ?? '',
     relative: input.relative ?? '',
