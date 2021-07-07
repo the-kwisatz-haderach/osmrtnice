@@ -1,5 +1,5 @@
 import type { ElementHandle, Page } from 'puppeteer'
-import { IObituary } from '../domain/types'
+import { IObituaryInput } from '../domain/types'
 
 export type PageProcessor<T> = (input: Page) => Promise<T>
 export type OutputHandler<T> = (crawlOutput: T) => void
@@ -19,7 +19,7 @@ export type DetailPageNavigatorFactory = (
   nextPageLinkSelector: ElementSelector
 ) => Navigator
 
-export type SiteProcessorFactory = <T extends Record<string, unknown>>(
+export type SiteProcessorFactory = <T>(
   pageProcessor: PageProcessor<T[]>,
   nextListingNavigator: Navigator,
   stopCondition: (result: T[], pageIndex: number) => boolean,
@@ -34,6 +34,6 @@ export type ItemProcessorFactory = <E extends Element, T>(
   }
 ) => (rootItem: ElementHandle<E> | null) => Promise<T | null>
 
-export type ObituaryMap = Record<string, IObituary>
-export type ObituaryPageProcessor = PageProcessor<IObituary[]>
-export type ObituaryOutputHandler = OutputHandler<IObituary[]>
+export type ObituaryMap = Record<string, IObituaryInput>
+export type ObituaryPageProcessor = PageProcessor<IObituaryInput[]>
+export type ObituaryOutputHandler = OutputHandler<IObituaryInput[]>

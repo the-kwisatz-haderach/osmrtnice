@@ -1,6 +1,6 @@
 import { ElementHandle } from 'puppeteer'
 import nameFormatter from '../../../../utils/nameFormatter/nameFormatter'
-import { IObituary, IObituaryInput } from '../../../domain/types'
+import { IObituaryInput } from '../../../domain/types'
 import { createItemProcessor } from '../../helpers/createItemProcessor'
 import { getElementProperty } from '../../helpers/getElementProperty'
 import { getInnerText } from '../../helpers/getInnerText'

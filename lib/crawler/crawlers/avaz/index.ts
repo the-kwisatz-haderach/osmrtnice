@@ -3,7 +3,7 @@ import { createOutputWriter } from '../common'
 import pageProcessor from './pageProcessor'
 import { nextPageNavigator, detailPageNavigator } from './pageNavigator'
 import { createSiteProcessor } from '../../helpers/createSiteProcessor'
-import { Obituary } from '../../../domain/obituary/types'
+import { IObituaryInput } from '../../../domain/types'
 
 const siteProcessor = createSiteProcessor(
   pageProcessor,
@@ -12,7 +12,7 @@ const siteProcessor = createSiteProcessor(
   detailPageNavigator
 )
 
-export default new SiteCrawler<Obituary[]>({
+export default new SiteCrawler<IObituaryInput[]>({
   url: process.env.AVAZ_URL,
   outputHandler: createOutputWriter('avaz'),
   documentProcessor: siteProcessor,
