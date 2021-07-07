@@ -23,13 +23,11 @@ export type SiteProcessorFactory = <T extends Record<string, unknown>>(
   pageProcessor: PageProcessor<T[]>,
   nextListingNavigator: Navigator,
   stopCondition: (result: T[], pageIndex: number) => boolean,
-  detailedListingNavigator?: Navigator
+  detailedListingNavigator?: Navigator,
+  maxPages?: number
 ) => PageProcessor<T[]>
 
-export type ItemProcessorFactory = <
-  E extends Element = any,
-  T extends Record<string, unknown> = Record<string, unknown>
->(
+export type ItemProcessorFactory = <E extends Element, T>(
   itemDefaults: T,
   propertyProcessors: {
     [K in keyof T]?: (handle: ElementHandle<E>) => Promise<T[K] | undefined>

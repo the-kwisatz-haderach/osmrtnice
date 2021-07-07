@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint '**/*.{ts,js,tsx,jsx}'"
+    "lint": "eslint '**/*.{ts,js,tsx,jsx}'",
+    "test": "jest --watchAll --detectOpenHandles",
+    "test:monitor": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",

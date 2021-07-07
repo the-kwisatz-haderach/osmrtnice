@@ -12,7 +12,7 @@ export const createPageNavigator: PageNavigatorFactory = (pageNavigator) => {
       return { success: false }
     } catch (err) {
       await page.close()
-      console.error(err)
+      console.error('Page navigator error: ', err)
       return { success: false }
     }
   }
@@ -42,7 +42,7 @@ export const createDetailPageNavigator: DetailPageNavigatorFactory = (
       return { success: false, isLastElement: true }
     } catch (err) {
       await page.close()
-      console.error(err)
+      console.error('Detail page navigator error: ', err)
       elementIndex = 0
       return { success: false }
     }

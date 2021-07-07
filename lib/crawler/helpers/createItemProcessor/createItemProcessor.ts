@@ -10,15 +10,17 @@ const createItemProcessor: ItemProcessorFactory = (
     }
 
     const values = await Promise.all(
-      Object.entries(propertyProcessors).map(async ([key, value]) => ({
-        [key]: (await value(rootItem)) ?? itemDefaults[key]
-      }))
+      Object.entries(propertyProcessors).map(
+        async ([key, value]: [key: string, value: any]) => ({
+          [key]: (await value(rootItem)) ?? itemDefaults[key],
+        })
+      )
     )
 
     return values.reduce<typeof itemDefaults>(
       (acc, curr) => ({
         ...acc,
-        ...curr
+        ...curr,
       }),
       itemDefaults
     )

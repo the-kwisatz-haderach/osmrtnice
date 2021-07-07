@@ -3,6 +3,7 @@ import fs from 'fs'
 import { ObituaryMap, ObituaryOutputHandler } from '../../types'
 import { obituaryIdGenerator } from '../../helpers/obituaryIdGenerator'
 import { createObituary } from '../../../domain/obituary'
+import { IObituaryInput } from '../../../domain/types'
 
 export const createOutputWriter = (fileName: string): ObituaryOutputHandler => (
   obituaries
@@ -27,9 +28,16 @@ export const createOutputWriter = (fileName: string): ObituaryOutputHandler => (
   })
 }
 
+export const obituaryInputDefault: IObituaryInput = {
+  firstname: '',
+  surname: '',
+  date_of_birth: null,
+  date_of_death: null,
+}
+
 export const obituaryDefaults = createObituary({
   firstname: '',
   surname: '',
-  dateOfBirth: null,
-  dateOfDeath: null,
+  date_of_birth: null,
+  date_of_death: null,
 })

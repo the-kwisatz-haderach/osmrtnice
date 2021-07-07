@@ -1,18 +1,17 @@
 import { SiteProcessorFactory } from '../../types'
 
-const MAX_PAGES = 100
-
 const createSiteProcessor: SiteProcessorFactory = (
   pageProcessor,
   nextListingNavigator,
   stopCondition,
-  detailedListingNavigator
+  detailedListingNavigator,
+  maxPages = 100
 ) => async (page) => {
   const allResults = []
   try {
     for (
       let pageIndex = 0;
-      !stopCondition(allResults, pageIndex) && pageIndex <= MAX_PAGES;
+      !stopCondition(allResults, pageIndex) && pageIndex <= maxPages;
       pageIndex += 1
     ) {
       if (!detailedListingNavigator) {

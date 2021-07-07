@@ -7,12 +7,12 @@ describe('createObituary', () => {
     const date_of_death = new Date(Date.now() + 1)
 
     const expected: IObituary = {
-      id: 'someId',
+      id: expect.any(String),
       firstname: 'Hello',
       surname: 'World',
       date_of_birth: date_of_birth.toString(),
       date_of_death: date_of_death.toString(),
-      imgUrl: '',
+      image: '',
       type: 'OBITUARY',
       description: '',
       middlename: '',
@@ -32,12 +32,12 @@ describe('createObituary', () => {
     const date_of_death = new Date(Date.now() + 1)
 
     const expected: IObituary = {
-      id: 'anotherId',
+      id: expect.any(String),
       firstname: 'Hello',
       surname: 'World',
       date_of_birth: date_of_birth.toString(),
       date_of_death: date_of_death.toString(),
-      imgUrl: 'testurl',
+      image: 'testurl',
       type: 'GRATITUDE_DISPLAY',
       description: 'Some description',
       middlename: 'middlename',
@@ -51,7 +51,7 @@ describe('createObituary', () => {
         date_of_death: date_of_death.toString(),
         type: 'GRATITUDE_DISPLAY',
         description: 'Some description',
-        imgUrl: 'testurl',
+        image: 'testurl',
         middlename: 'middlename',
         relative: 'relatives',
       })

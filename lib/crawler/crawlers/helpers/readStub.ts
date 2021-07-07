@@ -1,3 +1,3 @@
 export default function getStubPath(name: string): string {
-  return `file://${process.cwd()}/src/crawlers/__stubs__/${name}.html`
+  return `file://${process.cwd()}/lib/crawler/crawlers/__stubs__/${name}.html`
 }

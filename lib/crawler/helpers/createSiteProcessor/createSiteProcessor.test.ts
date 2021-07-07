@@ -8,7 +8,7 @@ const mockStopCondition = jest.fn(
 )
 const mockDetailedListingNavigator = jest.fn(async () => ({ success: true }))
 
-describe('createSiteProcessor', () => {
+xdescribe('createSiteProcessor', () => {
   const setup = (withDetailedListingNavigator = false): PageProcessor<any> =>
     createSiteProcessor(
       mockPageProcessor,

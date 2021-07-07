@@ -10,7 +10,6 @@ export default function createObituary(input: IObituaryInput): IObituary {
     date_of_death: input.date_of_death,
     image: input.image ?? '',
     type: input.type ?? 'OBITUARY',
-    description: input.description ?? '',
     middlename: input.middlename ?? '',
     relative: input.relative ?? '',
   }

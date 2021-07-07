@@ -2,7 +2,7 @@ import { Richtext } from 'storyblok-js-client'
 
 export type ObituaryType = 'IN_MEMORIAM' | 'OBITUARY' | 'GRATITUDE_DISPLAY'
 
-export interface IObituary extends Record<string, any> {
+export interface IObituary {
   firstname: string
   surname: string
   middlename?: string
@@ -19,7 +19,7 @@ export interface IObituary extends Record<string, any> {
   preamble?: string
 }
 
-export interface IObituaryInput extends Record<string, any> {
+export interface IObituaryInput {
   firstname: string
   middlename?: string
   surname: string
