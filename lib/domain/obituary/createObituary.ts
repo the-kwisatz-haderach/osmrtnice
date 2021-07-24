@@ -3,7 +3,7 @@ import { IObituary, IObituaryInput } from '../types'
 
 export default function createObituary(input: IObituaryInput): IObituary {
   return {
-    id: obituaryIdGenerator(input),
+    _id: obituaryIdGenerator(input),
     firstname: input.firstname,
     surname: input.surname,
     date_of_birth: input.date_of_birth,

@@ -26,7 +26,11 @@ export default function Obituary({
       <div className="contained p-10">
         <p className="font-serif text-3xl"></p>
       </div>
-      <RichTextBlok text={long_text} />
+      {typeof long_text === 'string' ? (
+        <p>{long_text}</p>
+      ) : (
+        <RichTextBlok text={long_text} />
+      )}
     </div>
   )
 }
