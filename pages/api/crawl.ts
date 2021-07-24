@@ -13,16 +13,27 @@ const crawler = new SiteCrawler<IObituaryInput[]>({
 
 export default attachMiddleware().get(
   async (req: EnhancedNextApiRequest, res: NextApiResponse): Promise<void> => {
-    try {
-      await req.db.collection('obituaries').find({}).forEach(console.log)
-      crawler.setOutputHandler(async (obituaries) => {
-        await req.db.collection('obituaries').insertMany(obituaries)
-      })
-      await crawler.init()
-      res.status(200).send('Crawl initiated')
-    } catch (err) {
-      console.error(err.message)
-      res.status(400)
+    switch (req.method) {
+      case 'GET': {
+        try {
+          // await req.db.collection('obituaries').find({}).forEach(console.log)
+          // crawler.setOutputHandler(async (obituaries) => {
+          //   await req.db.collection('obituaries').insertMany(obituaries)
+          // })
+          // await crawler.init()
+          console.log(req.headers)
+          console.log('running!')
+          res.status(200).send('Crawl initiated')
+          break
+        } catch (err) {
+          console.error(err.message)
+          res.status(400)
+          break
+        }
+      }
+      default: {
+        res.status(404)
+      }
     }
   }
 )

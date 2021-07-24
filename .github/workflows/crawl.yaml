@@ -1,12 +1,11 @@
 name: crawl
-on: [push]
+on:
+  schedule:
+    # “At 00:00 on Sunday.”
+    - cron: '0 0 * * 0'
 jobs:
-  check-bats-version:
+  cron:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+      - name: request crawl
+      - run: curl -X GET https://osmrtnice-the-kwisatz-haderach.vercel.app/api/crawl

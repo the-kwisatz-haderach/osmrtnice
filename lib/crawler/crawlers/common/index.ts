@@ -5,9 +5,9 @@ import { obituaryIdGenerator } from '../../helpers/obituaryIdGenerator'
 import { createObituary } from '../../../domain/obituary'
 import { IObituaryInput } from '../../../domain/types'
 
-export const createOutputWriter = (fileName: string): ObituaryOutputHandler => (
-  obituaries
-) => {
+export const createOutputWriter = (
+  fileName: string
+): ObituaryOutputHandler => async (obituaries) => {
   const data = obituaries.reduce<ObituaryMap>(
     (acc, curr) => ({
       ...acc,
