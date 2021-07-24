@@ -23,6 +23,7 @@ export default async (
         // crawler.setOutputHandler(async (obituaries) => {
         //   await req.db.collection('obituaries').insertMany(obituaries)
         // })
+
         // await crawler.init()
         let response =
           process.env.CRAWLER === req.query.token ? 'CORRECT' : 'FALSE'
