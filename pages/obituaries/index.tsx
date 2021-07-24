@@ -99,19 +99,16 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
   const connection = await connectToDb()
 
-  let otherObits: Array<Story<IObituary>> = []
-  if (connection) {
-    otherObits = await (
-      await connection.db.collection('obituaries').find({}).toArray()
-    ).map((obituary) =>
-      JSON.parse(
-        JSON.stringify({
-          uuid: obituary._id,
-          content: obituary,
-        })
-      )
+  const otherObits = await (
+    await connection.db.collection('obituaries').find({}).toArray()
+  ).map((obituary) =>
+    JSON.parse(
+      JSON.stringify({
+        uuid: obituary._id,
+        content: obituary,
+      })
     )
-  }
+  )
 
   return {
     props: {
