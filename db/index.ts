@@ -1,8 +1,5 @@
 import { Db, MongoClient } from 'mongodb'
 
-console.log('VARIABLES')
-console.log(process.env.MONGODB_URI)
-console.log(process.env.MONGODB_DB)
 const client = new MongoClient(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

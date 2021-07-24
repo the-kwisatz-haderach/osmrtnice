@@ -97,18 +97,20 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     is_startpage: 0,
   })
 
-  const { db } = await connectToDb()
+  const connection = await connectToDb()
 
-  const otherObits = await (
-    await db.collection('obituaries').find({}).toArray()
-  ).map((obituary) =>
-    JSON.parse(
-      JSON.stringify({
-        uuid: obituary._id,
-        content: obituary,
-      })
+  if (connection) {
+    const otherObits = await (
+      await connection.db.collection('obituaries').find({}).toArray()
+    ).map((obituary) =>
+      JSON.parse(
+        JSON.stringify({
+          uuid: obituary._id,
+          content: obituary,
+        })
+      )
     )
-  )
+  }
 
   // console.log(obituaryStories.data.stories)
   // console.log(JSON.parse(JSON.stringify(otherObits)))
@@ -116,9 +118,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
       story: story.data.story,
-      obituaries: [...obituaryStories.data.stories, ...otherObits] as Array<
-        Story<IObituary>
-      >,
+      obituaries: [...obituaryStories.data.stories] as Array<Story<IObituary>>,
     },
   }
 }
