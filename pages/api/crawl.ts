@@ -24,9 +24,10 @@ export default async (
         //   await req.db.collection('obituaries').insertMany(obituaries)
         // })
         // await crawler.init()
-        console.log(req.headers)
-        console.log('running!')
-        res.status(200).send('Crawl initiated')
+        let response =
+          process.env.CRAWLER === req.query.token ? 'CORRECT' : 'FALSE'
+
+        res.status(200).send(response)
         break
       } catch (err) {
         console.error(err.message)
