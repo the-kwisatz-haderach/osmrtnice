@@ -5,6 +5,12 @@ module.exports = {
     defaultLocale: 'en',
   },
   images: {
-    domains: ['picsum.photos', 'a.storyblok.com', 'cdn.oslobodjenje.ba'],
+    domains: [
+      'picsum.photos',
+      'a.storyblok.com',
+      'cdn.oslobodjenje.ba',
+      'digital.avaz.ba',
+      'www.nekros.info',
+    ],
   },
 }

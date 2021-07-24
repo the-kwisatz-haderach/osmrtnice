@@ -117,5 +117,6 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         Story<IObituary>
       >,
     },
+    revalidate: 60,
   }
 }

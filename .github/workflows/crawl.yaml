@@ -1,9 +1,8 @@
 name: crawl
 on:
-  push
-  # schedule:
-  #   # “At 00:00 on Sunday.”
-  #   - cron: '0 0 * * 0'
+  schedule:
+    # “At 00:00 on Sunday.”
+    - cron: '0 0 * * 0'
 jobs:
   cron:
     runs-on: ubuntu-latest
