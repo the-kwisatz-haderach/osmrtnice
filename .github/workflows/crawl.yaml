@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: request crawl
-        run: curl -v -X GET https://osmrtnice.vercel.app/api/crawl
+        run: curl -v -X GET https://osmrtnice.vercel.app/api/crawl?token=${{ secrets.CRAWLER }}
