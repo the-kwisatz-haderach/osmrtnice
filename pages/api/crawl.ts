@@ -6,7 +6,7 @@ import attachMiddleware from '../../middleware'
 import { EnhancedNextApiRequest } from '../../middleware/types'
 
 const crawler = new SiteCrawler<IObituaryInput[]>({
-  url: process.env.OSLOBODJENJE_URL,
+  url: 'https://www.oslobodjenje.ba/smrtovnice',
   documentProcessor: siteProcessor,
 })
 
