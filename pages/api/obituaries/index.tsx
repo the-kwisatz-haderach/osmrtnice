@@ -16,12 +16,12 @@ export default async (
         res.status(204).json({ messageId })
       } catch (err) {
         console.error(err.message)
-        res.status(400)
+        res.status(400).end()
       }
       break
     }
     default: {
-      res.status(404)
+      res.status(404).end()
     }
   }
 }
