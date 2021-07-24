@@ -49,9 +49,9 @@ export default function Home({ story, obituaries }: Props): ReactElement {
       <Page story={story} />
       <div className="contained my-10">
         <Grid>
-          {obituaries.map(({ content }) => (
+          {obituaries.map(({ content, slug }) => (
             <div
-              key={content.id}
+              key={slug}
               className={
                 content.size === 'large' ? 'sm:col-span-2' : 'col-span-1'
               }
