@@ -20,6 +20,7 @@ export default attachMiddleware().get(
           // crawler.setOutputHandler(async (obituaries) => {
           //   await req.db.collection('obituaries').insertMany(obituaries)
           // })
+
           // await crawler.init()
           console.log(req.headers)
           console.log('running!')
