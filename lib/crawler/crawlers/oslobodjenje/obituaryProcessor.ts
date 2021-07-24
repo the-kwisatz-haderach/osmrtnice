@@ -20,7 +20,13 @@ const getDates = async (
   await root
     .$('div.personPhoto')
     .then(getInnerText('p'))
-    .then((dateText: string) => dateText.split(/\D+/).filter((year) => year))
+    .then((dateText: string) =>
+      dateText
+        .replace('–', '-')
+        .split('-')
+        .map((str) => str.trim())
+        .filter((year) => year)
+    )
 
 const obituaryProcessor = createItemProcessor<HTMLDivElement, IObituaryInput>(
   obituaryInputDefault,

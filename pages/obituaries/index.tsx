@@ -11,6 +11,7 @@ import { IObituary } from '../../lib/domain/types'
 import Storyblok from '../../lib/storyblok/client'
 import { PageStory, Story } from '../../lib/storyblok/types'
 import { SearchInput } from '../../components/SearchInput'
+import { connectToDb } from '../../db'
 
 interface Props {
   story: PageStory
@@ -69,7 +70,11 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
         {currentObituaries.length > 0 ? (
           <Grid>
             {currentObituaries.map(({ content, full_slug, uuid }) => (
-              <Obituary {...content} slug={full_slug} key={uuid} />
+              <Obituary
+                {...content}
+                slug={full_slug}
+                key={uuid ?? content._id}
+              />
             ))}
           </Grid>
         ) : (
@@ -92,10 +97,28 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     is_startpage: 0,
   })
 
+  const { db } = await connectToDb()
+
+  const otherObits = await (
+    await db.collection('obituaries').find({}).toArray()
+  ).map((obituary) =>
+    JSON.parse(
+      JSON.stringify({
+        uuid: obituary._id,
+        content: obituary,
+      })
+    )
+  )
+
+  // console.log(obituaryStories.data.stories)
+  // console.log(JSON.parse(JSON.stringify(otherObits)))
+
   return {
     props: {
       story: story.data.story,
-      obituaries: obituaryStories.data.stories as Array<Story<IObituary>>,
+      obituaries: [...obituaryStories.data.stories, ...otherObits] as Array<
+        Story<IObituary>
+      >,
     },
   }
 }

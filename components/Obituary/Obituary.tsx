@@ -33,7 +33,13 @@ export default function Obituary({
         }}
         className="rounded-sm transition-shadow shadow-sm bg-white hover:shadow-lg p-7 border border-gray-200 space-y-5 flex flex-col items-center"
       >
-        {image && <Image src={`https:${image}`} width={140} height={140} />}
+        {image && (
+          <Image
+            src={image.startsWith('http') ? image : `https:${image}`}
+            width={140}
+            height={140}
+          />
+        )}
         <div className="text-center space-y-3">
           {preamble && <p className="text-center text-sm italic">{preamble}</p>}
           <div className="my-2">
@@ -48,9 +54,13 @@ export default function Obituary({
           </div>
         </div>
         {long_text && (
-          <p className="text-sm text-center">
-            <RichText>{long_text}</RichText>
-          </p>
+          <div className="text-sm text-center">
+            {typeof long_text === 'string' ? (
+              <p>{long_text}</p>
+            ) : (
+              <RichText>{long_text}</RichText>
+            )}
+          </div>
         )}
         {relative != null && relative.length > 0 && (
           <div className="text-xs flex flex-wrap justify-center">

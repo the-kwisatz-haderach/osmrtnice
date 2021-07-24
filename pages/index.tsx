@@ -23,10 +23,6 @@ export default function Home({ story, obituaries }: Props): ReactElement {
     await router.push(`/obituaries?search=${query}`)
   }
 
-  const triggerCrawl = async (): Promise<void> => {
-    await fetch('/api').then(console.log).catch(console.error)
-  }
-
   return (
     <div>
       <Head>
@@ -51,12 +47,11 @@ export default function Home({ story, obituaries }: Props): ReactElement {
         </div>
       </div>
       <Page story={story} />
-      <button onClick={triggerCrawl}>Crawl</button>
       <div className="contained my-10">
         <Grid>
-          {obituaries.map(({ content }) => (
+          {obituaries.map(({ content, slug }) => (
             <div
-              key={content.id}
+              key={slug}
               className={
                 content.size === 'large' ? 'sm:col-span-2' : 'col-span-1'
               }

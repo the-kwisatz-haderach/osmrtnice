@@ -1,8 +1,6 @@
 import nc from 'next-connect'
 import { dbConnection } from './dbConnection'
 
-const middleware = nc()
+const attachMiddleware = () => nc().use(dbConnection)
 
-middleware.use(dbConnection)
-
-export default middleware
+export default attachMiddleware
