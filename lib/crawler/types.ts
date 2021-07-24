@@ -2,7 +2,7 @@ import type { ElementHandle, Page } from 'puppeteer'
 import { IObituaryInput } from '../domain/types'
 
 export type PageProcessor<T> = (input: Page) => Promise<T>
-export type OutputHandler<T> = (crawlOutput: T) => void
+export type OutputHandler<T> = (crawlOutput: T) => Promise<void>
 export type ErrorHandler<T extends Error = Error> = (error: T) => void
 
 export type NextPageSelector = (page: Page) => Promise<ElementHandle | null>

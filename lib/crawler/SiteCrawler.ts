@@ -14,8 +14,8 @@ export default class SiteCrawler<U> {
   private readonly url: string
   private readonly cronSchedule?: string | Date
   private readonly documentProcessor: PageProcessor<U>
-  private readonly outputHandler: OutputHandler<U>
   private readonly errorHandler: ErrorHandler
+  private outputHandler?: OutputHandler<U>
 
   constructor({
     url,
@@ -27,7 +27,7 @@ export default class SiteCrawler<U> {
     this.url = url
     this.documentProcessor = documentProcessor
     this.cronSchedule = cronSchedule
-    this.outputHandler = outputHandler ?? console.log
+    this.outputHandler = outputHandler
     this.errorHandler = errorHandler ?? console.error
   }
 
@@ -40,24 +40,30 @@ export default class SiteCrawler<U> {
     }
   }
 
+  setOutputHandler(outputHandler: OutputHandler<U>): void {
+    this.outputHandler = outputHandler
+  }
+
   private async crawl(): Promise<void> {
-    const browser = await puppeteer.launch({
-      headless: process.env.PUPPETEER_HEADLESS === 'true',
-      slowMo: process.env.PUPPETEER_SLOW_MO === 'true' ? 150 : undefined,
-    })
-    try {
-      const page = await browser.newPage()
-      page.setDefaultNavigationTimeout(
-        parseInt(process.env.PUPPETEER_NAVIGATION_TIMEOUT)
-      )
-      await page.goto(this.url, {
-        waitUntil: 'domcontentloaded',
+    if (this.outputHandler) {
+      const browser = await puppeteer.launch({
+        headless: process.env.PUPPETEER_HEADLESS === 'true',
+        slowMo: process.env.PUPPETEER_SLOW_MO === 'true' ? 150 : undefined,
       })
-      await this.documentProcessor(page).then(this.outputHandler)
-    } catch (err) {
-      this.errorHandler(err)
-    } finally {
-      await browser.close()
+      try {
+        const page = await browser.newPage()
+        page.setDefaultNavigationTimeout(
+          parseInt(process.env.PUPPETEER_NAVIGATION_TIMEOUT)
+        )
+        await page.goto(this.url, {
+          waitUntil: 'domcontentloaded',
+        })
+        await this.documentProcessor(page).then(this.outputHandler)
+      } catch (err) {
+        this.errorHandler(err)
+      } finally {
+        await browser.close()
+      }
     }
   }
 }
