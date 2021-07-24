@@ -18,11 +18,12 @@ export default async (
   switch (req.method) {
     case 'GET': {
       try {
+        const signature = req.headers['X-Hub-Signature-256']
+        console.log(signature)
         // await req.db.collection('obituaries').find({}).forEach(console.log)
         // crawler.setOutputHandler(async (obituaries) => {
         //   await req.db.collection('obituaries').insertMany(obituaries)
         // })
-
         // await crawler.init()
         console.log(req.headers)
         console.log('running!')
