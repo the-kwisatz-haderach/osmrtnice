@@ -36,6 +36,7 @@ export default async (
     }
     default: {
       res.status(404).end()
+      break
     }
   }
 }
