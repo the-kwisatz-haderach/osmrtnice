@@ -22,6 +22,7 @@ interface Props {
 export default function Obituaries({ story, obituaries }: Props): ReactElement {
   const router = useRouter()
   const searchRef = useRef<HTMLDivElement>(null)
+  const resultsGridRef = useRef<HTMLDivElement>(null)
   const [pageIndex, setPageIndex] = useState(0)
   const [currentObituaries, setCurrentObituaries] = useState(obituaries)
 
@@ -56,6 +57,15 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
     }
   }, [searchRef, router])
 
+  const onClickPagination = (isPrev = false) => () => {
+    const m = isPrev ? -1 : 1
+    setPageIndex((curr) => curr + 1 * m)
+    window.scrollTo({
+      top: resultsGridRef.current.offsetTop - 100,
+      behavior: 'smooth',
+    })
+  }
+
   return (
     <div>
       <Head>
@@ -75,7 +85,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
           placeholder="Firstname, lastname, city..."
         />
       </div>
-      <div className="contained my-10">
+      <div ref={resultsGridRef} className="contained my-10">
         {currentObituaries.length > 0 ? (
           <Grid>
             {currentObituaries[pageIndex].map(
@@ -97,12 +107,8 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
           <Pagination
             index={pageIndex}
             totalIndices={currentObituaries.length}
-            onNext={() => {
-              setPageIndex((curr) => curr + 1)
-            }}
-            onPrev={() => {
-              setPageIndex((curr) => curr - 1)
-            }}
+            onNext={onClickPagination()}
+            onPrev={onClickPagination(true)}
           />
         </div>
       </div>
