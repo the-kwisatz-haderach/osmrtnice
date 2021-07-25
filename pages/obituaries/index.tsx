@@ -67,7 +67,9 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
         className="flex bg-gray-100 p-10 justify-center items-center flex-col"
       >
         <SearchInput
-          autoFocus
+          autoFocus={
+            typeof window !== 'undefined' ? window.innerWidth > 1024 : undefined
+          }
           defaultValue={(router?.query?.search as string) ?? ''}
           onChange={handleSearch}
           placeholder="Firstname, lastname, city..."
