@@ -8,6 +8,11 @@
   color: white;
 }
 
+.button:disabled {
+  @apply bg-gray-300 !important;
+  cursor: auto;
+}
+
 .button:focus {
   @apply opacity-90;
 

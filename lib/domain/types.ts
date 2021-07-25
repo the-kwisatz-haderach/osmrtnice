@@ -30,3 +30,5 @@ export interface IObituaryInput {
   image?: string
   type?: ObituaryType
 }
+
+export type Paginated<T> = T[]

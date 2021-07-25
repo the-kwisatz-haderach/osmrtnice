@@ -1,5 +1,7 @@
 import { NextApiResponse } from 'next'
+import { IObituary, Paginated } from '../../../lib/domain/types'
 import Storyblok from '../../../lib/storyblok/client'
+import { Story } from '../../../lib/storyblok/types'
 import attachMiddleware from '../../../middleware'
 import { EnhancedNextApiRequest } from '../../../middleware/types'
 
@@ -7,7 +9,14 @@ export default attachMiddleware().post(
   async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
     const result = await req.db
       .collection('obituaries')
-      .find({ firstname: { $regex: req.body.query, $options: 'i' } })
+      .find({
+        $or: [
+          { firstname: { $regex: req.body.query, $options: 'i' } },
+          { middlename: { $regex: req.body.query, $options: 'i' } },
+          { surname: { $regex: req.body.query, $options: 'i' } },
+        ],
+      })
+      .limit(50)
       .toArray()
       .then((res) =>
         res.map((obituary) =>
@@ -27,6 +36,16 @@ export default attachMiddleware().post(
       search_term: req.body.query,
     })
 
-    res.status(200).json(stories.data.stories.concat(result))
+    const paginatedObituaries: Array<Story<IObituary>> = [
+      ...stories.data.stories,
+      ...result,
+    ]
+
+    const obituaries: Paginated<Array<Story<IObituary>>> = []
+    for (let i = 0; i < paginatedObituaries.length; i += 50) {
+      obituaries.push(paginatedObituaries.slice(i, i + 50))
+    }
+
+    res.status(200).json(obituaries)
   }
 )
