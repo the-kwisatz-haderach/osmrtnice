@@ -1,9 +1,10 @@
-import { obituaryIdGenerator } from '../../crawler/helpers/obituaryIdGenerator'
-import { IObituary, IObituaryInput } from '../types'
+import { ICrawledObituary } from '../types'
 
-export default function createObituary(input: IObituaryInput): IObituary {
+export default function createObituary(
+  input: Omit<ICrawledObituary, '_id' | 'date_crawled'>
+): Omit<ICrawledObituary, '_id'> {
   return {
-    _id: obituaryIdGenerator(input),
+    date_crawled: new Date().toISOString(),
     firstname: input.firstname,
     surname: input.surname,
     date_of_birth: input.date_of_birth,
@@ -12,5 +13,6 @@ export default function createObituary(input: IObituaryInput): IObituary {
     type: input.type ?? 'OBITUARY',
     middlename: input.middlename ?? '',
     relative: input.relative ?? '',
+    long_text: input.long_text ?? '',
   }
 }

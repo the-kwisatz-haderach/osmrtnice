@@ -1,10 +1,12 @@
 import { createObituary } from '../../../domain/obituary'
-import { IObituary } from '../../../domain/types'
+import { ICrawledObituary } from '../../../domain/types'
 
-const expected: IObituary[] = [
+const expected: Array<Omit<ICrawledObituary, '_id'>> = [
   createObituary({
+    type: 'OBITUARY',
     firstname: 'Zlatici',
     surname: '',
+    long_text: '',
     date_of_birth: null,
     date_of_death: null,
     image:
@@ -12,6 +14,7 @@ const expected: IObituary[] = [
     relative: 'Džana, Zijo, Arman i Dado',
   }),
   createObituary({
+    type: 'OBITUARY',
     firstname: 'Vesni',
     surname: 'Begtašević',
     date_of_birth: '1955',
@@ -22,6 +25,7 @@ const expected: IObituary[] = [
     long_text: 'Porodici Begtašević, prijateljima i Konjicu iskreno saučešće.',
   }),
   createObituary({
+    type: 'OBITUARY',
     firstname: 'Midhat',
     middlename: 'Akifa',
     surname: 'Jusić',
@@ -35,6 +39,7 @@ const expected: IObituary[] = [
       'Neka ti dragi Allah dž.š. podari lijepi džennet i vječni rahmet.',
   }),
   createObituary({
+    type: 'OBITUARY',
     firstname: 'Tariku',
     surname: 'Eminagiću',
     date_of_birth: '1987',
@@ -46,6 +51,7 @@ const expected: IObituary[] = [
       'Bit ćeš zauvijek zapamćen kao najiskrenija, najvedrija duša i često ćemo te se sjećati.\nNemjerljiv je gubitak što više nisi s nama.\nNeka ti je laka zemlja.',
   }),
   createObituary({
+    type: 'OBITUARY',
     firstname: 'Zlatici',
     surname: '',
     date_of_birth: null,
@@ -57,6 +63,7 @@ const expected: IObituary[] = [
       'Beskrajno tužni zbog tvog preranog odlaska.\nSuprugu Radetu i porodici iskreno saučešće.',
   }),
   createObituary({
+    type: 'OBITUARY',
     firstname: 'Dalida',
     middlename: 'Hadžić',
     surname: 'Tulić',

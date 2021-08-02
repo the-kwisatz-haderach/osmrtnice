@@ -1,13 +1,17 @@
-import { IObituary } from '../types'
+import { ICrawledObituary } from '../types'
 import createObituary from './createObituary'
+
+jest
+  .spyOn(global, 'Date')
+  .mockImplementation(() => ({ toISOString: () => 'someDate' } as any))
 
 describe('createObituary', () => {
   it('creates an obituary with only required fields populated', () => {
-    const date_of_birth = new Date(Date.now())
-    const date_of_death = new Date(Date.now() + 1)
+    const date_of_birth = new Date(1234)
+    const date_of_death = new Date(1234 + 1)
 
-    const expected: IObituary = {
-      _id: expect.any(String),
+    const expected: Omit<ICrawledObituary, '_id'> = {
+      date_crawled: 'someDate',
       firstname: 'Hello',
       surname: 'World',
       date_of_birth: date_of_birth.toString(),
@@ -20,6 +24,7 @@ describe('createObituary', () => {
     }
     expect(
       createObituary({
+        type: 'OBITUARY',
         firstname: 'Hello',
         surname: 'World',
         date_of_birth: date_of_birth.toString(),
@@ -28,11 +33,11 @@ describe('createObituary', () => {
     ).toEqual(expected)
   })
   it('creates an obituary with all fields populated', () => {
-    const date_of_birth = new Date(Date.now())
-    const date_of_death = new Date(Date.now() + 1)
+    const date_of_birth = new Date(1234)
+    const date_of_death = new Date(1234 + 1)
 
-    const expected: IObituary = {
-      _id: expect.any(String),
+    const expected: Omit<ICrawledObituary, '_id'> = {
+      date_crawled: 'someDate',
       firstname: 'Hello',
       surname: 'World',
       date_of_birth: date_of_birth.toString(),

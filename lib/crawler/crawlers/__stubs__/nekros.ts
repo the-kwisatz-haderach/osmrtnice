@@ -3,6 +3,7 @@ import { createObituary } from '../../../domain/obituary'
 const expected = {
   avaz_1: [
     createObituary({
+      type: 'OBITUARY',
       firstname: 'Hamidu',
       surname: 'Žepljaku',
       middlename: 'Kulovcu',
@@ -15,6 +16,7 @@ const expected = {
   ],
   avaz_2: [
     createObituary({
+      type: 'OBITUARY',
       firstname: 'Irfan',
       surname: 'Sarajlić',
       date_of_birth: null,
@@ -26,6 +28,7 @@ const expected = {
   ],
   avaz_3: [
     createObituary({
+      type: 'OBITUARY',
       firstname: 'Mirza',
       middlename: 'Salih',
       surname: 'Krupalija',

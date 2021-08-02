@@ -19,6 +19,7 @@ export default function ContactForm(): ReactElement {
       <div className="flex justify-between sm:space-x-4 flex-wrap space-y-4">
         <FormField htmlFor="firstname" label="Firstname">
           <input
+            autoFocus
             autoComplete="given-name"
             id="firstname"
             type="text"

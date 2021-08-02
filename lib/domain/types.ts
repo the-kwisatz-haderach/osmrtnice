@@ -3,7 +3,6 @@ import { Richtext } from 'storyblok-js-client'
 export type ObituaryType = 'IN_MEMORIAM' | 'OBITUARY' | 'GRATITUDE_DISPLAY'
 
 export interface IObituary {
-  _id?: string
   firstname: string
   surname: string
   middlename?: string
@@ -19,6 +18,10 @@ export interface IObituary {
   preamble?: string
 }
 
+export interface ICrawledObituary extends IObituary {
+  _id: string
+  date_crawled: string
+}
 export interface IObituaryInput {
   firstname: string
   middlename?: string
