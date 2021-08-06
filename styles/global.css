@@ -109,7 +109,8 @@
   }
 
   input,
-  textarea {
+  textarea,
+  select {
     @apply rounded-sm p-2 border outline-none text-sm text-black;
   }
 
@@ -124,8 +125,15 @@
     @apply text-gray-300;
   }
 
+  input + label,
+  textarea + label,
+  select + label {
+    @apply bg-primary-200;
+  }
+
   input:focus + label,
-  textarea:focus + label {
+  textarea:focus + label,
+  select:focus + label {
     @apply text-primary-50 bg-primary-600;
   }
 

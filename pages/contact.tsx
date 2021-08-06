@@ -17,7 +17,7 @@ export default function Contact({ story }: Props): ReactElement {
         <title>Contact us</title>
       </Head>
       <Page story={story} />
-      <div className="contained w-4/5 my-20 flex justify-center flex-col md:flex-row md:space-x-10 lg:space-x-20">
+      <div className="contained w-11/12 my-20 flex justify-center flex-col md:flex-row md:space-x-10 lg:space-x-20">
         <ContactForm />
       </div>
     </div>
