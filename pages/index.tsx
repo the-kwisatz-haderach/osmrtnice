@@ -27,6 +27,10 @@ export default function Home({ story, obituaries }: Props): ReactElement {
   return (
     <div>
       <Head>
+        <meta
+          name="google-site-verification"
+          content="I3npG6NpSx1ZykfWYJn2SLCfhjdhNV6xb6Bm7NZ-iqs"
+        />
         <title>Home</title>
       </Head>
       <div
