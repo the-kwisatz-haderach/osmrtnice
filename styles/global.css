@@ -111,7 +111,7 @@
   input,
   textarea,
   select {
-    @apply rounded-sm p-2 border outline-none text-sm text-black;
+    @apply rounded-sm p-2 border outline-none text-black;
   }
 
   label {
