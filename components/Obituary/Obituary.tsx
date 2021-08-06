@@ -47,9 +47,9 @@ export default function Obituary({
               {[firstname, middlename, surname].join(' ')}
             </h3>
             <div className="text-sm flex justify-center align-center space-x-2 font-bold">
-              <p>{formatDate(date_of_birth)}</p>
-              <p>-</p>
-              <p>{formatDate(date_of_death)}</p>
+              {date_of_birth ? <p>{formatDate(date_of_birth)}</p> : ''}
+              {(date_of_birth || date_of_death) && <p>-</p>}
+              {date_of_death ? <p>{formatDate(date_of_death)}</p> : ''}
             </div>
           </div>
         </div>

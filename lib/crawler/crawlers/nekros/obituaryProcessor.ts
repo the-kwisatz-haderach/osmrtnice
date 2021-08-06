@@ -17,7 +17,7 @@ const getNames = async (
 const getDates = async (
   root: ElementHandle<HTMLDivElement>
 ): Promise<string[]> =>
-  await root
+  root
     .$('div.personPhoto')
     .then(getInnerText('p'))
     .then((dateText: string) => dateText.split(/\D+/).filter((year) => year))
