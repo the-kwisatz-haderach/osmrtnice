@@ -25,7 +25,6 @@ export default function MainLayout({
     }
 
     if (!shouldRender) {
-      console.log('shouldnt render')
       checkPassword()
     }
   }, [])
