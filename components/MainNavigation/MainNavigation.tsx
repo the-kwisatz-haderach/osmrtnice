@@ -8,6 +8,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import styles from './MainNavigation.module.css'
 import { IMenuItem } from '../../lib/storyblok/types'
+import { Button } from '../Button'
 
 interface Props {
   menuItems: IMenuItem[]
@@ -75,7 +76,17 @@ export default function MainNavigation({
             </div>
             {links.map((menuItem, i) => (
               <li key={i}>
-                <Link href={menuItem.href}>{menuItem.label}</Link>
+                {menuItem.href === '/contact' ? (
+                  <Button
+                    size="sm"
+                    className="relative bottom-1"
+                    onClick={() => router.push(menuItem.href)}
+                  >
+                    Publish
+                  </Button>
+                ) : (
+                  <Link href={menuItem.href}>{menuItem.label}</Link>
+                )}
               </li>
             ))}
           </ul>

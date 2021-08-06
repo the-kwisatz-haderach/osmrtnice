@@ -23,7 +23,7 @@ export default function PageHeaderBlok({
     >
       <div className="contained flex flex-col items-center justify-center h-full">
         <div
-          className="px-10 mt-20 w-full"
+          className="p-10 mt-20 w-full"
           style={{
             textAlign: align,
           }}

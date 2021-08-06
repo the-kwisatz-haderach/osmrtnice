@@ -10,6 +10,7 @@
 
 .button:disabled {
   @apply bg-gray-300 !important;
+
   cursor: auto;
 }
 
@@ -45,4 +46,9 @@
 
 .button.fluid {
   @apply w-full;
+}
+
+.button.small {
+  @apply py-2;
+  @apply px-5;
 }
