@@ -69,6 +69,8 @@ export default function ContactForm(): ReactElement {
           <select autoComplete="off" id="type" {...register('type')}>
             <option>Obituary</option>
             <option>In memoriam</option>
+            <option>Gratitude display</option>
+            <option>Last greetings</option>
           </select>
         </FormField>
       </div>

@@ -1,6 +1,10 @@
 import { Richtext } from 'storyblok-js-client'
 
-export type ObituaryType = 'IN_MEMORIAM' | 'OBITUARY' | 'GRATITUDE_DISPLAY'
+export type ObituaryType =
+  | 'IN_MEMORIAM'
+  | 'OBITUARY'
+  | 'GRATITUDE_DISPLAY'
+  | 'LAST_GREETINGS'
 
 export interface IObituary {
   firstname: string
