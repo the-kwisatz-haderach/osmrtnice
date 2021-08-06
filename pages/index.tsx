@@ -6,7 +6,7 @@ import { Grid } from '../components/Grid'
 import { Obituary } from '../components/Obituary'
 import { SearchInput } from '../components/SearchInput'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import { IObituary } from '../lib/domain/types'
+import { ICrawledObituary, IObituary } from '../lib/domain/types'
 import Storyblok from '../lib/storyblok/client'
 import { PageStory, Story } from '../lib/storyblok/types'
 import { connectToDb } from '../db'
@@ -55,7 +55,7 @@ export default function Home({ story, obituaries }: Props): ReactElement {
       <div className="contained my-10">
         <Grid>
           {obituaries.map(({ content, uuid }) => (
-            <Obituary key={content._id ?? uuid} {...content} />
+            <Obituary key={uuid} {...content} />
           ))}
         </Grid>
       </div>
@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const { db } = await connectToDb()
 
   const otherObits = await db
-    .collection<IObituary>('obituaries')
+    .collection<ICrawledObituary>('obituaries')
     .find({})
     .limit(20)
     .toArray()

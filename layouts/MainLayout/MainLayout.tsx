@@ -1,8 +1,11 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
+import React, { PropsWithChildren, ReactElement, useEffect } from 'react'
 import { Footer } from '../../components/Footer'
 import { MainNavigation } from '../../components/MainNavigation'
 import useAppContext from '../../contexts/AppContext'
 import useIntersectionObserver from '../../hooks/useIntersectionObserver'
+
+let shouldRender = process.env.NODE_ENV !== 'production'
+const correct_pass = process.env.NEXT_PUBLIC_PROD_PASS
 
 export default function MainLayout({
   children,
@@ -10,6 +13,27 @@ export default function MainLayout({
   const { menuItems, ...contactDetails } = useAppContext()
   const { observe, getValues } = useIntersectionObserver<HTMLDivElement>()
   const { isIntersecting } = getValues('main')
+
+  useEffect(() => {
+    const checkPassword = () => {
+      const password = window.prompt('Password')
+      if (password === correct_pass) {
+        shouldRender = true
+      } else {
+        checkPassword()
+      }
+    }
+
+    if (!shouldRender) {
+      console.log('shouldnt render')
+      checkPassword()
+    }
+  }, [])
+
+  if (!shouldRender) {
+    return <></>
+  }
+
   return (
     <div className="flex flex-col h-screen">
       <MainNavigation menuItems={menuItems} alternate={isIntersecting} />

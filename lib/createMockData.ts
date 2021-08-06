@@ -8,7 +8,6 @@ export const createObitary = (
   size: IObituary['size'] = 'regular'
 ): IObituary => ({
   size,
-  _id: faker.random.alphaNumeric(100),
   firstname: faker.name.firstName(),
   middlename: faker.name.middleName(),
   surname: faker.name.lastName(),

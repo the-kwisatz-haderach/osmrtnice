@@ -7,7 +7,7 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { Grid } from '../../components/Grid'
 import { Obituary } from '../../components/Obituary'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
-import { IObituary, Paginated } from '../../lib/domain/types'
+import { ICrawledObituary, IObituary, Paginated } from '../../lib/domain/types'
 import Storyblok from '../../lib/storyblok/client'
 import { PageStory, Story } from '../../lib/storyblok/types'
 import { SearchInput } from '../../components/SearchInput'
@@ -90,11 +90,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
           <Grid>
             {currentObituaries[pageIndex].map(
               ({ content, full_slug, uuid }) => (
-                <Obituary
-                  {...content}
-                  slug={full_slug}
-                  key={content._id ?? uuid}
-                />
+                <Obituary {...content} slug={full_slug} key={uuid} />
               )
             )}
           </Grid>
@@ -129,7 +125,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const { db } = await connectToDb()
 
   const otherObits = await db
-    .collection<IObituary>('obituaries')
+    .collection<ICrawledObituary>('obituaries')
     .find({})
     .limit(2000)
     .toArray()

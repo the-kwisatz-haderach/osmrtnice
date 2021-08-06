@@ -40,4 +40,5 @@ export const obituaryDefaults = createObituary({
   surname: '',
   date_of_birth: null,
   date_of_death: null,
+  type: 'OBITUARY',
 })
