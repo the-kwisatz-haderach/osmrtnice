@@ -54,7 +54,7 @@ export default function MainNavigation({
           </div>
           <div className="w-1/3 flex justify-center">
             <Link href="/">
-              <div className="cursor-pointer relative w-full">
+              <div className="cursor-pointer relative bottom-1 w-full">
                 <Image src="/icons/logo.svg" alt="logo" layout="fill" />
               </div>
             </Link>
