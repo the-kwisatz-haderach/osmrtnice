@@ -11,8 +11,9 @@ import { PageStory, Story } from '../../lib/storyblok/types'
 import { SearchInput } from '../../components/SearchInput'
 import { connectToDb } from '../../db'
 import { Pagination } from '../../components/Pagination'
-import { Box, Container, Flex } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import { ObituaryGrid } from '../../components/ObituaryGrid'
+import { EmptyState } from '../../components/EmptyState'
 
 interface Props {
   story: PageStory
@@ -73,7 +74,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
       </Head>
       <Page story={story} />
       <Flex
-        backgroundColor="gray.500"
+        backgroundColor="gray.400"
         justifyContent="center"
         height={32}
         alignItems="center"
@@ -88,22 +89,24 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
           placeholder="Firstname, lastname, city..."
         />
       </Flex>
-      <Box ref={resultsGridRef} my={10}>
+      <Box ref={resultsGridRef} my={14}>
         {currentObituaries.length > 0 ? (
           <ObituaryGrid obituaries={currentObituaries[pageIndex]} />
         ) : (
-          <div className="contained p-10 flex items-center justify-center h-56 text-xl">
-            <p>There are no results. Try changing your search query.</p>
-          </div>
+          <EmptyState
+            title="No results found."
+            description="Try changing your search query."
+            icon="warn"
+          />
         )}
-        <div className="contained p-10">
+        <Box>
           <Pagination
             index={pageIndex}
             totalIndices={currentObituaries.length}
             onNext={onClickPagination()}
             onPrev={onClickPagination(true)}
           />
-        </div>
+        </Box>
       </Box>
     </div>
   )
