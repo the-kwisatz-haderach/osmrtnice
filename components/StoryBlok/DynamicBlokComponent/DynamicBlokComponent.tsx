@@ -6,6 +6,8 @@ import { GridBlok } from '../GridBlok'
 import { GridColumn } from '../GridColumn'
 import { Teaser } from '../Teaser'
 import { FullWidthCTABlok } from '../FullWidthCTABlok'
+import { ServiceBlok } from '../ServiceBlok'
+import { ListBlok } from '../ListBlok'
 import { StoryBlokComponent } from '../../../lib/storyblok/types'
 
 export interface Props {
@@ -19,6 +21,8 @@ const components = {
   grid_column: GridColumn,
   teaser: Teaser,
   full_width_cta: FullWidthCTABlok,
+  service: ServiceBlok,
+  list: ListBlok,
 } as const
 
 export default function DynamicBlokComponent({ blok }: Props): ReactElement {

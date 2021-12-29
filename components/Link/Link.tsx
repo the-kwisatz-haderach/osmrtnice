@@ -1,24 +1,15 @@
-import React, { HTMLAttributes, ReactElement } from 'react'
-import NextLink, { LinkProps } from 'next/link'
-import cx from 'classnames'
+import React, { ReactElement } from 'react'
+import NextLink from 'next/link'
+import { Link as ChakraLink, LinkProps } from '@chakra-ui/react'
 
-interface Props extends React.PropsWithChildren<LinkProps> {
-  className?: HTMLAttributes<HTMLSpanElement>['className']
-}
+type Props = LinkProps
 
-export default function Link({
-  children,
-  className,
-  ...props
-}: Props): ReactElement {
+export default function Link({ children, ...props }: Props): ReactElement {
   return (
-    <span
-      className={cx(
-        className,
-        'underline hover:no-underline text-primary-800 font-bold'
-      )}
-    >
-      <NextLink {...props}>{children}</NextLink>
-    </span>
+    <NextLink href={props.href} passHref>
+      <ChakraLink {...props} color="orange.400" fontWeight="bold">
+        {children}
+      </ChakraLink>
+    </NextLink>
   )
 }

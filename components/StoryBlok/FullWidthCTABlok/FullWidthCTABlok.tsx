@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react'
 import { Richtext } from 'storyblok-js-client'
 import { useRouter } from 'next/router'
 import { RichText } from '../../RichText'
-import { Button } from '../../Button'
 import { LinkField } from '../../../lib/storyblok/common/types'
+import { Box, Button, Container, Flex, HStack, Text } from '@chakra-ui/react'
 
 interface Props {
   title: string
@@ -25,16 +25,36 @@ export default function FullWidthCTABlok({
   }
 
   return (
-    <div className="bg-primary-600">
-      <div className="contained text-white flex flex-col md:flex-row md:items-center px-10 py-14 space-y-10 md:space-y-0 m-auto lg:w-3/4">
-        <div className="md:mr-20">
-          <p className="text-2xl md:text-4xl font-bold mb-4">{title}</p>
-          <RichText>{body}</RichText>
-        </div>
-        <Button color="white" onClick={onClickCTA}>
-          {ctaLabel}
-        </Button>
-      </div>
-    </div>
+    <Box backgroundColor="orange.400">
+      <Container
+        maxW="container.xl"
+        color="white"
+        py={[6, 8, 14]}
+        px={8}
+        display="flex"
+        flexDir="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box>
+          <Text
+            flex={1}
+            fontSize={['xl', '2xl', '4xl']}
+            fontWeight="bold"
+            mb={2}
+          >
+            {title}
+          </Text>
+          <HStack spacing={{ md: 8 }} wrap="wrap">
+            <Box mb={[4, 4, 0]}>
+              <RichText>{body}</RichText>
+            </Box>
+            <Button colorScheme="orange" onClick={onClickCTA}>
+              {ctaLabel}
+            </Button>
+          </HStack>
+        </Box>
+      </Container>
+    </Box>
   )
 }

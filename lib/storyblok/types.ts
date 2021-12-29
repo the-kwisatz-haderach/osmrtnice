@@ -82,3 +82,13 @@ export interface IPageHeader {
   action_label?: string
   height?: 'normal' | 'large'
 }
+
+export interface IService {
+  title: string
+  description: string
+  image?: ImageField
+}
+
+export interface IList {
+  items: StoryBlokComponent[]
+}

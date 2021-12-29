@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
+import { Box, Button, Container, Flex, Heading, Text } from '@chakra-ui/react'
 import { IPageHeader } from '../../../lib/storyblok/types'
-import { Button } from '../../Button'
 
 export default function PageHeaderBlok({
   title,
@@ -11,28 +11,39 @@ export default function PageHeaderBlok({
   action_label,
 }: IPageHeader): ReactElement {
   return (
-    <div
-      className="bg-gradient-to-b from-primary-900 to-primary-700 text-white"
-      style={{
-        height: height === 'large' ? '75vh' : '40vh',
-        backgroundImage: image?.filename
+    <Box
+      color="white"
+      height={height === 'large' ? '75vh' : '40vh'}
+      backgroundAttachment="fixed"
+      backgroundImage={
+        image?.filename
           ? `linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%),
-          url(${image.filename}) `
-          : undefined,
-      }}
+        url(${image.filename}) `
+          : undefined
+      }
+      className="bg-gradient-to-b from-primary-900 to-primary-700 text-white"
     >
-      <div className="contained flex flex-col items-center justify-center h-full">
-        <div
-          className="p-10 mt-20 w-full"
-          style={{
-            textAlign: align,
-          }}
+      <Container maxW="container.xl" height="100%">
+        <Flex
+          flexDir="column"
+          alignItems="center"
+          justifyContent="flex-end"
+          height="100%"
+          py={10}
         >
-          <h1 className="relative right-1">{title}</h1>
-          {subtitle && <p className="subtitle mt-5">{subtitle}</p>}
-        </div>
-        {action_label && <Button className="mt-10">{action_label}</Button>}
-      </div>
-    </div>
+          <Box width="100%" textAlign={align}>
+            <Heading as="h1" fontSize={['4xl', '6xl', '6xl', '8xl']}>
+              {title}
+            </Heading>
+            {subtitle && (
+              <Text mt={4} fontSize={['lg', 'xl', 'xl', '3xl']}>
+                {subtitle}
+              </Text>
+            )}
+          </Box>
+          {action_label && <Button mt={10}>{action_label}</Button>}
+        </Flex>
+      </Container>
+    </Box>
   )
 }

@@ -4,8 +4,6 @@ import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
-import { Grid } from '../../components/Grid'
-import { Obituary } from '../../components/Obituary'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
 import { ICrawledObituary, IObituary, Paginated } from '../../lib/domain/types'
 import Storyblok from '../../lib/storyblok/client'
@@ -13,6 +11,8 @@ import { PageStory, Story } from '../../lib/storyblok/types'
 import { SearchInput } from '../../components/SearchInput'
 import { connectToDb } from '../../db'
 import { Pagination } from '../../components/Pagination'
+import { Box, Container, Flex } from '@chakra-ui/react'
+import { ObituaryGrid } from '../../components/ObituaryGrid'
 
 interface Props {
   story: PageStory
@@ -72,9 +72,12 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
         <title>Obituaries</title>
       </Head>
       <Page story={story} />
-      <div
+      <Flex
+        backgroundColor="gray.500"
+        justifyContent="center"
+        height={32}
+        alignItems="center"
         ref={searchRef}
-        className="flex bg-gray-100 p-10 justify-center items-center flex-col"
       >
         <SearchInput
           autoFocus={
@@ -84,16 +87,10 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
           onChange={handleSearch}
           placeholder="Firstname, lastname, city..."
         />
-      </div>
-      <div ref={resultsGridRef} className="contained my-10">
+      </Flex>
+      <Box ref={resultsGridRef} my={10}>
         {currentObituaries.length > 0 ? (
-          <Grid>
-            {currentObituaries[pageIndex].map(
-              ({ content, full_slug, uuid }) => (
-                <Obituary {...content} slug={full_slug} key={uuid} />
-              )
-            )}
-          </Grid>
+          <ObituaryGrid obituaries={currentObituaries[pageIndex]} />
         ) : (
           <div className="contained p-10 flex items-center justify-center h-56 text-xl">
             <p>There are no results. Try changing your search query.</p>
@@ -107,7 +104,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
             onPrev={onClickPagination(true)}
           />
         </div>
-      </div>
+      </Box>
     </div>
   )
 }
@@ -127,6 +124,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const otherObits = await db
     .collection<ICrawledObituary>('obituaries')
     .find({})
+    .sort({ date_of_death: -1 })
     .limit(2000)
     .toArray()
     .then((obituaries) =>

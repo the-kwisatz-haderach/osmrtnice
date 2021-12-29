@@ -1,17 +1,27 @@
 import { ComponentProps, ComponentType, ReactElement } from 'react'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { AppProvider, IAppContext } from '../contexts/AppContext'
 import { IntersectionObserverProvider } from '../hooks/useIntersectionObserver'
 import { MainLayout } from '../layouts/MainLayout'
 import { makeAppLinks } from '../lib/storyblok/makeAppLinks'
 import Storyblok from '../lib/storyblok/client'
-import '../styles/global.css'
 import { StoryBlokLink } from '../lib/storyblok/common/types'
 import { IGlobalSettings, Story } from '../lib/storyblok/types'
+import '@fontsource/dancing-script/700.css'
+import '@fontsource/nunito'
+import '../styles/global.css'
 
 interface Props<T extends ComponentType> extends IAppContext {
   Component: T
   pageProps: ComponentProps<T>
 }
+
+const theme = extendTheme({
+  fonts: {
+    heading: 'Dancing Script',
+    body: 'Nunito',
+  },
+})
 
 const observerOptions = { threshold: 0.8 }
 
@@ -21,13 +31,15 @@ function MyApp<T extends ComponentType<any>>({
   ...appContext
 }: Props<T>): ReactElement {
   return (
-    <AppProvider {...appContext}>
-      <IntersectionObserverProvider options={observerOptions}>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-      </IntersectionObserverProvider>
-    </AppProvider>
+    <ChakraProvider theme={theme}>
+      <AppProvider {...appContext}>
+        <IntersectionObserverProvider options={observerOptions}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </IntersectionObserverProvider>
+      </AppProvider>
+    </ChakraProvider>
   )
 }
 

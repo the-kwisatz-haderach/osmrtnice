@@ -1,14 +1,29 @@
-import React, { ReactElement, useEffect, useState } from 'react'
-import Link from 'next/link'
+import React, { Fragment, ReactElement, useEffect } from 'react'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import cx from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { useOutsideClick } from '../../hooks/useOutsideClick'
-import styles from './MainNavigation.module.css'
 import { IMenuItem } from '../../lib/storyblok/types'
-import { Button } from '../Button'
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  HStack,
+  IconButton,
+  Link,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react'
 
 interface Props {
   menuItems: IMenuItem[]
@@ -21,77 +36,99 @@ export default function MainNavigation({
 }: Props): ReactElement {
   const [homeLink, ...links] = menuItems
   const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
-  const ref = useOutsideClick<HTMLDivElement>(() => {
-    setIsOpen(false)
-  })
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
-    setIsOpen(false)
-  }, [router.pathname])
-
-  const toggleMenu = (): void => {
-    setIsOpen((curr) => !curr)
-  }
+    onClose()
+  }, [router.pathname, onClose])
 
   return (
     <>
-      {isOpen && (
-        <div className="h-screen md:hidden z-10 bg-black opacity-50 fixed inset-0" />
-      )}
-      <div
-        ref={ref}
-        className={cx(styles.container, { [styles.alternate]: alternate })}
+      <Box
+        zIndex={100}
+        boxShadow="lg"
+        position="sticky"
+        top={-1}
+        width="100%"
+        backgroundColor="white"
+        borderBottomStyle="solid"
+        borderBottomWidth={2}
+        borderBottomColor="gray.100"
+        height="70px"
       >
-        <nav className="flex flex-wrap justify-between contained z-20 relative">
-          <div className="w-1/3 py-5 px-10">
-            <div className="hidden md:block">
-              <Link href={homeLink.href}>{homeLink.label}</Link>
-            </div>
-            <div className="md:hidden">
-              <FontAwesomeIcon onClick={toggleMenu} icon={faBars} size="lg" />
-            </div>
-          </div>
-          <div className="w-1/3 flex justify-center">
-            <Link href="/">
-              <div className="cursor-pointer relative bottom-1 w-full">
-                <Image src="/icons/logo.svg" alt="logo" layout="fill" />
-              </div>
-            </Link>
-          </div>
-          <ul
-            className={cx(styles.foldOutMenu, {
-              [styles.hideMenu]: !isOpen,
-            })}
-          >
-            <div
-              className="md:hidden"
-              onClick={() => {
-                if (router.pathname === '/') {
-                  setIsOpen(false)
-                }
-              }}
+        <Container
+          display="flex"
+          maxW="container.xl"
+          justifyContent="space-between"
+          alignItems="center"
+          px={4}
+        >
+          <NextLink href={homeLink.href} passHref>
+            <Box
+              title={homeLink.label}
+              as="a"
+              position="relative"
+              width={120}
+              height={70}
             >
-              <Link href={homeLink.href}>{homeLink.label}</Link>
-            </div>
+              <Image src="/icons/logo.svg" alt="logo" layout="fill" />
+            </Box>
+          </NextLink>
+          <HStack
+            alignItems="center"
+            spacing={10}
+            display={{ base: 'none', md: 'flex' }}
+          >
             {links.map((menuItem, i) => (
-              <li key={i}>
-                {menuItem.href === '/contact' ? (
-                  <Button
-                    size="sm"
-                    className="relative bottom-1"
-                    onClick={() => router.push(menuItem.href)}
-                  >
-                    Publish
-                  </Button>
-                ) : (
-                  <Link href={menuItem.href}>{menuItem.label}</Link>
-                )}
-              </li>
+              <NextLink key={i} passHref href={menuItem.href}>
+                <Button
+                  variant={menuItem.href === '/contact' ? 'solid' : 'link'}
+                  colorScheme="orange"
+                >
+                  {menuItem.label}
+                </Button>
+              </NextLink>
             ))}
-          </ul>
-        </nav>
-      </div>
+          </HStack>
+          <IconButton
+            colorScheme="orange"
+            icon={<FontAwesomeIcon size="lg" icon={faBars} />}
+            display={{ md: 'none' }}
+            onClick={onOpen}
+            aria-label="main menu"
+          />
+        </Container>
+      </Box>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="left">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>Main menu</DrawerHeader>
+          <DrawerBody>
+            <VStack spacing={4} divider={<Divider />}>
+              {menuItems.map((menuItem, i) => (
+                <Box width="100%" textAlign="center" key={i} height="100%">
+                  <NextLink passHref href={menuItem.href}>
+                    <Button
+                      isFullWidth
+                      py={2}
+                      variant={menuItem.href === '/contact' ? 'solid' : 'link'}
+                      colorScheme="orange"
+                    >
+                      {menuItem.label}
+                    </Button>
+                  </NextLink>
+                </Box>
+              ))}
+            </VStack>
+          </DrawerBody>
+          <DrawerFooter>
+            <Button colorScheme="orange" variant="outline" onClick={onClose}>
+              Close
+            </Button>
+          </DrawerFooter>
+          <DrawerCloseButton />
+        </DrawerContent>
+      </Drawer>
     </>
   )
 }

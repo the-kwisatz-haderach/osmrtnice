@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
-import cx from 'classnames'
+import { Container, SimpleGrid } from '@chakra-ui/react'
 import { DynamicBlokComponent } from '../DynamicBlokComponent'
-import styles from './GridBlok.module.css'
 import { IGrid } from '../../../lib/storyblok/types'
 
 export default function GridBlok({
@@ -9,18 +8,13 @@ export default function GridBlok({
   grid_gap = 10,
   col_count = 1,
 }: IGrid): ReactElement {
-  const className = cx('contained p-10 grid', styles.grid)
   return (
-    <div
-      className={className}
-      style={{
-        gridTemplateColumns: `repeat(${col_count}, 1fr)`,
-        gap: `${grid_gap}px`,
-      }}
-    >
-      {columns.map((col) => (
-        <DynamicBlokComponent key={col._uid} blok={col} />
-      ))}
-    </div>
+    <Container maxW="container.xl" my={10}>
+      <SimpleGrid columns={col_count} gap={grid_gap}>
+        {columns.map((col) => (
+          <DynamicBlokComponent key={col._uid} blok={col} />
+        ))}
+      </SimpleGrid>
+    </Container>
   )
 }

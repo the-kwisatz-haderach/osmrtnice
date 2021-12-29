@@ -1,15 +1,9 @@
 import React, { ReactElement } from 'react'
-import { faSearch, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Flex, IconButton, Input, InputProps } from '@chakra-ui/react'
 
-interface Props
-  extends Omit<
-    React.DetailedHTMLProps<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      HTMLInputElement
-    >,
-    'onChange' | 'value'
-  > {
+interface Props extends Omit<InputProps, 'onChange' | 'value'> {
   defaultValue?: string
   onSubmit?: () => void
   onChange: (value: string) => void
@@ -24,8 +18,12 @@ export default function SearchInput({
   ...props
 }: Props): ReactElement {
   return (
-    <form
-      className="flex"
+    <Flex
+      as="form"
+      width="100%"
+      maxW={500}
+      px={[4, 0]}
+      flexDir={['column', 'row']}
       onSubmit={(e) => {
         e.preventDefault()
         if (onSubmit) {
@@ -33,28 +31,41 @@ export default function SearchInput({
         }
       }}
     >
-      <input
+      <Input
         {...props}
+        flex={1}
         defaultValue={defaultValue}
         onChange={(e) => {
           onChange(e.target.value)
         }}
-        className="h-14 sm:w-96 text-xl"
+        size="lg"
+        variant="flushed"
+        focusBorderColor="white"
+        borderBottomWidth={3}
+        height={16}
+        backgroundColor="rgba(0,0,0,0.2)"
+        fontSize={{ sm: 24 }}
+        p={3}
+        _focus={{
+          backgroundColor: 'rgba(255,255,255,0.4)',
+        }}
+        _placeholder={{
+          color: 'white',
+        }}
       />
-      <button
+      <IconButton
+        icon={<FontAwesomeIcon icon={faSearch} size="lg" />}
+        isLoading={isLoading}
         type="submit"
-        className="bg-primary-500 hover:bg-primary-600 transition-colors text-white border-none h-14 w-16"
-      >
-        {isLoading ? (
-          <FontAwesomeIcon
-            className="animate-spin"
-            icon={faSpinner}
-            size="lg"
-          />
-        ) : (
-          <FontAwesomeIcon icon={faSearch} size="lg" />
-        )}
-      </button>
-    </form>
+        aria-label="submit"
+        colorScheme="orange"
+        height="100%"
+        minH={[12, 16]}
+        minW={16}
+        size="lg"
+        mt={[2, 0]}
+        borderLeftRadius={{ sm: 0 }}
+      />
+    </Flex>
   )
 }

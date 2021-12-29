@@ -1,7 +1,15 @@
-import axios from 'axios'
 import React, { ReactElement } from 'react'
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  Select,
+  Textarea,
+  VStack,
+} from '@chakra-ui/react'
+import axios from 'axios'
 import { useForm } from 'react-hook-form'
-import { Button } from '../../Button'
 import { FormField } from '../FormField/FormField'
 
 export default function ContactForm(): ReactElement {
@@ -12,18 +20,33 @@ export default function ContactForm(): ReactElement {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = handleSubmit((data) => {
-    return axios.post('/api/obituaries', data).then(reset)
-  })
+  const onSubmit = handleSubmit((data) =>
+    axios.post('/api/obituaries', data).then(reset)
+  )
 
   return (
-    <form
+    <VStack
+      as="form"
+      spacing={2}
       onSubmit={onSubmit}
-      className="flex flex-col w-full max-w-2xl shadow-xl space-y-4 bg-primary-100 px-5 md:px-10 py-8 md:py-16 border border-primary-200"
+      p={[4, 10]}
+      boxShadow="xl"
+      width="100%"
+      maxW="xl"
+      borderColor="gray.100"
+      borderWidth={2}
+      borderStyle="solid"
     >
-      <div className="flex justify-between sm:space-x-4 flex-wrap space-y-4">
-        <FormField errors={errors} htmlFor="firstname" label="firstname*">
-          <input
+      <Flex flexDir={['column', 'row']} wrap="wrap" width="100%">
+        <FormField
+          flex={1}
+          mr={[0, 2]}
+          mb={[2, 0]}
+          errors={errors}
+          htmlFor="firstname"
+          label="firstname*"
+        >
+          <Input
             autoFocus
             autoComplete="given-name"
             id="firstname"
@@ -33,8 +56,13 @@ export default function ContactForm(): ReactElement {
             })}
           />
         </FormField>
-        <FormField errors={errors} htmlFor="lastname" label="lastname*">
-          <input
+        <FormField
+          flex={1}
+          errors={errors}
+          htmlFor="lastname"
+          label="lastname*"
+        >
+          <Input
             autoComplete="family-name"
             id="lastname"
             type="text"
@@ -43,10 +71,10 @@ export default function ContactForm(): ReactElement {
             })}
           />
         </FormField>
-      </div>
-      <div className="flex justify-between sm:space-x-4 flex-wrap space-y-4">
+      </Flex>
+      <Box width="100%">
         <FormField errors={errors} htmlFor="email" label="email*">
-          <input
+          <Input
             autoComplete="email"
             id="email"
             type="email"
@@ -56,48 +84,47 @@ export default function ContactForm(): ReactElement {
           />
         </FormField>
         <FormField errors={errors} htmlFor="phone" label="phone">
-          <input
+          <Input
             autoComplete="phone"
             id="phone"
             type="tel"
             {...register('phone')}
           />
         </FormField>
-      </div>
-      <div className="flex justify-between sm:space-x-4 flex-wrap space-y-4">
+      </Box>
+      <Box width="100%">
         <FormField errors={errors} htmlFor="type" label="type">
-          <select autoComplete="off" id="type" {...register('type')}>
+          <Select autoComplete="off" id="type" {...register('type')}>
             <option>Obituary</option>
             <option>In memoriam</option>
             <option>Gratitude display</option>
             <option>Last greetings</option>
-          </select>
+          </Select>
         </FormField>
-      </div>
-      <div className="flex justify-between sm:space-x-4 flex-wrap space-y-4">
+      </Box>
+      <Box width="100%">
         <FormField errors={errors} htmlFor="message" label="message*">
-          <textarea
+          <Textarea
             style={{
               minHeight: '2.5rem',
               maxHeight: '10rem',
             }}
             id="message"
             rows={5}
-            {...register('message', {
-              required: 'Required',
-            })}
+            {...register('message')}
           />
         </FormField>
-      </div>
+      </Box>
       <Button
-        style={{
-          position: 'relative',
-          top: 10,
-          alignSelf: 'flex-end',
-        }}
+        alignSelf="flex-end"
+        position="relative"
+        top={3}
+        onClick={onSubmit}
+        type="submit"
+        colorScheme="orange"
       >
         Submit
       </Button>
-    </form>
+    </VStack>
   )
 }

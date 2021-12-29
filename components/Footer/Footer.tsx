@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
-import cx from 'classnames'
 import { InfoList } from '../InfoList'
 import { FooterBottom } from './components/FooterBottom'
 import { IMenuItem } from '../../lib/storyblok/types'
+import { Box, Flex, Heading } from '@chakra-ui/react'
 
 interface Props
   extends React.DetailedHTMLProps<
@@ -21,14 +21,30 @@ export default function Footer({
   address,
   phone,
   email,
-  className,
 }: Props): ReactElement {
   return (
-    <footer className={cx('bg-gray-100 border-gray-200 border-t-2', className)}>
-      <div className="flex justify-between flex-wrap pb-10 pt-5 contained">
-        <div className="w-full lg:w-3/5 flex-wrap flex flex-col sm:flex-row px-10 pt-10">
-          <div className="flex flex-col md:mr-20 mb-10">
-            <h3 className="mb-2 text-2xl">Contact details</h3>
+    <Box
+      as="footer"
+      backgroundColor="gray.200"
+      mt={24}
+      borderTopWidth={2}
+      borderTopStyle="solid"
+      borderTopColor="gray.300"
+    >
+      <Flex
+        margin="auto"
+        maxW="container.xl"
+        justifyContent="space-between"
+        flexWrap="wrap"
+        pb={10}
+        px={5}
+        pt={10}
+      >
+        <Flex width={['100%', '100%', '50%']} flexWrap="wrap">
+          <Box mr={16}>
+            <Heading as="h3" size="xl" mb={2}>
+              Contact details
+            </Heading>
             <InfoList
               items={[
                 { label: 'Address', content: address },
@@ -40,24 +56,29 @@ export default function Footer({
                 },
               ]}
             />
-          </div>
-          <div className="flex flex-col md:mr-20 mb-10">
-            <h3 className="mb-2 text-2xl">Sitemap</h3>
+          </Box>
+          <Box>
+            <Heading as="h3" size="xl" mb={2}>
+              Sitemap
+            </Heading>
             <InfoList
               items={menuItems.map((menuItem) => ({
                 content: menuItem.label,
                 href: menuItem.href,
               }))}
             />
-          </div>
-        </div>
-        <div className="flex flex-grow justify-center items-center">
+          </Box>
+        </Flex>
+        <Box
+          width={['100%', '100%', '50%']}
+          textAlign={['center', 'center', 'right']}
+        >
           <Image src="/icons/logo.svg" height={200} width={300} />
-        </div>
-      </div>
-      <div className="border-gray-200 border-t-2">
+        </Box>
+      </Flex>
+      <Box borderTopColor="gray.300" borderTopWidth={2} borderTopStyle="solid">
         <FooterBottom />
-      </div>
-    </footer>
+      </Box>
+    </Box>
   )
 }

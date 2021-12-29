@@ -1,3 +1,4 @@
+import { Flex, Text, VStack } from '@chakra-ui/react'
 import React, { ReactElement } from 'react'
 import { Link } from '../Link'
 
@@ -13,17 +14,21 @@ interface Props {
 
 export default function InfoList({ items }: Props): ReactElement {
   return (
-    <ul className="space-y-2">
+    <VStack spacing={1} alignItems="flex-start">
       {items.map((item, i) => (
-        <li key={i} className="flex">
-          {item.label && <p className="font-bold mr-2">{item.label}:</p>}
+        <Flex key={i}>
+          {item.label && (
+            <Text fontWeight="bold" mr={1}>
+              {item.label}:
+            </Text>
+          )}
           {item.href ? (
             <Link href={item.href}>{item.content}</Link>
           ) : (
-            <p>{item.content}</p>
+            <Text>{item.content}</Text>
           )}
-        </li>
+        </Flex>
       ))}
-    </ul>
+    </VStack>
   )
 }

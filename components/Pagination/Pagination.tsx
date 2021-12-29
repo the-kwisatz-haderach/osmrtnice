@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Button } from '../Button'
+import { Button, Flex } from '@chakra-ui/react'
 
 interface Props {
   index: number
@@ -17,14 +17,14 @@ export default function Pagination({
   return (
     <>
       {totalIndices > 1 && (
-        <div className="flex justify-between w-full space-x-5">
+        <Flex justifyContent="space-between" width="100%">
           <Button disabled={index === 0} onClick={onPrev}>
             Previous
           </Button>
           <Button disabled={index + 1 >= totalIndices} onClick={onNext}>
             Next
           </Button>
-        </div>
+        </Flex>
       )}
     </>
   )

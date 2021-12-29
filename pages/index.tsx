@@ -2,14 +2,14 @@ import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { ReactElement, useState } from 'react'
-import { Grid } from '../components/Grid'
-import { Obituary } from '../components/Obituary'
 import { SearchInput } from '../components/SearchInput'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
 import { ICrawledObituary, IObituary } from '../lib/domain/types'
 import Storyblok from '../lib/storyblok/client'
 import { PageStory, Story } from '../lib/storyblok/types'
 import { connectToDb } from '../db'
+import { Box, Flex, Heading } from '@chakra-ui/react'
+import { ObituaryGrid } from '../components/ObituaryGrid'
 
 interface Props {
   story: PageStory
@@ -33,32 +33,37 @@ export default function Home({ story, obituaries }: Props): ReactElement {
         />
         <title>Home</title>
       </Head>
-      <div
-        className="bg-gradient-to-b from-primary-900 to-primary-700 text-white"
-        style={{
-          height: '75vh',
-          backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%),
-            url(/images/candles.jpg)`,
-        }}
+      <Box
+        color="white"
+        height="65vh"
+        backgroundAttachment="fixed"
+        backgroundSize="cover"
+        backgroundImage={`linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%), url(/images/candles.jpg)`}
       >
-        <div className="flex flex-col items-center justify-center w-5/6 m-auto h-full">
-          <h1 className="text-center mb-10">Search our obituaries</h1>
+        <Flex
+          flexDir="column"
+          alignItems="center"
+          justifyContent="center"
+          height="100%"
+        >
+          <Heading
+            as="h1"
+            fontSize={['4xl', '6xl', '6xl', '8xl']}
+            textAlign="center"
+            mb={10}
+          >
+            Search our obituaries
+          </Heading>
           <SearchInput
             defaultValue={query}
             onChange={setQuery}
             onSubmit={handleSubmitSearch}
             placeholder="Firstname, lastname, city..."
           />
-        </div>
-      </div>
+        </Flex>
+      </Box>
       <Page story={story} />
-      <div className="contained my-10">
-        <Grid>
-          {obituaries.map(({ content, uuid }) => (
-            <Obituary key={uuid} {...content} />
-          ))}
-        </Grid>
-      </div>
+      <ObituaryGrid obituaries={obituaries} />
     </div>
   )
 }

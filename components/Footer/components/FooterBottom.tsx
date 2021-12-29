@@ -1,16 +1,22 @@
 import { ReactElement } from 'react'
+import NextLink from 'next/link'
 import { faCopyright } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Link } from '../../Link'
+import { Container, Flex, Link, Text } from '@chakra-ui/react'
 
 export const FooterBottom = (): ReactElement => (
-  <div className="contained p-5  flex flex-col sm:flex-row justify-between">
-    <div className="flex space-x-5">
-      <span className="space-x-2 flex items-center">
-        <FontAwesomeIcon icon={faCopyright} />
-        <p>Osmrtnice</p>
-      </span>
-      <Link href="/privacy-policy">Privacy policy</Link>
-    </div>
-  </div>
+  <Container
+    maxW="container.xl"
+    p={5}
+    display="flex"
+    justifyContent="space-between"
+  >
+    <Flex alignItems="center">
+      <FontAwesomeIcon icon={faCopyright} />
+      <Text ml={2}>Osmrtnice</Text>
+    </Flex>
+    <NextLink href="/privacy-policy" passHref>
+      <Link>Privacy policy</Link>
+    </NextLink>
+  </Container>
 )

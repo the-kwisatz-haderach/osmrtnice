@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
-import cx from 'classnames'
 import { RichText } from '../RichText'
 import { formatDate } from '../../utils/formatDate'
 import { IObituary } from '../../lib/domain/types'
+import { Box, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 
 export default function Obituary({
   firstname,
@@ -21,62 +21,74 @@ export default function Obituary({
   type = 'OBITUARY',
 }: IObituary & { slug?: string }): ReactElement {
   return (
-    <div
-      className={cx(
-        'h-full flex flex-col',
-        size === 'large' ? 'sm:col-span-2' : 'col-span-1'
-      )}
+    <VStack
+      flexDir="column"
+      spacing={5}
+      p={6}
+      borderRadius="sm"
+      h="100%"
+      transition="box-shadow 0.3s ease-in-out"
+      borderColor="gray.200"
+      borderWidth={1}
+      borderStyle="solid"
+      _hover={{
+        boxShadow: 'lg',
+      }}
     >
-      <div
-        style={{
-          height: 'fit-content',
-        }}
-        className="rounded-sm transition-shadow shadow-sm bg-white hover:shadow-lg p-7 border border-gray-200 space-y-5 flex flex-col items-center"
-      >
-        {image && (
-          <Image
-            src={image.startsWith('http') ? image : `https:${image}`}
-            width={140}
-            height={140}
-          />
+      {image && (
+        <Image
+          src={image.startsWith('http') ? image : `https:${image}`}
+          width={140}
+          height={140}
+        />
+      )}
+      <VStack textAlign="center" spacing={3}>
+        {preamble && (
+          <Text fontSize="sm" fontStyle="italic">
+            {preamble}
+          </Text>
         )}
-        <div className="text-center space-y-3">
-          {preamble && <p className="text-center text-sm italic">{preamble}</p>}
-          <div className="my-2">
-            <h3 className="text-md mb-2">
-              {[firstname, middlename, surname].join(' ')}
-            </h3>
-            <div className="text-sm flex justify-center align-center space-x-2 font-bold">
-              {date_of_birth ? <p>{formatDate(date_of_birth)}</p> : ''}
-              {(date_of_birth || date_of_death) && <p>-</p>}
-              {date_of_death ? <p>{formatDate(date_of_death)}</p> : ''}
-            </div>
-          </div>
-        </div>
-        {long_text && (
-          <div className="text-sm text-center">
-            {typeof long_text === 'string' ? (
-              <p>{long_text}</p>
+        <Box>
+          <Heading as="h4" fontSize="2xl" mb={2}>
+            {[firstname, middlename, surname].join(' ')}
+          </Heading>
+          <HStack spacing={1}>
+            {date_of_birth ? (
+              <Text fontSize="sm">{formatDate(date_of_birth)}</Text>
             ) : (
-              <RichText>{long_text}</RichText>
+              ''
             )}
-          </div>
-        )}
-        {relative != null && relative.length > 0 && (
-          <div className="text-xs flex flex-wrap justify-center">
-            {relative.split(', ').map((relation) => (
-              <div className="mr-5 mb-1" key={relation}>
-                {relation}
-              </div>
-            ))}
-          </div>
-        )}
-        {additional_information && (
-          <p className="text-left w-full text-xs pt-4 border-dotted border-t-2">
-            {additional_information}
-          </p>
-        )}
-      </div>
-    </div>
+            {(date_of_birth || date_of_death) && <Text fontSize="sm">-</Text>}
+            {date_of_death ? (
+              <Text fontSize="sm">{formatDate(date_of_death)}</Text>
+            ) : (
+              ''
+            )}
+          </HStack>
+        </Box>
+      </VStack>
+      {long_text &&
+        (typeof long_text === 'string' ? (
+          <Text fontSize="sm" textAlign="justify">
+            {long_text}
+          </Text>
+        ) : (
+          <RichText textAlign="justify">{long_text}</RichText>
+        ))}
+      {relative != null && relative.length > 0 && (
+        <Flex flexWrap="wrap" justifyContent="center">
+          {relative.split(', ').map((relation) => (
+            <Text fontSize="xs" key={relation}>
+              {relation}
+            </Text>
+          ))}
+        </Flex>
+      )}
+      {additional_information && (
+        <Box borderTopStyle="dotted" borderTopWidth={2} pt={4} w="100%">
+          <Text fontSize="xs">{additional_information}</Text>
+        </Box>
+      )}
+    </VStack>
   )
 }

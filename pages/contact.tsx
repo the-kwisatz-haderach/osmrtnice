@@ -1,3 +1,4 @@
+import { Container } from '@chakra-ui/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { ReactElement } from 'react'
@@ -14,12 +15,17 @@ export default function Contact({ story }: Props): ReactElement {
   return (
     <div>
       <Head>
-        <title>Contact us</title>
+        <title>{story.name}</title>
       </Head>
       <Page story={story} />
-      <div className="contained w-11/12 my-20 flex justify-center flex-col md:flex-row md:space-x-10 lg:space-x-20">
+      <Container
+        maxW="container.xl"
+        display="flex"
+        justifyContent="center"
+        my={10}
+      >
         <ContactForm />
-      </div>
+      </Container>
     </div>
   )
 }
