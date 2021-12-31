@@ -1,10 +1,10 @@
-import { ICrawledObituary } from '../types'
+import { IObituary, IObituaryInput } from '../types'
 
 export default function createObituary(
-  input: Omit<ICrawledObituary, '_id' | 'date_crawled'>
-): Omit<ICrawledObituary, '_id'> {
+  input: IObituaryInput
+): Omit<IObituary, '_id'> {
   return {
-    date_crawled: new Date().toISOString(),
+    date_created: new Date().toISOString(),
     firstname: input.firstname,
     surname: input.surname,
     date_of_birth: input.date_of_birth,
@@ -14,5 +14,6 @@ export default function createObituary(
     middlename: input.middlename ?? '',
     relative: input.relative ?? '',
     long_text: input.long_text ?? '',
+    appreciations: 0,
   }
 }

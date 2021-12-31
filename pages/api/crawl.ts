@@ -6,6 +6,7 @@ import SiteCrawler from '../../lib/crawler/SiteCrawler'
 import { IObituaryInput } from '../../lib/domain/types'
 import attachMiddleware from '../../middleware'
 import { EnhancedNextApiRequest } from '../../middleware/types'
+import { createObituary } from '../../lib/domain/obituary'
 
 const crawlers = [
   new SiteCrawler<IObituaryInput[]>({
@@ -37,7 +38,7 @@ export default attachMiddleware().get(
               crawler.setOutputHandler(async (obituaries) => {
                 await Promise.all(
                   obituaries.map((obituary) =>
-                    obituariesCollection.insertOne(obituary)
+                    obituariesCollection.insertOne(createObituary(obituary))
                   )
                 )
               })

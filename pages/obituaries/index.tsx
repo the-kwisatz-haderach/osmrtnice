@@ -5,9 +5,9 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
-import { ICrawledObituary, IObituary, Paginated } from '../../lib/domain/types'
+import { IObituary } from '../../lib/domain/types'
 import Storyblok from '../../lib/storyblok/client'
-import { PageStory, Story } from '../../lib/storyblok/types'
+import { PageStory } from '../../lib/storyblok/types'
 import { SearchInput } from '../../components/SearchInput'
 import { connectToDb } from '../../db'
 import { Pagination } from '../../components/Pagination'
@@ -17,7 +17,7 @@ import { EmptyState } from '../../components/EmptyState'
 
 interface Props {
   story: PageStory
-  obituaries: Paginated<Array<Story<IObituary>>>
+  obituaries: IObituary[]
 }
 
 export default function Obituaries({ story, obituaries }: Props): ReactElement {
@@ -91,7 +91,7 @@ export default function Obituaries({ story, obituaries }: Props): ReactElement {
       </Flex>
       <Box ref={resultsGridRef} my={14}>
         {currentObituaries.length > 0 ? (
-          <ObituaryGrid obituaries={currentObituaries[pageIndex]} />
+          <ObituaryGrid obituaries={currentObituaries} />
         ) : (
           <EmptyState
             title="No results found."
@@ -116,40 +116,17 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const story = await Storyblok.getStory('obituaries', {
     version: 'draft',
   })
-  const obituaryStories = await Storyblok.getStories({
-    starts_with: 'obituaries',
-    version: 'draft',
-    is_startpage: 0,
-  })
-
   const { db } = await connectToDb()
-
-  const otherObits = await db
-    .collection<ICrawledObituary>('obituaries')
-    .find({})
-    .sort({ date_of_death: -1 })
-    .limit(2000)
-    .toArray()
-    .then((obituaries) =>
-      obituaries.map((obituary) => {
-        return JSON.parse(
-          JSON.stringify({
-            uuid: obituary._id,
-            content: obituary,
-          })
-        )
-      })
+  const obituaries = JSON.parse(
+    JSON.stringify(
+      await db
+        .collection<IObituary>('obituaries')
+        .find({})
+        .sort({ date_of_death: -1 })
+        .limit(2000)
+        .toArray()
     )
-
-  const paginatedObituaries: Array<Story<IObituary>> = [
-    ...obituaryStories.data.stories,
-    ...otherObits,
-  ]
-
-  const obituaries: Paginated<Array<Story<IObituary>>> = []
-  for (let i = 0; i < paginatedObituaries.length; i += 50) {
-    obituaries.push(paginatedObituaries.slice(i, i + 50))
-  }
+  )
 
   return {
     props: {

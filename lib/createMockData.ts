@@ -26,6 +26,8 @@ export const createObitary = (
     ],
   },
   type: 'OBITUARY',
+  appreciations: 0,
+  _id: '',
 })
 
 export const createObituaries = (amount: number): IObituary[] =>

@@ -6,7 +6,10 @@ export type ObituaryType =
   | 'GRATITUDE_DISPLAY'
   | 'LAST_GREETINGS'
 
+export type FaithType = 'christian' | 'muslim'
+
 export interface IObituary {
+  _id: string
   firstname: string
   surname: string
   middlename?: string
@@ -20,12 +23,12 @@ export interface IObituary {
   size?: 'regular' | 'large'
   additional_information?: string
   preamble?: string
+  appreciations: number
+  date_created: string
+  date_updated?: string
+  faith?: FaithType
 }
 
-export interface ICrawledObituary extends IObituary {
-  _id: string
-  date_crawled: string
-}
 export interface IObituaryInput {
   firstname: string
   middlename?: string
@@ -36,6 +39,7 @@ export interface IObituaryInput {
   long_text?: string
   image?: string
   type?: ObituaryType
+  faith?: FaithType
 }
 
 export type Paginated<T> = T[]

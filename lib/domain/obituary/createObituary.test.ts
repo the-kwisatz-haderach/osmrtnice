@@ -1,4 +1,4 @@
-import { ICrawledObituary } from '../types'
+import { IObituary } from '../types'
 import createObituary from './createObituary'
 
 jest
@@ -10,8 +10,8 @@ describe('createObituary', () => {
     const date_of_birth = new Date(1234)
     const date_of_death = new Date(1234 + 1)
 
-    const expected: Omit<ICrawledObituary, '_id'> = {
-      date_crawled: 'someDate',
+    const expected: Omit<IObituary, '_id'> = {
+      date_created: 'someDate',
       firstname: 'Hello',
       surname: 'World',
       date_of_birth: date_of_birth.toString(),
@@ -21,6 +21,7 @@ describe('createObituary', () => {
       long_text: '',
       middlename: '',
       relative: '',
+      appreciations: 0,
     }
     expect(
       createObituary({
@@ -36,8 +37,8 @@ describe('createObituary', () => {
     const date_of_birth = new Date(1234)
     const date_of_death = new Date(1234 + 1)
 
-    const expected: Omit<ICrawledObituary, '_id'> = {
-      date_crawled: 'someDate',
+    const expected: Omit<IObituary, '_id'> = {
+      date_created: 'someDate',
       firstname: 'Hello',
       surname: 'World',
       date_of_birth: date_of_birth.toString(),
@@ -47,6 +48,7 @@ describe('createObituary', () => {
       long_text: 'Some description',
       middlename: 'middlename',
       relative: 'relatives',
+      appreciations: 0,
     }
     expect(
       createObituary({

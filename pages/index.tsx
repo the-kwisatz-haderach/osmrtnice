@@ -4,16 +4,16 @@ import Head from 'next/head'
 import { ReactElement, useState } from 'react'
 import { SearchInput } from '../components/SearchInput'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import { ICrawledObituary, IObituary } from '../lib/domain/types'
+import { IObituary } from '../lib/domain/types'
 import Storyblok from '../lib/storyblok/client'
-import { PageStory, Story } from '../lib/storyblok/types'
+import { PageStory } from '../lib/storyblok/types'
 import { connectToDb } from '../db'
 import { Box, Flex, Heading } from '@chakra-ui/react'
 import { ObituaryGrid } from '../components/ObituaryGrid'
 
 interface Props {
   story: PageStory
-  obituaries: Array<Story<IObituary>>
+  obituaries: IObituary[]
 }
 
 export default function Home({ story, obituaries }: Props): ReactElement {
@@ -74,35 +74,17 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
     version: 'draft',
     cv: Date.now(),
   })
-  const obituaryStories = await Storyblok.getStories({
-    starts_with: 'obituaries',
-    version: 'draft',
-    is_startpage: 0,
-  })
-
   const { db } = await connectToDb()
-
-  const otherObits = await db
-    .collection<ICrawledObituary>('obituaries')
-    .find({})
-    .limit(20)
-    .toArray()
-    .then((obituaries) =>
-      obituaries.map((obituary) => {
-        return JSON.parse(
-          JSON.stringify({
-            uuid: obituary._id,
-            content: obituary,
-          })
-        )
-      })
+  const obituaries = JSON.parse(
+    JSON.stringify(
+      await db
+        .collection<IObituary>('obituaries')
+        .find({})
+        .limit(100)
+        .sort({ date_created: -1 })
+        .toArray()
     )
-
-  const obituaries: Array<Story<IObituary>> = [
-    ...obituaryStories.data.stories,
-    ...otherObits,
-  ].slice(0, 20)
-
+  )
   return {
     props: {
       story: res.data.story as PageStory,
