@@ -9,18 +9,27 @@ import { obituaryInputDefault } from '../common'
 const getNames = async (
   root: ElementHandle<HTMLDivElement>
 ): Promise<string[]> =>
-  (await root
-    .$('div.personPhoto')
-    .then(getInnerText('h2'))
-    .then((namesStr: string) => namesStr.split(/\s+/))) ?? []
+  (await getInnerText('.title2')(root).then((namesStr: string) =>
+    namesStr.split(/\s+/)
+  )) ?? []
 
 const getDates = async (
   root: ElementHandle<HTMLDivElement>
 ): Promise<string[]> =>
   await root
-    .$('div.personPhoto')
-    .then(getInnerText('p'))
-    .then((dateText: string) => dateText.split(/\D+/).filter((year) => year))
+    .$$('div')
+    .then((elements) => elements[5]?.evaluate((el) => el.innerText))
+    .then((dates) => dates.split(/\s+-\s+/))
+
+const getLongText = async (
+  root: ElementHandle<HTMLDivElement>
+): Promise<string> =>
+  await root
+    .$$('p')
+    .then((elements) =>
+      elements.map((element) => element?.evaluate((el) => el.innerText))
+    )
+    .then((text) => text.join('\n'))
 
 const obituaryProcessor = createItemProcessor<HTMLDivElement, IObituaryInput>(
   obituaryInputDefault,
@@ -37,13 +46,12 @@ const obituaryProcessor = createItemProcessor<HTMLDivElement, IObituaryInput>(
       await getNames(root)
         .then((names) => (names.length > 2 ? names[1] : ''))
         .then(nameFormatter),
-    date_of_death: async (root) =>
-      await getDates(root).then((dates) => dates[1]),
     date_of_birth: async (root) =>
       await getDates(root).then((dates) => dates[0]),
-    relative: getInnerText('.signature'),
-    long_text: getInnerText('.maintext'),
-    image: getElementProperty('img', 'src'),
+    date_of_death: async (root) =>
+      await getDates(root).then((dates) => dates[1]),
+    long_text: getLongText,
+    image: getElementProperty('img.okvir', 'src'),
   }
 )
 

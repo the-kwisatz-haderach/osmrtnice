@@ -13,7 +13,7 @@ export default function PageHeaderBlok({
   return (
     <Box
       color="white"
-      height={height === 'large' ? '75vh' : '40vh'}
+      height={height === 'large' ? '65vh' : '40vh'}
       backgroundAttachment="fixed"
       backgroundImage={
         image?.filename
@@ -26,7 +26,7 @@ export default function PageHeaderBlok({
         <Flex
           flexDir="column"
           alignItems="center"
-          justifyContent="flex-end"
+          justifyContent="center"
           height="100%"
           py={10}
         >

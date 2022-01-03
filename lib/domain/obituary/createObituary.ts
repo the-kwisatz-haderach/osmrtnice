@@ -10,7 +10,7 @@ export default function createObituary(
     date_of_birth: input.date_of_birth,
     date_of_death: input.date_of_death,
     image: input.image || '',
-    type: input.type || 'OBITUARY',
+    type: input.type || 'obituary',
     middlename: input.middlename || '',
     relative: input.relative || '',
     long_text: input.long_text || '',

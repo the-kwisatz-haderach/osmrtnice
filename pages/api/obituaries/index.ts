@@ -1,7 +1,6 @@
 import { ObjectID } from 'mongodb'
 import { NextApiResponse } from 'next'
-import { obituaryTypeMap } from '../../../lib/domain'
-import { IObituary } from '../../../lib/domain/types'
+import { IObituary, ObituaryType } from '../../../lib/domain/types'
 import attachMiddleware from '../../../middleware'
 import { EnhancedNextApiRequest } from '../../../middleware/types'
 
@@ -20,17 +19,15 @@ export default attachMiddleware().get(
         MAX_LIMIT
       )
 
-      const parsedCategory = obituaryTypeMap[category]
-
       const obituaries: IObituary[] = JSON.parse(
         JSON.stringify(
           await req.db
             .collection<Omit<IObituary, '_id'>>('obituaries')
             .find({
-              ...(parsedCategory && {
+              ...(category && {
                 $and: [
                   {
-                    type: parsedCategory,
+                    type: category as ObituaryType,
                   },
                 ],
               }),

@@ -10,6 +10,7 @@ import {
 import axios from 'axios'
 import { ObjectID } from 'mongodb'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -17,7 +18,7 @@ import React, { ReactElement, useState } from 'react'
 import { AppreciationIndicator } from '../../components/AppreciationIndicator'
 import { RichText } from '../../components/RichText'
 import { connectToDb } from '../../db'
-import { obituaryTypeMap } from '../../lib/domain'
+import { obituaryTypes } from '../../lib/domain'
 import { IObituary } from '../../lib/domain/types'
 import { formatDate } from '../../utils/formatDate'
 
@@ -138,7 +139,7 @@ export default function Obituary({
 export const getStaticProps: GetStaticProps<
   IObituary,
   { id: string; category: string }
-> = async ({ params }) => {
+> = async ({ params, locale }) => {
   const { db } = await connectToDb()
   const obituary = JSON.parse(
     JSON.stringify(
@@ -148,14 +149,17 @@ export const getStaticProps: GetStaticProps<
     )
   )
   return {
-    props: obituary,
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      ...obituary,
+    },
   }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const { db } = await connectToDb()
   const paths = await Promise.all(
-    Object.entries(obituaryTypeMap).flatMap(async ([slug, type]) =>
+    obituaryTypes.flatMap(async (type) =>
       JSON.parse(
         JSON.stringify(
           await db
@@ -167,8 +171,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
             .toArray()
         )
       ).flatMap((entry) => ({
-        params: { id: entry._id, category: slug },
-        locale: 'en',
+        params: { id: entry._id, category: type },
       }))
     )
   )

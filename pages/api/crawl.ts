@@ -2,6 +2,7 @@ import { NextApiResponse } from 'next'
 import { siteProcessor as oslobodjenjeSiteProcessor } from '../../lib/crawler/crawlers/oslobodjenje'
 import { siteProcessor as avazSiteProcessor } from '../../lib/crawler/crawlers/avaz'
 import { siteProcessor as nekrosSiteProcessor } from '../../lib/crawler/crawlers/nekros'
+import { siteProcessor as osmrtnicaSiteProcessor } from '../../lib/crawler/crawlers/osmrtnica'
 import SiteCrawler from '../../lib/crawler/SiteCrawler'
 import { IObituaryInput } from '../../lib/domain/types'
 import attachMiddleware from '../../middleware'
@@ -9,6 +10,10 @@ import { EnhancedNextApiRequest } from '../../middleware/types'
 import { createObituary } from '../../lib/domain/obituary'
 
 const crawlers = [
+  new SiteCrawler<IObituaryInput[]>({
+    url: 'https://www.osmrtnica.ba/',
+    documentProcessor: osmrtnicaSiteProcessor,
+  }),
   new SiteCrawler<IObituaryInput[]>({
     url: 'https://www.oslobodjenje.ba/smrtovnice',
     documentProcessor: oslobodjenjeSiteProcessor,

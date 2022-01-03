@@ -14,6 +14,7 @@ import { Flex, IconButton, Input } from '@chakra-ui/react'
 interface Props {
   value?: string
   onChange: (value: string) => void
+  title?: string
   placeholder?: string
   isLoading?: boolean
   debounceDelay?: number
@@ -22,6 +23,7 @@ interface Props {
 export default function SearchInput({
   value,
   onChange,
+  title,
   placeholder = '',
   isLoading = false,
   debounceDelay = 2000,
@@ -84,6 +86,7 @@ export default function SearchInput({
         minW={16}
         size="lg"
         mt={[2, 0]}
+        title={title}
         borderLeftRadius={{ sm: 0 }}
       />
     </Flex>

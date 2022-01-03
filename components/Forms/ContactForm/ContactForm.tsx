@@ -11,8 +11,11 @@ import {
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { FormField } from '../FormField/FormField'
+import { obituaryTypes } from '../../../lib/domain'
+import { useTranslation } from 'next-i18next'
 
 export default function ContactForm(): ReactElement {
+  const { t } = useTranslation()
   const {
     register,
     handleSubmit,
@@ -94,11 +97,21 @@ export default function ContactForm(): ReactElement {
       </Box>
       <Box width="100%">
         <FormField errors={errors} htmlFor="type" label="type">
-          <Select autoComplete="off" id="type" {...register('type')}>
-            <option>Obituary</option>
-            <option>In memoriam</option>
-            <option>Gratitude display</option>
-            <option>Last greetings</option>
+          <Select
+            autoComplete="off"
+            id="type"
+            {...register('type')}
+            sx={{
+              '& option': {
+                textTransform: 'capitalize',
+              },
+            }}
+          >
+            {obituaryTypes.map((type) => (
+              <option key={type} value={type}>
+                {t(type)}
+              </option>
+            ))}
           </Select>
         </FormField>
       </Box>

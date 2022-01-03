@@ -2,7 +2,8 @@ import { ReactElement } from 'react'
 import NextLink from 'next/link'
 import { faCopyright } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Container, Flex, Link, Text } from '@chakra-ui/react'
+import { Container, HStack, Link, Text } from '@chakra-ui/react'
+import { SITE_NAME } from '../../../lib/domain'
 
 export const FooterBottom = (): ReactElement => (
   <Container
@@ -11,10 +12,11 @@ export const FooterBottom = (): ReactElement => (
     display="flex"
     justifyContent="space-between"
   >
-    <Flex alignItems="center">
+    <HStack alignItems="center" spacing={4}>
       <FontAwesomeIcon icon={faCopyright} />
-      <Text ml={2}>Osmrtnice</Text>
-    </Flex>
+      <Text ml={2}>{new Date().getFullYear()}</Text>
+      <Text ml={2}>{SITE_NAME}</Text>
+    </HStack>
     <NextLink href="/privacy-policy" passHref>
       <Link>Privacy policy</Link>
     </NextLink>

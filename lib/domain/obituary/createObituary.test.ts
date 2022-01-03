@@ -17,7 +17,7 @@ describe('createObituary', () => {
       date_of_birth: date_of_birth.toString(),
       date_of_death: date_of_death.toString(),
       image: '',
-      type: 'OBITUARY',
+      type: 'obituary',
       long_text: '',
       middlename: '',
       relative: '',
@@ -25,7 +25,7 @@ describe('createObituary', () => {
     }
     expect(
       createObituary({
-        type: 'OBITUARY',
+        type: 'obituary',
         firstname: 'Hello',
         surname: 'World',
         date_of_birth: date_of_birth.toString(),
@@ -44,7 +44,7 @@ describe('createObituary', () => {
       date_of_birth: date_of_birth.toString(),
       date_of_death: date_of_death.toString(),
       image: 'testurl',
-      type: 'GRATITUDE_DISPLAY',
+      type: 'gratitude-display',
       long_text: 'Some description',
       middlename: 'middlename',
       relative: 'relatives',
@@ -56,7 +56,7 @@ describe('createObituary', () => {
         surname: 'World',
         date_of_birth: date_of_birth.toString(),
         date_of_death: date_of_death.toString(),
-        type: 'GRATITUDE_DISPLAY',
+        type: 'gratitude-display',
         long_text: 'Some description',
         image: 'testurl',
         middlename: 'middlename',

@@ -1,10 +1,10 @@
 import { Richtext } from 'storyblok-js-client'
 
 export type ObituaryType =
-  | 'IN_MEMORIAM'
-  | 'OBITUARY'
-  | 'GRATITUDE_DISPLAY'
-  | 'LAST_GREETINGS'
+  | 'in-memoriam'
+  | 'obituary'
+  | 'gratitude-display'
+  | 'last-greetings'
 
 export type FaithType = 'christian' | 'muslim'
 

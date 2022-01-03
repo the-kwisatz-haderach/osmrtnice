@@ -5,7 +5,7 @@ const getInnerText = (selector: string) => async (
 ): Promise<string> =>
   (await root
     ?.$(selector)
-    .then(async (handle) => handle?.evaluate((el) => el.innerText))) ??
+    .then(async (handle) => await handle?.evaluate((el) => el.innerText))) ??
   Promise.resolve('')
 
 export default getInnerText

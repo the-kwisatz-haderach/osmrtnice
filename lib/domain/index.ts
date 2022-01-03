@@ -1,8 +1,13 @@
 import { ObituaryType } from './types'
 
-export const obituaryTypeMap: Record<string, ObituaryType> = {
-  obituary: 'OBITUARY',
-  'last-greetings': 'LAST_GREETINGS',
-  'in-memoriam': 'IN_MEMORIAM',
-  'gratitude-display': 'GRATITUDE_DISPLAY',
-}
+export const SITE_NAME = 'Preminuli'
+
+export const obituaryTypes: ObituaryType[] = [
+  'gratitude-display',
+  'in-memoriam',
+  'last-greetings',
+  'obituary',
+]
+
+export const createMetaTitle = (...names: any[]) =>
+  [SITE_NAME, ...names].join(' | ')

@@ -11,7 +11,9 @@ import { PageStory } from '../../lib/storyblok/types'
 import { SearchInput } from '../../components/SearchInput'
 import { ObituaryGrid } from '../../components/ObituaryGrid'
 import { IObituary } from '../../lib/domain/types'
-import { obituaryTypeMap } from '../../lib/domain'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
+import { createMetaTitle, obituaryTypes } from '../../lib/domain'
 
 interface Props {
   story: PageStory
@@ -19,6 +21,7 @@ interface Props {
 }
 
 export default function Obituaries({ story, category }: Props): ReactElement {
+  const { t } = useTranslation()
   const router = useRouter()
   const [query, setQuery] = useState((router?.query?.search as string) ?? '')
   const {
@@ -51,7 +54,7 @@ export default function Obituaries({ story, category }: Props): ReactElement {
   return (
     <div>
       <Head>
-        <title>Obituaries</title>
+        <title>{createMetaTitle(story.name)}</title>
       </Head>
       <Page story={story} />
       <Flex
@@ -61,9 +64,10 @@ export default function Obituaries({ story, category }: Props): ReactElement {
         alignItems="center"
       >
         <SearchInput
+          title={t('search')}
           value={query}
           onChange={setQuery}
-          placeholder="Firstname, lastname, city..."
+          placeholder={t('search-placeholder')}
         />
       </Flex>
       <Box my={14}>
@@ -82,12 +86,14 @@ export default function Obituaries({ story, category }: Props): ReactElement {
 export const getStaticProps: GetStaticProps<
   Props,
   { category: string }
-> = async ({ params: { category } }) => {
+> = async ({ params: { category }, locale }) => {
   const story = await Storyblok.getStory(category, {
     version: 'draft',
+    language: locale,
   })
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       story: story.data.story,
       category,
     },
@@ -95,12 +101,9 @@ export const getStaticProps: GetStaticProps<
   }
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: Object.keys(obituaryTypeMap).map((category) => ({
-      params: { category },
-      locale: 'en',
-    })),
-    fallback: false,
-  }
-}
+export const getStaticPaths: GetStaticPaths = async () => ({
+  paths: obituaryTypes.map((category) => ({
+    params: { category },
+  })),
+  fallback: false,
+})

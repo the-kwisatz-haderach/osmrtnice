@@ -1,4 +1,6 @@
-import { Flex, Text, VStack } from '@chakra-ui/react'
+import { HStack, Text, VStack } from '@chakra-ui/react'
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { ReactElement } from 'react'
 import { Link } from '../Link'
 
@@ -6,6 +8,7 @@ interface InfoItem {
   content: string
   label?: string
   href?: string
+  icon?: IconDefinition
 }
 
 interface Props {
@@ -14,20 +17,17 @@ interface Props {
 
 export default function InfoList({ items }: Props): ReactElement {
   return (
-    <VStack spacing={1} alignItems="flex-start">
+    <VStack spacing={2} alignItems="flex-start">
       {items.map((item, i) => (
-        <Flex key={i}>
-          {item.label && (
-            <Text fontWeight="bold" mr={1}>
-              {item.label}:
-            </Text>
-          )}
+        <HStack key={i}>
+          {item.icon && <FontAwesomeIcon icon={item.icon} />}
+          {item.label && <Text fontWeight="bold">{item.label}:</Text>}
           {item.href ? (
             <Link href={item.href}>{item.content}</Link>
           ) : (
             <Text>{item.content}</Text>
           )}
-        </Flex>
+        </HStack>
       ))}
     </VStack>
   )

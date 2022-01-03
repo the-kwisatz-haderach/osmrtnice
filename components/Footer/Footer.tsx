@@ -4,6 +4,12 @@ import { InfoList } from '../InfoList'
 import { FooterBottom } from './components/FooterBottom'
 import { IMenuItem } from '../../lib/storyblok/types'
 import { Box, Flex, Heading } from '@chakra-ui/react'
+import { useTranslation } from 'next-i18next'
+import {
+  faPhone as phoneIcon,
+  faMailBulk as mailIcon,
+  faLocationArrow as locationIcon,
+} from '@fortawesome/free-solid-svg-icons'
 
 interface Props
   extends React.DetailedHTMLProps<
@@ -22,6 +28,7 @@ export default function Footer({
   phone,
   email,
 }: Props): ReactElement {
+  const { t } = useTranslation()
   return (
     <Box
       as="footer"
@@ -43,23 +50,28 @@ export default function Footer({
         <Flex width={['100%', '100%', '50%']} flexWrap="wrap">
           <Box mr={16}>
             <Heading as="h3" size="xl" mb={2}>
-              Contact details
+              {t('contact-details')}
             </Heading>
             <InfoList
               items={[
-                { label: 'Address', content: address },
-                { label: 'Phone', content: phone },
                 {
-                  label: 'E-mail',
+                  label: t('address'),
+                  content: address,
+                  icon: locationIcon,
+                },
+                { label: t('phone'), content: phone, icon: phoneIcon },
+                {
+                  label: t('mail'),
                   content: email,
                   href: `mailto:${email}`,
+                  icon: mailIcon,
                 },
               ]}
             />
           </Box>
           <Box>
             <Heading as="h3" size="xl" mb={2}>
-              Sitemap
+              {t('pages')}
             </Heading>
             <InfoList
               items={menuItems.map((menuItem) => ({
@@ -76,7 +88,12 @@ export default function Footer({
           <Image src="/icons/logo.svg" height={200} width={300} />
         </Box>
       </Flex>
-      <Box borderTopColor="gray.300" borderTopWidth={2} borderTopStyle="solid">
+      <Box
+        backgroundColor="gray.300"
+        borderTopColor="gray.400"
+        borderTopWidth={2}
+        borderTopStyle="solid"
+      >
         <FooterBottom />
       </Box>
     </Box>

@@ -27,13 +27,13 @@ const obituaryProcessor = createItemProcessor<HTMLDivElement, IObituaryInput>(
         .then((names) => (names.length > 2 ? names[1] : ''))
         .then(nameFormatter),
     date_of_death: async (root) =>
-      root.$('.obituary-footer').then(getInnerText('p')),
+      await root.$('.obituary-footer').then(getInnerText('p')),
     long_text: async (root) => {
       const handle = await root.$$('p')
       const text = await Promise.all(
         handle
           .slice(-3, -1)
-          .map(async (handle) => handle.evaluate((el) => el.innerText))
+          .map(async (handle) => await handle.evaluate((el) => el.innerText))
       )
       return text.join('\n')
     },

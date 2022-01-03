@@ -1,4 +1,5 @@
 import { ComponentProps, ComponentType, ReactElement } from 'react'
+import { appWithTranslation } from 'next-i18next'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -74,9 +75,9 @@ MyApp.getInitialProps = async (): Promise<IAppContext> => {
   const { content } = data.data.story as Story<IGlobalSettings>
 
   return {
-    menuItems: makeAppLinks('en', ['privacy-policy'])(myLinks).en,
+    menuItems: makeAppLinks('hr', ['privacy-policy'])(myLinks).hr,
     ...content,
   }
 }
 
-export default MyApp
+export default appWithTranslation(MyApp as any)

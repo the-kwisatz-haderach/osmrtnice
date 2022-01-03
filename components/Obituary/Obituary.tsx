@@ -8,6 +8,7 @@ import { AppreciationIndicator } from '../AppreciationIndicator'
 import axios from 'axios'
 import { Link } from '../Link'
 import { useMutation } from 'react-query'
+import { useTranslation } from 'next-i18next'
 
 export default function Obituary({
   _id,
@@ -21,8 +22,9 @@ export default function Obituary({
   image,
   appreciations,
   faith,
-  type = 'OBITUARY',
+  type = 'obituary',
 }: IObituary): ReactElement {
+  const { t } = useTranslation()
   const [src, setSrc] = useState(
     image
       ? image.startsWith('http')
@@ -38,7 +40,7 @@ export default function Obituary({
     'incrementAppreciation',
     async (id: string) => {
       const res = await axios.post<IObituary>(
-        `/api/${formattedType}/${id}/appreciation/increment`,
+        `/api/obituaries/${id}/appreciation/increment`,
         {
           increment: isClicked ? -1 : 1,
         }
@@ -71,7 +73,7 @@ export default function Obituary({
     >
       <VStack p={6} flexDir="column" spacing={3} h="100%">
         <Text width="fit-content" fontSize="xs" color="gray.400">
-          {type}
+          {t(type)}
         </Text>
         <Box
           borderStyle="solid"
@@ -97,7 +99,6 @@ export default function Obituary({
             <Heading as="h4" fontSize="2xl" mb={2}>
               {[firstname, middlename, surname].join(' ')}
             </Heading>
-
             <HStack
               hidden={!date_of_birth && !date_of_death}
               spacing={1}
@@ -119,6 +120,7 @@ export default function Obituary({
         {long_text &&
           (typeof long_text === 'string' ? (
             <Text
+              className="capitalize"
               fontSize="sm"
               textAlign="justify"
               sx={{
@@ -126,15 +128,14 @@ export default function Obituary({
                 WebkitLineClamp: 6,
                 WebkitBoxOrient: 'vertical',
                 overflow: 'hidden',
-                '&::first-letter': {
-                  textTransform: 'uppercase',
-                },
               }}
             >
               {long_text}
             </Text>
           ) : (
-            <RichText textAlign="justify">{long_text}</RichText>
+            <RichText className="capitalize" textAlign="justify">
+              {long_text}
+            </RichText>
           ))}
         <Flex
           alignItems="flex-end"
@@ -148,7 +149,9 @@ export default function Obituary({
             isClicked={isClicked}
             onClick={() => mutate(_id)}
           />
-          <Link href={`/${formattedType}/${_id}`}>View full</Link>
+          <Link href={`/${formattedType}/${_id}`}>
+            {t('search-results-view_full')}
+          </Link>
         </Flex>
       </VStack>
     </Box>

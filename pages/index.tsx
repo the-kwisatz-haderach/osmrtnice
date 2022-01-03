@@ -8,15 +8,19 @@ import { SearchInput } from '../components/SearchInput'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
 import Storyblok from '../lib/storyblok/client'
 import { PageStory } from '../lib/storyblok/types'
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import { ObituaryGrid } from '../components/ObituaryGrid'
 import { IObituary } from '../lib/domain/types'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
+import { createMetaTitle } from '../lib/domain'
 
 interface Props {
   story: PageStory
 }
 
 export default function Home({ story }: Props): ReactElement {
+  const { t } = useTranslation()
   const router = useRouter()
   const [query, setQuery] = useState((router?.query?.search as string) ?? '')
   const {
@@ -51,31 +55,8 @@ export default function Home({ story }: Props): ReactElement {
           name="google-site-verification"
           content="I3npG6NpSx1ZykfWYJn2SLCfhjdhNV6xb6Bm7NZ-iqs"
         />
-        <title>Home</title>
+        <title>{createMetaTitle(story.name)}</title>
       </Head>
-      <Box
-        color="white"
-        height="65vh"
-        backgroundAttachment="fixed"
-        backgroundSize="cover"
-        backgroundImage={`linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%), url(/images/candles.jpg)`}
-      >
-        <Flex
-          flexDir="column"
-          alignItems="center"
-          justifyContent="center"
-          height="100%"
-        >
-          <Heading
-            as="h1"
-            fontSize={['4xl', '6xl', '6xl', '8xl']}
-            textAlign="center"
-            mb={10}
-          >
-            Search our obituaries
-          </Heading>
-        </Flex>
-      </Box>
       <Page story={story} />
       <Flex
         backgroundColor="gray.300"
@@ -84,9 +65,10 @@ export default function Home({ story }: Props): ReactElement {
         alignItems="center"
       >
         <SearchInput
+          title={t('search')}
           value={query}
           onChange={setQuery}
-          placeholder="Firstname, lastname, city..."
+          placeholder={t('search-placeholder')}
         />
       </Flex>
       <ObituaryGrid
@@ -101,13 +83,14 @@ export default function Home({ story }: Props): ReactElement {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
-  const loc = locale === 'en' ? '' : `${locale}/`
-  const res = await Storyblok.getStory(`${loc}home`, {
+  const res = await Storyblok.getStory('home', {
     version: 'draft',
     cv: Date.now(),
+    language: locale,
   })
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       story: res.data.story as PageStory,
     },
   }

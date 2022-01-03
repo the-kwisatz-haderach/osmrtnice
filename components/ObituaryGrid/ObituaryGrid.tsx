@@ -1,15 +1,10 @@
 import React, { ReactElement } from 'react'
-import {
-  Button,
-  Container,
-  Flex,
-  GridItem,
-  SimpleGrid,
-  Text,
-} from '@chakra-ui/react'
+import { Button, Container, Flex, GridItem, SimpleGrid } from '@chakra-ui/react'
 import { IObituary } from '../../lib/domain/types'
 import { Obituary, ObituarySkeleton } from '../Obituary'
 import { EmptyState } from '../EmptyState'
+import { useTranslation } from 'next-i18next'
+import { ResultsDescription } from './ResultsDescription'
 
 interface Props {
   obituaries: IObituary[]
@@ -26,12 +21,10 @@ export default function ObituaryGrid({
   isLoading,
   isLoadingNext,
 }: Props): ReactElement {
+  const { t } = useTranslation()
   return (
     <Container maxW="container.xl" my={8}>
-      <Text hidden={obituaries.length < 1} textAlign="center" my={5}>
-        Found <b>{obituaries.length}</b> result
-        {obituaries.length > 1 ? 's' : ''}.
-      </Text>
+      <ResultsDescription resultsCount={obituaries.length} hasMore={hasMore} />
       {isLoading || obituaries.length > 0 ? (
         <SimpleGrid spacing={4} columns={[1, 2, 3, 4]}>
           {isLoading
@@ -54,9 +47,9 @@ export default function ObituaryGrid({
       ) : (
         <EmptyState
           mt={24}
-          title="No results found."
-          description="Try changing your search query."
-          icon="warn"
+          title={t('search-results-empty-title')}
+          description={t('search-results-empty-description')}
+          icon="no-results"
         />
       )}
       <Flex justifyContent="center" hidden={!hasMore} mt={10}>
@@ -65,8 +58,9 @@ export default function ObituaryGrid({
           colorScheme="orange"
           disabled={!hasMore}
           onClick={onLoadMore}
+          title={t('search-results-more')}
         >
-          Load more
+          {t('search-results-more')}
         </Button>
       </Flex>
     </Container>
