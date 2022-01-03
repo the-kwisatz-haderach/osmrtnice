@@ -30,8 +30,7 @@ function AppreciationIndicator({
 }: Props): ReactElement {
   const iconType = icons[faithType]
   return (
-    <Flex alignItems="center">
-      {appreciations > 0 && <Text fontSize="xs">{appreciations}</Text>}
+    <Box display="inline-flex" alignItems="flex-end">
       <Box position="relative">
         <Fade
           in={isClicked}
@@ -50,6 +49,7 @@ function AppreciationIndicator({
               )
             }
             size="xs"
+            fontSize={['xs', 'md', 'xl']}
           />
         </Fade>
         <Fade in={!isClicked}>
@@ -61,10 +61,19 @@ function AppreciationIndicator({
               iconType?.base ?? <FontAwesomeIcon icon={faExclamationTriangle} />
             }
             size="xs"
+            fontSize={['xs', 'md', 'xl']}
           />
         </Fade>
       </Box>
-    </Flex>
+      <Text
+        hidden={appreciations < 1}
+        fontSize={['xs', 'md', 'xl']}
+        lineHeight={1}
+        mr={1}
+      >
+        {appreciations}
+      </Text>
+    </Box>
   )
 }
 

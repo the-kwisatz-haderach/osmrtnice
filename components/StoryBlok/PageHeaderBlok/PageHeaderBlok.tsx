@@ -18,10 +18,9 @@ export default function PageHeaderBlok({
       backgroundImage={
         image?.filename
           ? `linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%),
-        url(${image.filename}) `
+        url(${image.filename})`
           : undefined
       }
-      className="bg-gradient-to-b from-primary-900 to-primary-700 text-white"
     >
       <Container maxW="container.xl" height="100%">
         <Flex

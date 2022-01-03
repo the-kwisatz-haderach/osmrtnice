@@ -1,3 +1,4 @@
+import { ObjectID } from 'mongodb'
 import { NextApiResponse } from 'next'
 import { IObituary } from '../../../../../lib/domain/types'
 import attachMiddleware from '../../../../../middleware'
@@ -7,22 +8,17 @@ export default attachMiddleware().post(
   async (req: EnhancedNextApiRequest, res: NextApiResponse): Promise<void> => {
     try {
       const id = req.query.id as string
-      const obituaries = req.db.collection<IObituary>('obituaries')
-      switch (req.method) {
-        case 'POST': {
-          const { increment = 1 } = req.body
-          const obituary = await obituaries.findOneAndUpdate(
-            { _id: id },
-            { $inc: { appreciations: increment } },
-            {
-              returnDocument: 'after',
-            }
-          )
-          return res.status(200).json(obituary.value)
-        }
-        default:
-          return res.status(400).end()
-      }
+      const { increment = 1 } = req.body
+      const obituary = await req.db
+        .collection<Omit<IObituary, '_id'>>('obituaries')
+        .findOneAndUpdate(
+          { _id: new ObjectID(id) },
+          { $inc: { appreciations: increment } },
+          {
+            returnDocument: 'after',
+          }
+        )
+      return res.status(200).json(obituary.value)
     } catch (err) {
       console.error(err)
       return res.status(500).end()

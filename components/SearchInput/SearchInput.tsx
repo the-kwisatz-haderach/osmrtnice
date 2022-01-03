@@ -1,22 +1,50 @@
-import React, { ReactElement } from 'react'
+import React, {
+  ChangeEventHandler,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import { debounce } from 'lodash'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Flex, IconButton, Input, InputProps } from '@chakra-ui/react'
+import { Flex, IconButton, Input } from '@chakra-ui/react'
 
-interface Props extends Omit<InputProps, 'onChange' | 'value'> {
-  defaultValue?: string
-  onSubmit?: () => void
+interface Props {
+  value?: string
   onChange: (value: string) => void
+  placeholder?: string
   isLoading?: boolean
+  debounceDelay?: number
 }
 
 export default function SearchInput({
-  defaultValue,
+  value,
   onChange,
-  onSubmit,
+  placeholder = '',
   isLoading = false,
-  ...props
+  debounceDelay = 2000,
 }: Props): ReactElement {
+  const [isTyping, setIsTyping] = useState(false)
+  const debouncedSetQuery = useRef(debounce(onChange, debounceDelay)).current
+
+  const onType: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      setIsTyping(true)
+      debouncedSetQuery(e.target.value)
+    },
+    [debouncedSetQuery]
+  )
+
+  useEffect(() => {
+    onChange(value)
+    setIsTyping(false)
+    return () => {
+      debouncedSetQuery.cancel()
+    }
+  }, [value, debouncedSetQuery, onChange])
+
   return (
     <Flex
       as="form"
@@ -24,20 +52,12 @@ export default function SearchInput({
       maxW={500}
       px={[4, 0]}
       flexDir={['column', 'row']}
-      onSubmit={(e) => {
-        e.preventDefault()
-        if (onSubmit) {
-          onSubmit()
-        }
-      }}
     >
       <Input
-        {...props}
+        placeholder={placeholder}
         flex={1}
-        defaultValue={defaultValue}
-        onChange={(e) => {
-          onChange(e.target.value)
-        }}
+        defaultValue={value}
+        onChange={onType}
         size="lg"
         variant="flushed"
         focusBorderColor="white"
@@ -55,7 +75,7 @@ export default function SearchInput({
       />
       <IconButton
         icon={<FontAwesomeIcon icon={faSearch} size="lg" />}
-        isLoading={isLoading}
+        isLoading={isTyping || isLoading}
         type="submit"
         aria-label="submit"
         colorScheme="orange"

@@ -25,39 +25,28 @@ const crawlers = [
 
 export default attachMiddleware().get(
   async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
-    switch (req.method) {
-      case 'GET': {
-        try {
-          if (process.env.CRAWLER === req.query.token) {
-            const obituariesCollection = await req.db.collection('obituaries')
-            await obituariesCollection.createIndex(
-              { firstname: 1, middlename: 1, surname: 1 },
-              { unique: true }
+    try {
+      if (process.env.CRAWLER === req.query.token) {
+        const obituariesCollection = await req.db.collection('obituaries')
+        await obituariesCollection.createIndex(
+          { firstname: 1, middlename: 1, surname: 1 },
+          { unique: true }
+        )
+        crawlers.forEach((crawler) => {
+          crawler.setOutputHandler(async (obituaries) => {
+            await Promise.all(
+              obituaries.map((obituary) =>
+                obituariesCollection.insertOne(createObituary(obituary))
+              )
             )
-            crawlers.forEach((crawler) => {
-              crawler.setOutputHandler(async (obituaries) => {
-                await Promise.all(
-                  obituaries.map((obituary) =>
-                    obituariesCollection.insertOne(createObituary(obituary))
-                  )
-                )
-              })
-            })
-            await Promise.all(crawlers.map((crawler) => crawler.init()))
-            res.status(200).send('Crawl finished.')
-            break
-          }
-          res.status(400).send('Incorrect token passed.')
-          break
-        } catch (err) {
-          res.status(400).send(err.message)
-          break
-        }
+          })
+        })
+        await Promise.all(crawlers.map((crawler) => crawler.init()))
+        return res.status(200).send('Crawl finished.')
       }
-      default: {
-        res.status(404).end()
-        break
-      }
+      return res.status(400).send('Incorrect token passed.')
+    } catch (err) {
+      return res.status(400).send(err.message)
     }
   }
 )

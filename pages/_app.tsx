@@ -1,5 +1,7 @@
 import { ComponentProps, ComponentType, ReactElement } from 'react'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { AppProvider, IAppContext } from '../contexts/AppContext'
 import { IntersectionObserverProvider } from '../hooks/useIntersectionObserver'
 import { MainLayout } from '../layouts/MainLayout'
@@ -23,6 +25,13 @@ const theme = extendTheme({
   },
 })
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 const observerOptions = { threshold: 0.8 }
 
 function MyApp<T extends ComponentType<any>>({
@@ -35,7 +44,10 @@ function MyApp<T extends ComponentType<any>>({
       <AppProvider {...appContext}>
         <IntersectionObserverProvider options={observerOptions}>
           <MainLayout>
-            <Component {...pageProps} />
+            <QueryClientProvider client={queryClient}>
+              <Component {...pageProps} />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
           </MainLayout>
         </IntersectionObserverProvider>
       </AppProvider>

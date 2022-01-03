@@ -1,28 +1,48 @@
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { useInfiniteQuery } from 'react-query'
 import { ReactElement, useState } from 'react'
+import axios from 'axios'
 import { SearchInput } from '../components/SearchInput'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import { IObituary } from '../lib/domain/types'
 import Storyblok from '../lib/storyblok/client'
 import { PageStory } from '../lib/storyblok/types'
-import { connectToDb } from '../db'
 import { Box, Flex, Heading } from '@chakra-ui/react'
 import { ObituaryGrid } from '../components/ObituaryGrid'
+import { IObituary } from '../lib/domain/types'
 
 interface Props {
   story: PageStory
-  obituaries: IObituary[]
 }
 
-export default function Home({ story, obituaries }: Props): ReactElement {
-  const [query, setQuery] = useState('')
+export default function Home({ story }: Props): ReactElement {
   const router = useRouter()
-
-  const handleSubmitSearch = async (): Promise<void> => {
-    await router.push(`/obituaries?search=${query}`)
-  }
+  const [query, setQuery] = useState((router?.query?.search as string) ?? '')
+  const {
+    data,
+    hasNextPage,
+    fetchNextPage,
+    isLoading,
+    isFetchingNextPage,
+    isPlaceholderData,
+  } = useInfiniteQuery<{
+    data: IObituary[]
+    next?: string
+  }>(
+    ['obituaries', query],
+    async ({ pageParam }: { pageParam?: string }) => {
+      const res = await axios.get(
+        `/api/obituaries?search=${query}&limit=100&next=${pageParam ?? ''}`
+      )
+      return res.data
+    },
+    {
+      placeholderData: { pages: [], pageParams: [] },
+      getNextPageParam: (lastPage) => lastPage.next,
+      keepPreviousData: true,
+    }
+  )
 
   return (
     <div>
@@ -54,16 +74,28 @@ export default function Home({ story, obituaries }: Props): ReactElement {
           >
             Search our obituaries
           </Heading>
-          <SearchInput
-            defaultValue={query}
-            onChange={setQuery}
-            onSubmit={handleSubmitSearch}
-            placeholder="Firstname, lastname, city..."
-          />
         </Flex>
       </Box>
       <Page story={story} />
-      <ObituaryGrid obituaries={obituaries} />
+      <Flex
+        backgroundColor="gray.300"
+        justifyContent="center"
+        height={32}
+        alignItems="center"
+      >
+        <SearchInput
+          value={query}
+          onChange={setQuery}
+          placeholder="Firstname, lastname, city..."
+        />
+      </Flex>
+      <ObituaryGrid
+        isLoading={isLoading || isPlaceholderData}
+        isLoadingNext={isFetchingNextPage}
+        obituaries={data.pages.flatMap((page) => page.data)}
+        hasMore={hasNextPage}
+        onLoadMore={fetchNextPage}
+      />
     </div>
   )
 }
@@ -74,21 +106,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
     version: 'draft',
     cv: Date.now(),
   })
-  const { db } = await connectToDb()
-  const obituaries = JSON.parse(
-    JSON.stringify(
-      await db
-        .collection<IObituary>('obituaries')
-        .find({})
-        .limit(100)
-        .sort({ date_created: -1 })
-        .toArray()
-    )
-  )
   return {
     props: {
       story: res.data.story as PageStory,
-      obituaries,
     },
   }
 }

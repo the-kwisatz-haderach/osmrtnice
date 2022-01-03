@@ -1,37 +1,63 @@
+import { ObjectID } from 'mongodb'
 import { NextApiResponse } from 'next'
-import { sendEmail } from '../../../lib/email'
+import { obituaryTypeMap } from '../../../lib/domain'
+import { IObituary } from '../../../lib/domain/types'
+import attachMiddleware from '../../../middleware'
 import { EnhancedNextApiRequest } from '../../../middleware/types'
 
-const formatEmailMessage = <T extends Record<string, string>>(
-  data: T
-): string => {
-  return Object.entries(data).reduce(
-    (acc, [key, value]) => acc + `${key}: ${value}\n`,
-    ''
-  )
-}
+const MAX_LIMIT = 500
+const DEFAULT_LIMIT = 100
 
-export default async (
-  req: EnhancedNextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
-  switch (req.method) {
-    case 'POST': {
-      try {
-        let text = formatEmailMessage(req.body)
-        const messageId = await sendEmail({
-          subject: `Message From preminuli.ba`,
-          text,
-        })
-        res.status(204).json({ messageId })
-      } catch (err) {
-        console.error(err.message)
-        res.status(400).end()
-      }
-      break
-    }
-    default: {
-      res.status(404).end()
+export default attachMiddleware().get(
+  async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
+    try {
+      const { next, search, limit, category } = req.query as Record<
+        string,
+        string
+      >
+      const parsedLimit = Math.min(
+        Number.parseInt(limit || DEFAULT_LIMIT.toString()),
+        MAX_LIMIT
+      )
+
+      const parsedCategory = obituaryTypeMap[category]
+
+      const obituaries: IObituary[] = JSON.parse(
+        JSON.stringify(
+          await req.db
+            .collection<Omit<IObituary, '_id'>>('obituaries')
+            .find({
+              ...(parsedCategory && {
+                $and: [
+                  {
+                    type: parsedCategory,
+                  },
+                ],
+              }),
+              ...(search && {
+                $or: [
+                  { firstname: { $regex: search, $options: 'i' } },
+                  { middlename: { $regex: search, $options: 'i' } },
+                  { surname: { $regex: search, $options: 'i' } },
+                ],
+              }),
+              ...(next && {
+                _id: { $gt: new ObjectID(next) },
+              }),
+            })
+            .limit(parsedLimit + 1)
+            .toArray()
+        )
+      )
+
+      res.status(200).json({
+        data: obituaries.slice(0, parsedLimit),
+        next:
+          obituaries.length > parsedLimit ? obituaries.slice(-2)[0]?._id : null,
+      })
+    } catch (err) {
+      console.error(err)
+      res.status(500).end()
     }
   }
-}
+)

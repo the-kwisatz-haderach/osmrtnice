@@ -21,7 +21,7 @@ export default function ContactForm(): ReactElement {
   } = useForm()
 
   const onSubmit = handleSubmit((data) =>
-    axios.post('/api/obituaries', data).then(reset)
+    axios.post('/api/obituaries/email', data).then(reset)
   )
 
   return (

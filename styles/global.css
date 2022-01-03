@@ -1,48 +1,17 @@
-@font-face {
-  font-family: 'Dancing Script';
-  font-weight: 400;
-  font-style: normal;
-  src: url('../public/fonts/DancingScript-Regular.ttf');
+.background-shift {
+  background-size: 150%;
+  height: 120vh;
+  width: 120vw;
+  overflow: hidden;
+  animation: shift 10s ease-in-out infinite alternate-reverse;
 }
 
-@font-face {
-  font-family: 'Dancing Script';
-  font-weight: 700;
-  font-style: bold;
-  src: url('../public/fonts/DancingScript-SemiBold.ttf');
-}
+@keyframes shift {
+  0% {
+    background-position: 0% 50%;
+  }
 
-@font-face {
-  font-family: 'Nunito';
-  font-weight: 300;
-  font-style: normal;
-  src: url('../public/fonts/Nunito-Light.ttf');
-}
-
-@font-face {
-  font-family: 'Nunito';
-  font-weight: 400;
-  font-style: normal;
-  src: url('../public/fonts/Nunito-Regular.ttf');
-}
-
-@font-face {
-  font-family: 'Nunito';
-  font-weight: 400;
-  font-style: italic;
-  src: url('../public/fonts/Nunito-Italic.ttf');
-}
-
-@font-face {
-  font-family: 'Nunito';
-  font-weight: 700;
-  font-style: bold;
-  src: url('../public/fonts/Nunito-SemiBold.ttf');
-}
-
-@font-face {
-  font-family: 'Nunito';
-  font-weight: 700;
-  font-style: italic;
-  src: url('../public/fonts/Nunito-SemiBoldItalic.ttf');
+  100% {
+    background-position: 100% 50%;
+  }
 }
