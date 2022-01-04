@@ -1,4 +1,5 @@
 const { i18n } = require('./next-i18next.config')
+const { pathTranslations } = require('./pathTranslations')
 
 const securityHeaders = [
   {
@@ -26,13 +27,23 @@ const securityHeaders = [
 module.exports = {
   i18n,
   async headers() {
-    return [
-      {
-        // Apply these headers to all routes in your application.
-        source: '/(.*)',
-        headers: securityHeaders,
-      },
-    ]
+    return process.env.NODE_ENV === 'development'
+      ? []
+      : [
+          {
+            // Apply these headers to all routes in your application.
+            source: '/(.*)',
+            headers: securityHeaders,
+          },
+        ]
+  },
+  async rewrites() {
+    return Object.values(pathTranslations).flatMap((paths) =>
+      Object.entries(paths).map(([destination, source]) => ({
+        destination,
+        source,
+      }))
+    )
   },
   images: {
     domains: [

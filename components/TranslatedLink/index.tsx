@@ -1,0 +1,1 @@
+export { TranslatedLink } from './TranslatedLink'

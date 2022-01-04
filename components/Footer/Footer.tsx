@@ -31,6 +31,7 @@ export default function Footer({
   const { t } = useTranslation()
   return (
     <Box
+      flex={1}
       as="footer"
       backgroundColor="gray.200"
       mt={24}
@@ -49,7 +50,7 @@ export default function Footer({
       >
         <Flex width={['100%', '100%', '50%']} flexWrap="wrap">
           <Box mr={[8, 8, 16]} mb={8}>
-            <Heading as="h3" size="xl" mb={2}>
+            <Heading as="h3" size="xl" mb={4}>
               {t('contact-details')}
             </Heading>
             <InfoList
@@ -70,7 +71,7 @@ export default function Footer({
             />
           </Box>
           <Box>
-            <Heading as="h3" size="xl" mb={2}>
+            <Heading as="h3" size="xl" mb={4}>
               {t('pages')}
             </Heading>
             <InfoList

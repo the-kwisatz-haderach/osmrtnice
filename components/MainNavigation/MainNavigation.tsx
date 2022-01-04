@@ -1,5 +1,4 @@
-import React, { Fragment, ReactElement, useEffect } from 'react'
-import NextLink from 'next/link'
+import React, { ReactElement, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,13 +16,12 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
   HStack,
   IconButton,
-  Link,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
+import { TranslatedLink } from '../TranslatedLink'
 
 interface Props {
   menuItems: IMenuItem[]
@@ -63,7 +61,7 @@ export default function MainNavigation({
           alignItems="center"
           px={4}
         >
-          <NextLink href={homeLink.href} passHref>
+          <TranslatedLink href={homeLink.href} passHref>
             <Box
               title={homeLink.label}
               as="a"
@@ -73,21 +71,21 @@ export default function MainNavigation({
             >
               <Image src="/icons/logo.svg" alt="logo" layout="fill" />
             </Box>
-          </NextLink>
+          </TranslatedLink>
           <HStack
             alignItems="center"
             spacing={10}
             display={{ base: 'none', md: 'flex' }}
           >
-            {links.map((menuItem, i) => (
-              <NextLink key={i} passHref href={menuItem.href}>
+            {links.map((menuItem) => (
+              <TranslatedLink key={menuItem.href} passHref href={menuItem.href}>
                 <Button
                   variant={menuItem.href === '/contact' ? 'solid' : 'link'}
                   colorScheme="orange"
                 >
                   {menuItem.label}
                 </Button>
-              </NextLink>
+              </TranslatedLink>
             ))}
           </HStack>
           <IconButton
@@ -107,7 +105,7 @@ export default function MainNavigation({
             <VStack spacing={4} divider={<Divider />}>
               {menuItems.map((menuItem, i) => (
                 <Box width="100%" textAlign="center" key={i} height="100%">
-                  <NextLink passHref href={menuItem.href}>
+                  <TranslatedLink passHref href={menuItem.href}>
                     <Button
                       isFullWidth
                       py={2}
@@ -116,7 +114,7 @@ export default function MainNavigation({
                     >
                       {menuItem.label}
                     </Button>
-                  </NextLink>
+                  </TranslatedLink>
                 </Box>
               ))}
             </VStack>

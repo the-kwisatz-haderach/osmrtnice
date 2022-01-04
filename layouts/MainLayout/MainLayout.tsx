@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react'
 import React, { PropsWithChildren, ReactElement, useEffect } from 'react'
 import { Footer } from '../../components/Footer'
 import { MainNavigation } from '../../components/MainNavigation'
@@ -34,7 +35,7 @@ export default function MainLayout({
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <Flex flexDir="column" minH="100vh">
       <MainNavigation menuItems={menuItems} alternate={isIntersecting} />
       <div
         id="main"
@@ -49,7 +50,7 @@ export default function MainLayout({
         }}
       />
       <main>{children}</main>
-      <Footer {...contactDetails} menuItems={menuItems} className="flex-grow" />
-    </div>
+      <Footer {...contactDetails} menuItems={menuItems} />
+    </Flex>
   )
 }

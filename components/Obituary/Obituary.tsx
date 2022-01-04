@@ -35,7 +35,7 @@ export default function Obituary({
   const [isClicked, setIsClicked] = useState(
     Boolean(typeof window !== 'undefined' && window.localStorage.getItem(_id))
   )
-  const formattedType = type.toLowerCase().replace('_', '-')
+  const formattedType = t(type.toLowerCase().replace('_', '-'))
   const { data, mutate } = useMutation<IObituary, unknown, string>(
     'incrementAppreciation',
     async (id: string) => {
@@ -68,7 +68,7 @@ export default function Obituary({
       borderStyle="solid"
       borderRadius="sm"
       _hover={{
-        boxShadow: 'lg',
+        boxShadow: 'xl',
       }}
     >
       <VStack p={6} flexDir="column" spacing={3} h="100%">

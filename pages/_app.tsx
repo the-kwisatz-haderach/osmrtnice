@@ -1,3 +1,4 @@
+import App from 'next/app'
 import { ComponentProps, ComponentType, ReactElement } from 'react'
 import { appWithTranslation } from 'next-i18next'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
@@ -56,7 +57,8 @@ function MyApp<T extends ComponentType<any>>({
   )
 }
 
-MyApp.getInitialProps = async (): Promise<IAppContext> => {
+MyApp.getInitialProps = async (appContext): Promise<IAppContext> => {
+  const initialProps = await App.getInitialProps(appContext)
   const [data, response] = await Promise.all([
     Storyblok.getStory('global', {
       version: 'draft',
@@ -75,6 +77,7 @@ MyApp.getInitialProps = async (): Promise<IAppContext> => {
   const { content } = data.data.story as Story<IGlobalSettings>
 
   return {
+    ...initialProps,
     menuItems: makeAppLinks('hr', ['privacy-policy'])(myLinks).hr,
     ...content,
   }

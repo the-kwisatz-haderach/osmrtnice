@@ -17,6 +17,6 @@
     "downlevelIteration": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/pathTranslations.js"],
   "exclude": ["node_modules"]
 }

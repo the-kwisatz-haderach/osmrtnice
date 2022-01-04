@@ -1,9 +1,9 @@
 import { ReactElement } from 'react'
-import NextLink from 'next/link'
 import { faCopyright } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Container, HStack, Link, Text } from '@chakra-ui/react'
 import { SITE_NAME } from '../../../lib/domain'
+import { TranslatedLink } from '../../TranslatedLink'
 
 export const FooterBottom = (): ReactElement => (
   <Container
@@ -17,8 +17,8 @@ export const FooterBottom = (): ReactElement => (
       <Text ml={2}>{new Date().getFullYear()}</Text>
       <Text ml={2}>{SITE_NAME}</Text>
     </HStack>
-    <NextLink href="/privacy-policy" passHref>
-      <Link>Privacy policy</Link>
-    </NextLink>
+    <TranslatedLink href="/privacy-policy" passHref>
+      <Link>Politika privatnosti</Link>
+    </TranslatedLink>
   </Container>
 )

@@ -15,6 +15,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { createMetaTitle, obituaryTypes } from '../../lib/domain'
 import { TopScroll } from '../../components/TopScroll'
+import { ProgressBar } from '../../components/ProgessBar'
 
 interface Props {
   story: PageStory
@@ -37,6 +38,7 @@ export default function Obituaries({ story, category }: Props): ReactElement {
     hasNextPage,
     fetchNextPage,
     isLoading,
+    isFetching,
     isPlaceholderData,
     isFetchingNextPage,
   } = useInfiniteQuery<{
@@ -79,6 +81,7 @@ export default function Obituaries({ story, category }: Props): ReactElement {
           placeholder={t('search-placeholder')}
         />
       </Flex>
+      <ProgressBar show={isLoading || isFetching || isPlaceholderData} />
       <Box my={14}>
         <ObituaryGrid
           isLoading={isLoading || isPlaceholderData}
@@ -88,7 +91,7 @@ export default function Obituaries({ story, category }: Props): ReactElement {
           onLoadMore={fetchNextPage}
         />
         <TopScroll
-          hidden={!data.pages.some((page) => page.data.length > 0)}
+          show={data.pages.some((page) => page.data.length > 10)}
           margin="auto"
           maxW="container.xl"
           width="100%"
