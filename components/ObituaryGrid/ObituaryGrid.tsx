@@ -22,6 +22,7 @@ export default function ObituaryGrid({
   isLoadingNext,
 }: Props): ReactElement {
   const { t } = useTranslation()
+
   return (
     <Container maxW="container.xl" my={8}>
       <ResultsDescription resultsCount={obituaries.length} hasMore={hasMore} />

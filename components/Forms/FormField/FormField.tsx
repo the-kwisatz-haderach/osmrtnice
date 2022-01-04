@@ -28,7 +28,7 @@ export const FormField: React.FC<
         )}
       />
       {children}
-      <FormLabel textTransform="capitalize" htmlFor={htmlFor}>
+      <FormLabel fontWeight="bold" className="capitalize" htmlFor={htmlFor}>
         {label}
       </FormLabel>
     </Flex>

@@ -72,7 +72,12 @@ export default function Obituary({
       }}
     >
       <VStack p={6} flexDir="column" spacing={3} h="100%">
-        <Text width="fit-content" fontSize="xs" color="gray.400">
+        <Text
+          className="capitalize"
+          width="fit-content"
+          fontSize="xs"
+          color="gray.400"
+        >
           {t(type)}
         </Text>
         <Box
@@ -86,6 +91,8 @@ export default function Obituary({
           <Image
             src={src}
             layout="fill"
+            placeholder="blur"
+            blurDataURL="/images/placeholder-person.png"
             onError={() => setSrc('/images/placeholder-obit-image.jpeg')}
           />
         </Box>

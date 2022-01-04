@@ -48,7 +48,7 @@ export default function Footer({
         pt={10}
       >
         <Flex width={['100%', '100%', '50%']} flexWrap="wrap">
-          <Box mr={16}>
+          <Box mr={[8, 8, 16]} mb={8}>
             <Heading as="h3" size="xl" mb={2}>
               {t('contact-details')}
             </Heading>
@@ -81,12 +81,14 @@ export default function Footer({
             />
           </Box>
         </Flex>
-        <Box
+        <Flex
+          alignItems="center"
+          justifyContent="center"
           width={['100%', '100%', '50%']}
-          textAlign={['center', 'center', 'right']}
+          flexWrap="wrap"
         >
           <Image src="/icons/logo.svg" height={200} width={300} />
-        </Box>
+        </Flex>
       </Flex>
       <Box
         backgroundColor="gray.300"

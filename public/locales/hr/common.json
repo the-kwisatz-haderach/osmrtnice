@@ -16,5 +16,12 @@
   "phone": "Telefonnummer",
   "mail": "E-post",
   "contact-details": "Kontaktuppgifter",
-  "pages": "Sidor"
+  "pages": "Sidor",
+  "firstname": "Förnamn",
+  "lastname": "Efternamn",
+  "type": "Typ",
+  "message": "Meddelande",
+  "submit": "Skicka",
+  "required": "Obligatorisk",
+  "select_placeholder": "Gör ditt val"
 }
