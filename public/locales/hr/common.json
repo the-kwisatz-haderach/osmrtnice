@@ -23,5 +23,8 @@
   "message": "Poruka",
   "submit": "Poslati",
   "required": "Obveznim",
-  "select_placeholder": "Odluči se"
+  "select_placeholder": "Odluči se",
+  "published": "Objavljeno",
+  "updated": "Ažurirano",
+  "pay_respects": "Odati počast"
 }

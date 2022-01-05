@@ -1,25 +1,22 @@
 import React, { memo, ReactElement } from 'react'
-import { Box, Fade, Flex, IconButton, Text } from '@chakra-ui/react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import Image from 'next/image'
+import { Box, Button, Text } from '@chakra-ui/react'
 import { FaithType } from '../../lib/domain/types'
+import christian from './images/candle.png'
+import muslim from './images/koran.png'
 
 interface Props {
   faithType?: FaithType
   appreciations: number
   isClicked: boolean
   onClick: () => void
+  size?: 'regular' | 'large'
 }
 
-const icons: Record<FaithType, { base: ReactElement; active: ReactElement }> = {
-  christian: {
-    base: <FontAwesomeIcon icon={faExclamationTriangle} />,
-    active: <FontAwesomeIcon color="red" icon={faExclamationTriangle} />,
-  },
-  muslim: {
-    base: <FontAwesomeIcon icon={faExclamationTriangle} />,
-    active: <FontAwesomeIcon color="red" icon={faExclamationTriangle} />,
-  },
+const icons: Record<FaithType | 'default', StaticImageData> = {
+  christian,
+  muslim,
+  default: christian,
 }
 
 function AppreciationIndicator({
@@ -27,49 +24,33 @@ function AppreciationIndicator({
   isClicked,
   appreciations,
   onClick,
+  size = 'regular',
 }: Props): ReactElement {
-  const iconType = icons[faithType]
+  const src = icons[faithType] ?? icons.default
   return (
-    <Box display="inline-flex" alignItems="flex-end">
-      <Box position="relative">
-        <Fade
-          in={isClicked}
-          style={{
-            position: 'absolute',
-            inset: 0,
-          }}
-        >
-          <IconButton
-            onClick={onClick}
-            variant="unstyled"
-            aria-label="appreciation-indicator"
-            icon={
-              iconType?.active ?? (
-                <FontAwesomeIcon color="red" icon={faExclamationTriangle} />
-              )
-            }
-            size="xs"
-            fontSize={['xs', 'md', 'xl']}
-          />
-        </Fade>
-        <Fade in={!isClicked}>
-          <IconButton
-            onClick={onClick}
-            variant="unstyled"
-            aria-label="appreciation-indicator"
-            icon={
-              iconType?.base ?? <FontAwesomeIcon icon={faExclamationTriangle} />
-            }
-            size="xs"
-            fontSize={['xs', 'md', 'xl']}
-          />
-        </Fade>
-      </Box>
+    <Box display="inline-flex" alignItems="center">
+      <Button
+        aria-label="Show appreciation"
+        variant="unstyled"
+        onClick={onClick}
+        position="relative"
+        maxHeight={size === 'large' ? 50 : 25}
+        sx={{
+          '& img': {
+            filter: `saturate(${isClicked ? 1 : 0})`,
+          },
+          '&:hover img': {
+            filter: 'saturate(1)',
+          },
+        }}
+      >
+        <Image src={src} layout="fill" />
+      </Button>
       <Text
         hidden={appreciations < 1}
-        fontSize={['xs', 'md', 'xl']}
+        fontSize={size === 'large' ? 'xl' : 'md'}
         lineHeight={1}
-        mr={1}
+        ml={size === 'large' ? 4 : 2}
       >
         {appreciations}
       </Text>

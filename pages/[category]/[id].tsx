@@ -8,17 +8,19 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import axios from 'axios'
+import { capitalize } from 'lodash'
 import { ObjectID } from 'mongodb'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { ReactElement, useState } from 'react'
 import { AppreciationIndicator } from '../../components/AppreciationIndicator'
-import { RichText } from '../../components/RichText'
+import { TextBlock } from '../../components/TextBlock'
 import { connectToDb } from '../../db'
-import { obituaryTypes } from '../../lib/domain'
+import { createMetaTitle, obituaryTypes } from '../../lib/domain'
 import { IObituary } from '../../lib/domain/types'
 import { formatDate } from '../../utils/formatDate'
 
@@ -41,6 +43,14 @@ export default function Obituary({
   type,
 }: IObituary): ReactElement {
   const { isFallback } = useRouter()
+  const { t } = useTranslation()
+  const [src, setSrc] = useState(
+    image
+      ? image.startsWith('http')
+        ? image
+        : `https:${image}`
+      : '/images/placeholder-obit-image.jpeg'
+  )
   const [localAppreciations, setLocalAppreciations] = useState(appreciations)
   const [isClicked, setIsClicked] = useState(
     Boolean(
@@ -73,17 +83,37 @@ export default function Obituary({
   return (
     <div>
       <Head>
-        <title>Obituary | {[firstname, middlename, surname].join(' ')}</title>
+        <title>
+          {createMetaTitle(
+            capitalize(t(type)),
+            [firstname, middlename, surname].join(' ')
+          )}
+          {preamble && <meta name="description" content={preamble} />}
+          {image && <meta property="og:image" content={image} />}
+          {typeof long_text === 'string' && (
+            <meta property="og:description" content={long_text} />
+          )}
+          <meta
+            property="og:title"
+            content={createMetaTitle(
+              capitalize(t(type)),
+              [firstname, middlename, surname].join(' ')
+            )}
+          />
+        </title>
       </Head>
-      <Box minHeight="50vh" mt={10}>
-        <Container maxW="container.xl" p={5}>
-          <Flex
-            flexDir={['column', 'column', 'row']}
-            alignItems={['center', 'center', 'flex-start']}
-          >
+      <Box minHeight="50vh" my={[10, 20]}>
+        <Container
+          maxW="container.lg"
+          boxShadow={{ lg: 'xl' }}
+          borderColor="gray.200"
+          borderWidth={{ lg: 1 }}
+          borderStyle="solid"
+          borderRadius={5}
+          p={[4, 6, 10]}
+        >
+          <VStack mb={10}>
             <Box
-              mr={{ md: 12 }}
-              mb={[4, 4, 0]}
               flexShrink={0}
               position="relative"
               width={200}
@@ -93,44 +123,125 @@ export default function Obituary({
               borderRadius={5}
               borderWidth={1}
               borderColor="gray.400"
+              mb={3}
             >
-              <Image src={image} layout="fill" />
+              <Image
+                src={src}
+                layout="fill"
+                placeholder="blur"
+                blurDataURL="/images/placeholder-person.png"
+                onError={() => setSrc('/images/placeholder-obit-image.jpeg')}
+              />
             </Box>
             <VStack
-              alignItems={['center', 'center', 'flex-start']}
+              alignItems="center"
               flex={1}
-              justifyContent="flex-end"
+              justifyContent="center"
+              spacing={4}
             >
-              <Heading as="h1" fontSize={['4xl', '6xl', '8xl']}>
+              <Heading
+                textAlign="center"
+                as="h1"
+                lineHeight={1.1}
+                fontSize={['4xl', '6xl', '8xl']}
+              >
                 {[firstname, middlename, surname].join(' ')}
               </Heading>
-              <HStack
-                fontSize={['lg', '2xl', '4xl']}
-                spacing={1}
-                fontWeight="bold"
-              >
-                {date_of_birth ? <Text>{formatDate(date_of_birth)}</Text> : ''}
-                {(date_of_birth || date_of_death) && <Text>-</Text>}
-                {date_of_death ? <Text>{formatDate(date_of_death)}</Text> : ''}
-              </HStack>
+              {(date_of_birth || date_of_death) && (
+                <HStack fontSize={['lg', '2xl', '4xl']} fontWeight="bold">
+                  {date_of_birth ? (
+                    <Text>{formatDate(date_of_birth)}</Text>
+                  ) : (
+                    ''
+                  )}
+                  {(date_of_birth || date_of_death) && <Text>-</Text>}
+                  {date_of_death ? (
+                    <Text>{formatDate(date_of_death)}</Text>
+                  ) : (
+                    ''
+                  )}
+                </HStack>
+              )}
             </VStack>
-          </Flex>
-          <Container maxW="container.xl" mt={5}>
-            <Text fontSize={['lg', '2xl']}>{preamble}</Text>
-          </Container>
+            {preamble && (
+              <Text
+                fontStyle="italic"
+                textAlign="center"
+                color="blackAlpha.500"
+                fontSize={['lg', '2xl']}
+              >
+                {preamble}
+              </Text>
+            )}
+          </VStack>
+          <VStack spacing={5}>
+            {long_text && (
+              <Box
+                py={[6, 8, 12]}
+                px={[6, 10, 16]}
+                backgroundColor="orange.400"
+                color="white"
+                align="start"
+                mx={{ md: -10 }}
+              >
+                <Text fontSize={['lg', 'xl', '2xl']}>{long_text}</Text>
+              </Box>
+            )}
+            {relative && (
+              <Flex py={[2, 4]} px={[4, 6]} width="100%">
+                <Text fontSize={['md', 'lg']}>{relative}</Text>
+              </Flex>
+            )}
+            {additional_information && (
+              <Flex py={[2, 4]} px={[4, 6]} width="100%">
+                <Text fontSize={['md', 'lg']}>{additional_information}</Text>
+              </Flex>
+            )}
+            <Flex
+              width="100%"
+              flexWrap="wrap"
+              sx={{
+                '& > *': {
+                  m: 2,
+                },
+              }}
+            >
+              <TextBlock
+                flex={1}
+                color="white"
+                backgroundColor="gray.700"
+                label={t('published')}
+              >
+                <Text fontSize={['md', 'lg']}>{formatDate(date_created)}</Text>
+              </TextBlock>
+              {
+                <TextBlock
+                  flex={1}
+                  color="white"
+                  backgroundColor="gray.700"
+                  label={t('updated')}
+                >
+                  <Text fontSize={['md', 'lg']}>
+                    {formatDate(date_updated) || 'N/A'}
+                  </Text>
+                </TextBlock>
+              }
+              <TextBlock
+                flex={1}
+                backgroundColor="gray.100"
+                label={t('pay_respects')}
+              >
+                <AppreciationIndicator
+                  size="large"
+                  appreciations={localAppreciations}
+                  onClick={onShowAppreciation}
+                  isClicked={isClicked}
+                  faithType={faith}
+                />
+              </TextBlock>
+            </Flex>
+          </VStack>
         </Container>
-        <Box backgroundColor="orange.400">
-          <Container
-            maxW="container.xl"
-            py={[10, 16]}
-            px={[6, 10]}
-            my={5}
-            color="white"
-            fontSize={['lg', '2xl']}
-          >
-            {long_text}
-          </Container>
-        </Box>
       </Box>
     </div>
   )

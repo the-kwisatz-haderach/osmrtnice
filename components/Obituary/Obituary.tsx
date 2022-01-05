@@ -1,5 +1,13 @@
 import React, { ReactElement, useState } from 'react'
-import { Box, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  VStack,
+} from '@chakra-ui/react'
 import Image from 'next/image'
 import { RichText } from '../RichText'
 import { formatDate } from '../../utils/formatDate'
@@ -63,12 +71,16 @@ export default function Obituary({
     <Box
       height="100%"
       transition="box-shadow 0.3s ease-in-out"
-      borderColor="gray.200"
+      borderColor={isClicked ? 'orange.200' : 'gray.200'}
       borderWidth={1}
       borderStyle="solid"
       borderRadius="sm"
       _hover={{
-        boxShadow: 'xl',
+        boxShadow: `0 20px 25px -5px rgba(${
+          isClicked ? '222,135,31,0.2' : '0,0,0,0.1'
+        }), 0 10px 10px -5px rgba(${
+          isClicked ? '222,107,31,0.1' : '0,0,0,0.04'
+        })`,
       }}
     >
       <VStack p={6} flexDir="column" spacing={3} h="100%">
@@ -144,19 +156,15 @@ export default function Obituary({
               {long_text}
             </RichText>
           ))}
-        <Flex
-          alignItems="flex-end"
-          justifyContent="space-between"
-          width="100%"
-          flex={1}
-        >
+        <Divider flex={1} alignSelf="flex-end" />
+        <Flex alignItems="flex-end" justifyContent="space-between" width="100%">
           <AppreciationIndicator
             appreciations={data?.appreciations ?? appreciations}
             faithType={faith}
             isClicked={isClicked}
             onClick={() => mutate(_id)}
           />
-          <Link href={`/${formattedType}/${_id}`}>
+          <Link href={`/${formattedType}/${_id}`} prefetch={false}>
             {t('search-results-view_full')}
           </Link>
         </Flex>

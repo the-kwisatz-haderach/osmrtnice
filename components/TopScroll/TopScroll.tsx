@@ -14,7 +14,13 @@ export default function TopScroll({
   ...boxProps
 }: Props): ReactElement {
   return (
-    <Box {...boxProps} textAlign="right" position="sticky" bottom={0}>
+    <Box
+      {...boxProps}
+      textAlign="right"
+      position="sticky"
+      bottom={0}
+      pointerEvents="none"
+    >
       <Fade
         in={show}
         transition={{
@@ -29,6 +35,7 @@ export default function TopScroll({
         }}
       >
         <IconButton
+          pointerEvents="all"
           colorScheme="orange"
           onClick={onClick}
           aria-label="Scroll to top"

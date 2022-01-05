@@ -22,7 +22,6 @@ export default function ObituaryGrid({
   isLoadingNext,
 }: Props): ReactElement {
   const { t } = useTranslation()
-
   return (
     <Container maxW="container.xl" my={8}>
       <ResultsDescription resultsCount={obituaries.length} hasMore={hasMore} />
@@ -53,17 +52,19 @@ export default function ObituaryGrid({
           icon="no-results"
         />
       )}
-      <Flex justifyContent="center" hidden={!hasMore} mt={10}>
-        <Button
-          isLoading={isLoadingNext}
-          colorScheme="orange"
-          disabled={!hasMore}
-          onClick={onLoadMore}
-          title={t('search-results-more')}
-        >
-          {t('search-results-more')}
-        </Button>
-      </Flex>
+      {hasMore && (
+        <Flex justifyContent="center" mt={10}>
+          <Button
+            isLoading={isLoadingNext}
+            colorScheme="orange"
+            disabled={!hasMore}
+            onClick={onLoadMore}
+            title={t('search-results-more')}
+          >
+            {t('search-results-more')}
+          </Button>
+        </Flex>
+      )}
     </Container>
   )
 }

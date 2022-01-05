@@ -34,7 +34,6 @@ export default function Footer({
       flex={1}
       as="footer"
       backgroundColor="gray.200"
-      mt={24}
       borderTopWidth={2}
       borderTopStyle="solid"
       borderTopColor="gray.300"

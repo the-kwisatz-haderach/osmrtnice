@@ -1,9 +1,9 @@
 import { createObituary } from '../../../domain/obituary'
-import { ICrawledObituary } from '../../../domain/types'
+import { IObituary } from '../../../domain/types'
 
-const expected: Array<Omit<ICrawledObituary, '_id'>> = [
+const expected: Array<Omit<IObituary, '_id'>> = [
   createObituary({
-    type: 'OBITUARY',
+    type: 'obituary',
     firstname: 'Zlatici',
     surname: '',
     long_text: '',
@@ -14,7 +14,7 @@ const expected: Array<Omit<ICrawledObituary, '_id'>> = [
     relative: 'Džana, Zijo, Arman i Dado',
   }),
   createObituary({
-    type: 'OBITUARY',
+    type: 'obituary',
     firstname: 'Vesni',
     surname: 'Begtašević',
     date_of_birth: '1955',
@@ -25,7 +25,7 @@ const expected: Array<Omit<ICrawledObituary, '_id'>> = [
     long_text: 'Porodici Begtašević, prijateljima i Konjicu iskreno saučešće.',
   }),
   createObituary({
-    type: 'OBITUARY',
+    type: 'obituary',
     firstname: 'Midhat',
     middlename: 'Akifa',
     surname: 'Jusić',
@@ -39,7 +39,7 @@ const expected: Array<Omit<ICrawledObituary, '_id'>> = [
       'Neka ti dragi Allah dž.š. podari lijepi džennet i vječni rahmet.',
   }),
   createObituary({
-    type: 'OBITUARY',
+    type: 'obituary',
     firstname: 'Tariku',
     surname: 'Eminagiću',
     date_of_birth: '1987',
@@ -51,7 +51,7 @@ const expected: Array<Omit<ICrawledObituary, '_id'>> = [
       'Bit ćeš zauvijek zapamćen kao najiskrenija, najvedrija duša i često ćemo te se sjećati.\nNemjerljiv je gubitak što više nisi s nama.\nNeka ti je laka zemlja.',
   }),
   createObituary({
-    type: 'OBITUARY',
+    type: 'obituary',
     firstname: 'Zlatici',
     surname: '',
     date_of_birth: null,
@@ -63,7 +63,7 @@ const expected: Array<Omit<ICrawledObituary, '_id'>> = [
       'Beskrajno tužni zbog tvog preranog odlaska.\nSuprugu Radetu i porodici iskreno saučešće.',
   }),
   createObituary({
-    type: 'OBITUARY',
+    type: 'obituary',
     firstname: 'Dalida',
     middlename: 'Hadžić',
     surname: 'Tulić',

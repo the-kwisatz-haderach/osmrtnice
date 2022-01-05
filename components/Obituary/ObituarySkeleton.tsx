@@ -5,6 +5,7 @@ export default function ObituarySkeleton(): ReactElement {
   return (
     <Box
       height="100%"
+      minH="280px"
       borderColor="gray.200"
       borderWidth={1}
       borderStyle="solid"

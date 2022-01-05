@@ -10,10 +10,10 @@ import { EnhancedNextApiRequest } from '../../middleware/types'
 import { createObituary } from '../../lib/domain/obituary'
 
 const crawlers = [
-  new SiteCrawler<IObituaryInput[]>({
-    url: 'https://www.osmrtnica.ba/',
-    documentProcessor: osmrtnicaSiteProcessor,
-  }),
+  // new SiteCrawler<IObituaryInput[]>({
+  //   url: 'https://www.osmrtnica.ba/',
+  //   documentProcessor: osmrtnicaSiteProcessor,
+  // }),
   new SiteCrawler<IObituaryInput[]>({
     url: 'https://www.oslobodjenje.ba/smrtovnice',
     documentProcessor: oslobodjenjeSiteProcessor,

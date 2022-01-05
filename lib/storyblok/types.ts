@@ -17,7 +17,11 @@ export type Story<Fields> = StoryData<
   StoryContent<StoryBlokComponentType, Fields>
 > & { default_full_slug?: string }
 
-export type PageStory = Story<{ body?: StoryBlokComponent[] }>
+export type PageStory = Story<{
+  body?: StoryBlokComponent[]
+  description?: string
+  title?: string
+}>
 
 export interface IPost {
   title: string

@@ -60,13 +60,6 @@ export default function Home({ story }: Props): ReactElement {
 
   return (
     <div>
-      <Head>
-        <meta
-          name="google-site-verification"
-          content="I3npG6NpSx1ZykfWYJn2SLCfhjdhNV6xb6Bm7NZ-iqs"
-        />
-        <title>{createMetaTitle(story.name)}</title>
-      </Head>
       <Page story={story} />
       <Flex
         ref={ref}

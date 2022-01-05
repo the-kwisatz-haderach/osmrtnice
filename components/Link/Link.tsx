@@ -1,13 +1,18 @@
-import React, { ReactElement } from 'react'
-import { Link as ChakraLink, LinkProps } from '@chakra-ui/react'
+import React, { PropsWithChildren, ReactElement } from 'react'
+import { LinkProps } from 'next/link'
+import { Link as ChakraLink } from '@chakra-ui/react'
 import { TranslatedLink } from '../TranslatedLink'
 
 type Props = LinkProps
 
-export default function Link({ children, ...props }: Props): ReactElement {
+export default function Link({
+  children,
+  href,
+  ...props
+}: PropsWithChildren<Props>): ReactElement {
   return (
-    <TranslatedLink href={props.href} passHref>
-      <ChakraLink {...props} color="orange.400" fontWeight="bold">
+    <TranslatedLink {...props} href={href} passHref>
+      <ChakraLink color="orange.400" fontWeight="bold">
         {children}
       </ChakraLink>
     </TranslatedLink>

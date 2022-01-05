@@ -4,7 +4,7 @@ import usePuppeteer from '../helpers/usePuppeteer'
 
 jest.setTimeout(100000)
 
-describe('pageNavigator', () => {
+describe.skip('pageNavigator', () => {
   const puppet = usePuppeteer()
 
   afterAll(async () => {
@@ -14,7 +14,7 @@ describe('pageNavigator', () => {
 
   it('navigates from one page to another based on provided callback', async () => {
     const { goTo, page } = await puppet
-    const path = getStubPath('oslobodjenje')
+    const path = getStubPath('osmrtnica')
 
     await goTo(path)
 

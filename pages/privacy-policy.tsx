@@ -1,9 +1,7 @@
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Head from 'next/head'
 import { ReactElement } from 'react'
 import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import { createMetaTitle } from '../lib/domain'
 import Storyblok from '../lib/storyblok/client'
 import { PageStory } from '../lib/storyblok/types'
 
@@ -12,14 +10,7 @@ interface Props {
 }
 
 export default function PrivacyPolicy({ story }: Props): ReactElement {
-  return (
-    <div>
-      <Head>
-        <title>{createMetaTitle(story.name)}</title>
-      </Head>
-      <Page story={story} />
-    </div>
-  )
+  return <Page story={story} />
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {

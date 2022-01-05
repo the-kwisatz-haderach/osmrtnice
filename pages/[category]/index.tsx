@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
 import { useInfiniteQuery } from 'react-query'
 import React, { ReactElement, useCallback, useRef, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
@@ -13,7 +12,7 @@ import { ObituaryGrid } from '../../components/ObituaryGrid'
 import { IObituary } from '../../lib/domain/types'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { createMetaTitle, obituaryTypes } from '../../lib/domain'
+import { obituaryTypes } from '../../lib/domain'
 import { TopScroll } from '../../components/TopScroll'
 import { ProgressBar } from '../../components/ProgessBar'
 
@@ -63,9 +62,6 @@ export default function Obituaries({ story, category }: Props): ReactElement {
 
   return (
     <div>
-      <Head>
-        <title>{createMetaTitle(story.name)}</title>
-      </Head>
       <Page story={story} />
       <Flex
         ref={ref}
@@ -104,11 +100,11 @@ export default function Obituaries({ story, category }: Props): ReactElement {
   )
 }
 
-export const getStaticProps: GetStaticProps<
-  Props,
-  { category: string }
-> = async ({ params: { category }, locale }) => {
-  const story = await Storyblok.getStory(category, {
+export const getStaticProps: GetStaticProps = async ({
+  params: { category },
+  locale,
+}) => {
+  const story = await Storyblok.getStory(category as string, {
     version: 'draft',
     language: locale,
   })
