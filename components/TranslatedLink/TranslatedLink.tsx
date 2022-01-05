@@ -9,7 +9,7 @@ export const TranslatedLink: React.FC<LinkProps> = ({
 }) => {
   const { locale, defaultLocale } = useRouter()
   const localePath: string =
-    locale === defaultLocale || !locale ? '' : `/${locale as string}`
+    locale === defaultLocale || !locale ? '' : `/${locale}`
   // Get translated route for non-default locales
   const translatedPath: string = pathTranslations[locale]?.[href as string]
   // Set `as` prop to change displayed URL in browser

@@ -10,9 +10,9 @@ export default function Teaser({
   link,
 }: ITeaser): ReactElement {
   return (
-    <div className="flex flex-col">
+    <div>
       {image.filename !== '' && (
-        <div className="relative w-full h-80 mb-3">
+        <div>
           <Image
             alt={image.alt}
             title={image.title}
@@ -21,14 +21,10 @@ export default function Teaser({
           />
         </div>
       )}
-      <div className="leading-10">
-        <h4 className="text-4xl">{title}</h4>
+      <div>
+        <h4>{title}</h4>
         <p>{description}</p>
-        {link.url !== '' && (
-          <Link className="float-right -mb-2" href={link.url}>
-            Read more
-          </Link>
-        )}
+        {link.url !== '' && <Link href={link.url}>Read more</Link>}
       </div>
     </div>
   )
