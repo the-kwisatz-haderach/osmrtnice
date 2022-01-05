@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   Flex,
   Heading,
@@ -76,6 +77,14 @@ export default function Obituary({
     }
   }
 
+  const shareToFacebook = () => {
+    window?.FB?.ui({
+      display: 'popup',
+      method: 'share',
+      href: window.location.href,
+    })
+  }
+
   if (isFallback) {
     return <></>
   }
@@ -110,7 +119,8 @@ export default function Obituary({
           borderWidth={{ lg: 1 }}
           borderStyle="solid"
           borderRadius={5}
-          p={[4, 6, 10]}
+          px={[4, 6, 10]}
+          py={[6, 8, 14]}
         >
           <VStack mb={10}>
             <Box
@@ -198,6 +208,7 @@ export default function Obituary({
               </Flex>
             )}
             <Flex
+              textAlign="center"
               width="100%"
               flexWrap="wrap"
               sx={{
@@ -214,18 +225,37 @@ export default function Obituary({
               >
                 <Text fontSize={['md', 'lg']}>{formatDate(date_created)}</Text>
               </TextBlock>
-              {
-                <TextBlock
-                  flex={1}
-                  color="white"
-                  backgroundColor="gray.700"
-                  label={t('updated')}
-                >
-                  <Text fontSize={['md', 'lg']}>
-                    {formatDate(date_updated) || 'N/A'}
-                  </Text>
-                </TextBlock>
-              }
+              <TextBlock
+                flex={1}
+                color="white"
+                backgroundColor="gray.700"
+                label={t('updated')}
+              >
+                <Text fontSize={['md', 'lg']}>
+                  {formatDate(date_updated) || 'N/A'}
+                </Text>
+              </TextBlock>
+              <TextBlock
+                flex={1}
+                backgroundColor="gray.100"
+                label={t('updated')}
+              >
+                <Button colorScheme="facebook" onClick={shareToFacebook}>
+                  {t('share')}
+                  <svg
+                    style={{
+                      marginLeft: 8,
+                    }}
+                    width={20}
+                    height={20}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"
+                    fill="white"
+                  >
+                    <path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z" />
+                  </svg>
+                </Button>
+              </TextBlock>
               <TextBlock
                 flex={1}
                 backgroundColor="gray.100"
