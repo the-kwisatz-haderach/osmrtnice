@@ -22,6 +22,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { TranslatedLink } from '../TranslatedLink'
+import { useTranslation } from 'next-i18next'
 
 interface Props {
   menuItems: IMenuItem[]
@@ -32,6 +33,7 @@ export default function MainNavigation({
   menuItems,
   alternate = true,
 }: Props): ReactElement {
+  const { t } = useTranslation()
   const [homeLink, ...links] = menuItems
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -100,7 +102,7 @@ export default function MainNavigation({
       <Drawer isOpen={isOpen} onClose={onClose} placement="left">
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader>Main menu</DrawerHeader>
+          <DrawerHeader>{t('menu')}</DrawerHeader>
           <DrawerBody>
             <VStack spacing={4} divider={<Divider />}>
               {menuItems.map((menuItem, i) => (
@@ -121,7 +123,7 @@ export default function MainNavigation({
           </DrawerBody>
           <DrawerFooter>
             <Button colorScheme="orange" variant="outline" onClick={onClose}>
-              Close
+              {t('close')}
             </Button>
           </DrawerFooter>
           <DrawerCloseButton />
