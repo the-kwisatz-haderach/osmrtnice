@@ -5,6 +5,6 @@ import { createSiteProcessor } from '../../helpers/createSiteProcessor'
 export const siteProcessor = createSiteProcessor(
   pageProcessor,
   nextPageNavigator,
-  (_, page) => page >= 20,
+  (_, page) => page > 1,
   detailPageNavigator
 )

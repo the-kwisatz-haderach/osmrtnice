@@ -51,7 +51,7 @@ export default attachMiddleware().get(
       }
       return res.status(400).send('Incorrect token passed.')
     } catch (err) {
-      return res.status(400).send(err.message)
+      return res.status(500).send(err.message)
     }
   }
 )
