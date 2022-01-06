@@ -1,5 +1,6 @@
 import { CronJob } from 'cron'
-import puppeteer from 'puppeteer'
+import chromium from 'chrome-aws-lambda'
+import puppeteer from 'puppeteer-core'
 import type { ErrorHandler, OutputHandler, PageProcessor } from './types'
 
 interface SiteCrawlerArgs<U> {
@@ -48,6 +49,10 @@ export default class SiteCrawler<U> {
     if (this.outputHandler) {
       const browser = await puppeteer.launch({
         headless: true,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        ignoreHTTPSErrors: true,
       })
       try {
         const page = await browser.newPage()

@@ -7,6 +7,13 @@ import { EnhancedNextApiRequest } from '../../../middleware/types'
 const MAX_LIMIT = 500
 const DEFAULT_LIMIT = 100
 
+/*
+
+Get all from storyblok.
+- If they are less than the limit, get from
+
+*/
+
 export default attachMiddleware().get(
   async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
     try {
@@ -18,6 +25,14 @@ export default attachMiddleware().get(
         Number.parseInt(limit || DEFAULT_LIMIT.toString()),
         MAX_LIMIT
       )
+
+      // const storyBlokObituaries = await Storyblok.getStories({
+      //   starts_with: 'obituary',
+      //   is_startpage: 0,
+      //   per_page: parsedLimit,
+      //   ...(search && { search_term: search }),
+      //   ...(category && { filter_query: `category=${category}` }),
+      // })
 
       const obituaries: IObituary[] = JSON.parse(
         JSON.stringify(
