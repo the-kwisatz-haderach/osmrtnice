@@ -37,7 +37,7 @@ export default class SiteCrawler<U> {
       /* eslint-disable-next-line */
       new CronJob(this.cronSchedule, this.crawl, null, false).start()
     } else {
-      this.crawl().catch(console.error)
+      await this.crawl().catch(console.error)
     }
   }
 
