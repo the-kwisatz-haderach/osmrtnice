@@ -1,4 +1,4 @@
-import { ElementHandle } from 'puppeteer'
+import { ElementHandle } from 'puppeteer-core'
 import nameFormatter from '../../../../utils/nameFormatter/nameFormatter'
 import { IObituaryInput } from '../../../domain/types'
 import { createItemProcessor } from '../../helpers/createItemProcessor'
@@ -33,7 +33,7 @@ const obituaryProcessor = createItemProcessor<HTMLDivElement, IObituaryInput>(
       const text = await Promise.all(
         handle
           .slice(-3, -1)
-          .map(async (handle) => await handle.evaluate((el) => el.innerText))
+          .map(async (handle) => await handle.evaluate((el) => el.textContent))
       )
       return text.join('\n')
     },

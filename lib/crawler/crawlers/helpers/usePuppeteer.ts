@@ -1,4 +1,4 @@
-import puppeteer, { Page } from 'puppeteer'
+import puppeteer, { Page } from 'puppeteer-core'
 
 const usePuppeteer = async (
   headless = true

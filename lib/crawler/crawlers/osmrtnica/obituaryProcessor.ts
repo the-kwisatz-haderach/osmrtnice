@@ -1,4 +1,4 @@
-import { ElementHandle } from 'puppeteer'
+import { ElementHandle } from 'puppeteer-core'
 import nameFormatter from '../../../../utils/nameFormatter/nameFormatter'
 import { IObituaryInput } from '../../../domain/types'
 import { createItemProcessor } from '../../helpers/createItemProcessor'
@@ -18,7 +18,7 @@ const getDates = async (
 ): Promise<string[]> =>
   await root
     .$$('div')
-    .then((elements) => elements[5]?.evaluate((el) => el.innerText))
+    .then((elements) => elements[5]?.evaluate((el) => el.textContent))
     .then((dates) => dates.split(/\s+-\s+/))
 
 const getLongText = async (
@@ -27,7 +27,7 @@ const getLongText = async (
   await root
     .$$('p')
     .then((elements) =>
-      elements.map((element) => element?.evaluate((el) => el.innerText))
+      elements.map((element) => element?.evaluate((el) => el.textContent))
     )
     .then((text) => text.join('\n'))
 

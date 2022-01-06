@@ -54,7 +54,7 @@ export interface IMenuItem {
 }
 
 export interface IGlobalSettings {
-  logo: string
+  logo: ImageField
   address: string
   phone: string
   email: string
