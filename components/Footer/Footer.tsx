@@ -20,6 +20,7 @@ interface Props
   address: string
   phone: string
   email: string
+  logoSrc: string
 }
 
 export default function Footer({
@@ -27,6 +28,7 @@ export default function Footer({
   address,
   phone,
   email,
+  logoSrc,
 }: Props): ReactElement {
   const { t } = useTranslation()
   return (
@@ -87,7 +89,7 @@ export default function Footer({
           width={['100%', '100%', '50%']}
           flexWrap="wrap"
         >
-          <Image src="/icons/logo.svg" height={200} width={300} />
+          <Image src={logoSrc} height={200} width={300} />
         </Flex>
       </Flex>
       <Box

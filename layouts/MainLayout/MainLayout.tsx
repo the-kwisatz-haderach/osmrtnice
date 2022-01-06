@@ -10,7 +10,7 @@ const correct_pass = process.env.NEXT_PUBLIC_PROD_PASS
 export default function MainLayout({
   children,
 }: PropsWithChildren<any>): ReactElement {
-  const { menuItems, ...contactDetails } = useAppContext()
+  const { menuItems, logo, ...contactDetails } = useAppContext()
 
   useEffect(() => {
     const checkPassword = () => {
@@ -35,9 +35,9 @@ export default function MainLayout({
 
   return (
     <Flex flexDir="column" minH="100vh">
-      <MainNavigation menuItems={menuItems} />
+      <MainNavigation menuItems={menuItems} logoSrc={logo} />
       <main>{children}</main>
-      <Footer {...contactDetails} menuItems={menuItems} />
+      <Footer {...contactDetails} menuItems={menuItems} logoSrc={logo} />
     </Flex>
   )
 }

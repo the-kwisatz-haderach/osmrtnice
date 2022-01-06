@@ -26,12 +26,12 @@ import { useTranslation } from 'next-i18next'
 
 interface Props {
   menuItems: IMenuItem[]
-  alternate?: boolean
+  logoSrc: string
 }
 
 export default function MainNavigation({
   menuItems,
-  alternate = true,
+  logoSrc,
 }: Props): ReactElement {
   const { t } = useTranslation()
   const [homeLink, ...links] = menuItems
@@ -71,7 +71,7 @@ export default function MainNavigation({
               width={120}
               height={70}
             >
-              <Image src="/icons/logo.svg" alt="logo" layout="fill" />
+              <Image src={logoSrc} alt="logo" layout="fill" />
             </Box>
           </TranslatedLink>
           <HStack
