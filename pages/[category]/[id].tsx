@@ -43,6 +43,7 @@ export default function Obituary({
   additional_information,
   type,
 }: IObituary): ReactElement {
+  const fullname = [firstname, middlename, surname].join(' ')
   const { isFallback } = useRouter()
   const { t } = useTranslation()
   const [src, setSrc] = useState(
@@ -92,24 +93,16 @@ export default function Obituary({
   return (
     <div>
       <Head>
-        <title>
-          {createMetaTitle(
-            capitalize(t(type)),
-            [firstname, middlename, surname].join(' ')
-          )}
-          {preamble && <meta name="description" content={preamble} />}
-          {image && <meta property="og:image" content={image} />}
-          {typeof long_text === 'string' && (
-            <meta property="og:description" content={long_text} />
-          )}
-          <meta
-            property="og:title"
-            content={createMetaTitle(
-              capitalize(t(type)),
-              [firstname, middlename, surname].join(' ')
-            )}
-          />
-        </title>
+        <title>{createMetaTitle(capitalize(t(type)), fullname)}</title>
+        {preamble && <meta name="description" content={preamble} />}
+        {image && <meta property="og:image" content={image} />}
+        {typeof long_text === 'string' && (
+          <meta property="og:description" content={long_text} />
+        )}
+        <meta
+          property="og:title"
+          content={createMetaTitle(capitalize(t(type)), fullname)}
+        />
       </Head>
       <Box minHeight="50vh" my={[10, 20]}>
         <Container
@@ -155,7 +148,7 @@ export default function Obituary({
                 lineHeight={1.1}
                 fontSize={['4xl', '6xl', '8xl']}
               >
-                {[firstname, middlename, surname].join(' ')}
+                {fullname}
               </Heading>
               {(date_of_birth || date_of_death) && (
                 <HStack fontSize={['lg', '2xl', '4xl']} fontWeight="bold">
@@ -187,6 +180,7 @@ export default function Obituary({
           <VStack spacing={5}>
             {long_text && (
               <Box
+                width="100%"
                 py={[6, 8, 12]}
                 px={[6, 10, 16]}
                 backgroundColor="orange.400"

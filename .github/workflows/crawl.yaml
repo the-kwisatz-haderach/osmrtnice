@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: request crawl
-        run: curl -X GET https://preminuli.ba/api/crawl?token=${{ secrets.CRAWLER }}
+        run: curl -X GET https://www.preminuli.ba/api/crawl?token=${{ secrets.CRAWLER }}
