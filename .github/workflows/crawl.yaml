@@ -1,11 +1,11 @@
 name: crawl
-on:
-  schedule:
-    # “At 00:00 every day.”
-    - cron: '0 0 * * *'
+# on:
+#   schedule:
+# “At 00:00 every day.”
+# - cron: '0 0 * * *'
 jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
       - name: request crawl
-        run: curl -X GET https://osmrtnice.vercel.app/api/crawl?token=${{ secrets.CRAWLER }}
+        run: curl -X GET https://preminuli.ba/api/crawl?token=${{ secrets.CRAWLER }}
