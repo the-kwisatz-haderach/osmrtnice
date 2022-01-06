@@ -17,7 +17,7 @@ export default function MainLayout({
       const password =
         window.sessionStorage.getItem('pass') || window.prompt('Password')
       if (password === correct_pass) {
-        window.sessionStorage.setItem('pass', 'true')
+        window.sessionStorage.setItem('pass', correct_pass)
         shouldRender = true
       } else {
         checkPassword()

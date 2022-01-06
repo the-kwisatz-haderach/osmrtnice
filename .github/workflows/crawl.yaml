@@ -3,7 +3,9 @@ name: crawl
 #   schedule:
 # “At 00:00 every day.”
 # - cron: '0 0 * * *'
-on: push
+on:
+  push:
+  workflow_dispatch:
 jobs:
   cron:
     runs-on: ubuntu-latest

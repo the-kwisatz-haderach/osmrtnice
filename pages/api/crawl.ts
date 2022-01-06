@@ -46,8 +46,12 @@ export default attachMiddleware().get(
             )
           })
         })
-        return Promise.all(crawlers.map((crawler) => crawler.init())).then(() =>
-          res.status(200).send('Crawl finished.')
+        console.log('start')
+        return Promise.all(crawlers.map((crawler) => crawler.init())).then(
+          () => {
+            console.log('end')
+            res.status(200).send('Crawl finished.')
+          }
         )
       }
       return res.status(400).send('Incorrect token passed.')
