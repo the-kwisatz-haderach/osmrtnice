@@ -89,7 +89,7 @@ export default function Footer({
           width={['100%', '100%', '50%']}
           flexWrap="wrap"
         >
-          <Image src={logoSrc} height={200} width={300} />
+          {logoSrc && <Image src={logoSrc} height={200} width={300} />}
         </Flex>
       </Flex>
       <Box

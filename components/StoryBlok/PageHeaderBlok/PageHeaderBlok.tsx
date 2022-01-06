@@ -17,7 +17,7 @@ export default function PageHeaderBlok({
       backgroundAttachment="fixed"
       backgroundImage={
         image?.filename
-          ? `linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%),
+          ? `linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%),
         url(${image.filename})`
           : undefined
       }

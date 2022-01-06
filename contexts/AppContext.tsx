@@ -1,8 +1,9 @@
 import { createContext, useContext } from 'react'
+import { ImageField } from '../lib/storyblok/common/types'
 import { IMenuItem } from '../lib/storyblok/types'
 export interface IAppContext {
   menuItems: IMenuItem[]
-  logo: string
+  logo?: ImageField
   address: string
   phone: string
   email: string
@@ -10,7 +11,6 @@ export interface IAppContext {
 
 const defaultAppContext: IAppContext = {
   menuItems: [],
-  logo: '',
   address: '',
   phone: '',
   email: '',

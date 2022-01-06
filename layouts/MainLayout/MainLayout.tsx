@@ -35,9 +35,13 @@ export default function MainLayout({
 
   return (
     <Flex flexDir="column" minH="100vh">
-      <MainNavigation menuItems={menuItems} logoSrc={logo} />
+      <MainNavigation menuItems={menuItems} logoSrc={logo.filename} />
       <main>{children}</main>
-      <Footer {...contactDetails} menuItems={menuItems} logoSrc={logo} />
+      <Footer
+        {...contactDetails}
+        menuItems={menuItems}
+        logoSrc={logo.filename}
+      />
     </Flex>
   )
 }

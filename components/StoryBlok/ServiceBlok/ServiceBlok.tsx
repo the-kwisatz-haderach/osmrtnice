@@ -9,7 +9,7 @@ export default function ServiceBlok({
   image,
 }: IService): ReactElement {
   return (
-    <Flex flexDir={['column', 'column', 'row-reverse']}>
+    <Flex flexDir={['column', 'column', 'row-reverse']} alignItems={['center']}>
       {image.filename && (
         <Box
           ml={{ md: 10 }}
@@ -17,7 +17,7 @@ export default function ServiceBlok({
           width={300}
           height={200}
           position="relative"
-          boxShadow="0px 20px 30px -15px #000000cc"
+          boxShadow="xl"
         >
           <Image
             src={

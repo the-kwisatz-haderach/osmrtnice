@@ -45,6 +45,7 @@ export default function MainNavigation({
   return (
     <>
       <Box
+        as="nav"
         zIndex={100}
         boxShadow="lg"
         position="sticky"
@@ -71,7 +72,7 @@ export default function MainNavigation({
               width={120}
               height={70}
             >
-              <Image src={logoSrc} alt="logo" layout="fill" />
+              {logoSrc && <Image src={logoSrc} alt="logo" layout="fill" />}
             </Box>
           </TranslatedLink>
           <HStack
@@ -104,7 +105,7 @@ export default function MainNavigation({
         <DrawerContent>
           <DrawerHeader>{t('menu')}</DrawerHeader>
           <DrawerBody>
-            <VStack spacing={4} divider={<Divider />}>
+            <VStack as="nav" spacing={4} divider={<Divider />}>
               {menuItems.map((menuItem, i) => (
                 <Box width="100%" textAlign="center" key={i} height="100%">
                   <TranslatedLink passHref href={menuItem.href}>
