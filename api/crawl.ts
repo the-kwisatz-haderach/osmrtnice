@@ -17,14 +17,14 @@ const crawlers = [
     url: 'https://www.oslobodjenje.ba/smrtovnice',
     documentProcessor: oslobodjenjeSiteProcessor,
   }),
-  new SiteCrawler<IObituaryInput[]>({
-    url: 'https://digital.avaz.ba/smrtovnice',
-    documentProcessor: avazSiteProcessor,
-  }),
-  new SiteCrawler<IObituaryInput[]>({
-    url: 'https://www.nekros.info/',
-    documentProcessor: nekrosSiteProcessor,
-  }),
+  // new SiteCrawler<IObituaryInput[]>({
+  //   url: 'https://digital.avaz.ba/smrtovnice',
+  //   documentProcessor: avazSiteProcessor,
+  // }),
+  // new SiteCrawler<IObituaryInput[]>({
+  //   url: 'https://www.nekros.info/',
+  //   documentProcessor: nekrosSiteProcessor,
+  // }),
 ]
 
 module.exports = async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
@@ -46,9 +46,10 @@ module.exports = async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
           )
         })
       })
-      return Promise.all(crawlers.map((crawler) => crawler.init())).then(() =>
+      await Promise.all(crawlers.map((crawler) => crawler.init()))
+      setTimeout(() => {
         res.status(200).send('Crawl finished.')
-      )
+      }, 4500)
     }
     return res.status(400).send('Incorrect token passed.')
   } catch (err) {
