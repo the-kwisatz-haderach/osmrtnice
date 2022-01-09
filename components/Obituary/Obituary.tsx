@@ -48,7 +48,7 @@ export default function Obituary({
     'incrementAppreciation',
     async (id: string) => {
       const res = await axios.post<IObituary>(
-        `/api/appreciations/${id}/appreciation/increment`,
+        `/api/obituaries/${id}/appreciation/increment`,
         {
           increment: isClicked ? -1 : 1,
         }

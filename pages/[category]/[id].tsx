@@ -24,8 +24,6 @@ import { TextBlock } from '../../components/TextBlock'
 import { connectToDb } from '../../db'
 import { createMetaTitle, obituaryTypes } from '../../lib/domain'
 import { IObituary } from '../../lib/domain/types'
-import Storyblok from '../../lib/storyblok/client'
-import { Story } from '../../lib/storyblok/types'
 import { formatDate } from '../../utils/formatDate'
 
 export default function Obituary({
@@ -278,28 +276,13 @@ export const getStaticProps: GetStaticProps<
   IObituary,
   { id: string; category: string }
 > = async ({ params, locale }) => {
-  const id = params.id
-  let obituary: IObituary
-  if (!ObjectID.isValid(params.id)) {
-    const story = await Storyblok.getStory(id, {
-      find_by: 'uuid',
-    })
-    obituary = {
-      ...(story.data.story.content as Story<Omit<IObituary, '_id'>>['content']),
-      date_created: story.data.story.first_published_at,
-      date_updated: story.data.story.published_at,
-      _id: story.data.story.uuid,
-      is_crawled: false,
-    }
-  } else {
-    obituary = JSON.parse(
-      JSON.stringify(
-        await (await connectToDb()).db
-          .collection<Omit<IObituary, '_id'>>('obituaries')
-          .findOne({ _id: new ObjectID(params.id) })
-      )
+  const obituary = JSON.parse(
+    JSON.stringify(
+      await (await connectToDb()).db
+        .collection<Omit<IObituary, '_id'>>('obituaries')
+        .findOne({ _id: new ObjectID(params.id) })
     )
-  }
+  )
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
