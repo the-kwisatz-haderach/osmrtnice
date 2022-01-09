@@ -15,7 +15,18 @@ export type StoryBlokComponent =
 
 export type Story<Fields> = StoryData<
   StoryContent<StoryBlokComponentType, Fields>
-> & { default_full_slug?: string }
+> & {
+  default_full_slug?: string
+  name: string
+  created_at: string
+  published_at: string
+  uuid: string
+  id: number
+  slug: string
+  full_slug: string
+  is_startpage: boolean
+  first_published_at: string
+}
 
 export type PageStory = Story<{
   body?: StoryBlokComponent[]

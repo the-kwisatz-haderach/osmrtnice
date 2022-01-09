@@ -1,4 +1,4 @@
-import { ElementHandle } from 'puppeteer-core'
+import { ElementHandle } from 'puppeteer'
 import nameFormatter from '../../../../utils/nameFormatter/nameFormatter'
 import { IObituaryInput } from '../../../domain/types'
 import { createItemProcessor } from '../../helpers/createItemProcessor'

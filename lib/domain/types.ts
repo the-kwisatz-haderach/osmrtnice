@@ -8,6 +8,11 @@ export type ObituaryType =
 
 export type FaithType = 'christian' | 'muslim'
 
+export interface IAppreciation {
+  _id: string
+  quantity: number
+}
+
 export interface IObituary {
   _id: string
   firstname: string
@@ -27,6 +32,7 @@ export interface IObituary {
   date_created: string
   date_updated?: string
   faith?: FaithType
+  is_crawled: boolean
 }
 
 export interface IObituaryInput {
@@ -41,5 +47,3 @@ export interface IObituaryInput {
   type?: ObituaryType
   faith?: FaithType
 }
-
-export type Paginated<T> = T[]

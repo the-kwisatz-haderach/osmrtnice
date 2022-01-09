@@ -1,4 +1,4 @@
-import type { ElementHandle, Page } from 'puppeteer-core'
+import type { ElementHandle, Page } from 'puppeteer'
 import { IObituaryInput } from '../domain/types'
 
 export type PageProcessor<T> = (input: Page) => Promise<T>

@@ -15,5 +15,6 @@ export default function createObituary(
     relative: input.relative || '',
     long_text: input.long_text || '',
     appreciations: 0,
+    is_crawled: true,
   }
 }

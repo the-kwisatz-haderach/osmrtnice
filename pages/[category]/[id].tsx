@@ -19,10 +19,13 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { ReactElement, useState } from 'react'
 import { AppreciationIndicator } from '../../components/AppreciationIndicator'
+import { RichText } from '../../components/RichText'
 import { TextBlock } from '../../components/TextBlock'
 import { connectToDb } from '../../db'
 import { createMetaTitle, obituaryTypes } from '../../lib/domain'
 import { IObituary } from '../../lib/domain/types'
+import Storyblok from '../../lib/storyblok/client'
+import { Story } from '../../lib/storyblok/types'
 import { formatDate } from '../../utils/formatDate'
 
 export default function Obituary({
@@ -188,7 +191,11 @@ export default function Obituary({
                 align="start"
                 mx={{ md: -10 }}
               >
-                <Text fontSize={['lg', 'xl', '2xl']}>{long_text}</Text>
+                {typeof long_text === 'string' ? (
+                  <Text fontSize={['lg', 'xl', '2xl']}>{long_text}</Text>
+                ) : (
+                  <RichText>{long_text}</RichText>
+                )}
               </Box>
             )}
             {relative && (
@@ -229,11 +236,7 @@ export default function Obituary({
                   {formatDate(date_updated) || 'N/A'}
                 </Text>
               </TextBlock>
-              <TextBlock
-                flex={1}
-                backgroundColor="gray.100"
-                label={t('updated')}
-              >
+              <TextBlock flex={1} backgroundColor="gray.100">
                 <Button colorScheme="facebook" onClick={shareToFacebook}>
                   {t('share')}
                   <svg
@@ -275,14 +278,28 @@ export const getStaticProps: GetStaticProps<
   IObituary,
   { id: string; category: string }
 > = async ({ params, locale }) => {
-  const { db } = await connectToDb()
-  const obituary = JSON.parse(
-    JSON.stringify(
-      await db
-        .collection<Omit<IObituary, '_id'>>('obituaries')
-        .findOne({ _id: new ObjectID(params.id) })
+  const id = params.id
+  let obituary: IObituary
+  if (!ObjectID.isValid(params.id)) {
+    const story = await Storyblok.getStory(id, {
+      find_by: 'uuid',
+    })
+    obituary = {
+      ...(story.data.story.content as Story<Omit<IObituary, '_id'>>['content']),
+      date_created: story.data.story.first_published_at,
+      date_updated: story.data.story.published_at,
+      _id: story.data.story.uuid,
+      is_crawled: false,
+    }
+  } else {
+    obituary = JSON.parse(
+      JSON.stringify(
+        await (await connectToDb()).db
+          .collection<Omit<IObituary, '_id'>>('obituaries')
+          .findOne({ _id: new ObjectID(params.id) })
+      )
     )
-  )
+  }
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),

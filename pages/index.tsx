@@ -41,17 +41,27 @@ export default function Home({ story }: Props): ReactElement {
   } = useInfiniteQuery<{
     data: IObituary[]
     next?: string
+    nextPage?: string
   }>(
     ['obituaries', query],
     async ({ pageParam }: { pageParam?: string }) => {
       const res = await axios.get(
-        `/api/obituaries?search=${query}&limit=100&next=${pageParam ?? ''}`
+        `/api/obituaries?search=${query}&limit=100&${pageParam ?? ''}`
       )
       return res.data
     },
     {
       placeholderData: { pages: [], pageParams: [] },
-      getNextPageParam: (lastPage) => lastPage.next,
+      getNextPageParam: (lastPage) => {
+        let nextString: string[] = []
+        if (lastPage.next) {
+          nextString.push(`next=${lastPage.next}`)
+        }
+        if (lastPage.nextPage) {
+          nextString.push(`nextPage=${lastPage.nextPage}`)
+        }
+        return nextString.join('&') || undefined
+      },
       keepPreviousData: true,
     }
   )

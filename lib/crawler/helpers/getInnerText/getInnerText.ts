@@ -1,4 +1,4 @@
-import { ElementHandle } from 'puppeteer-core'
+import { ElementHandle } from 'puppeteer'
 
 const getInnerText = (selector: string) => async (
   root: ElementHandle | null
