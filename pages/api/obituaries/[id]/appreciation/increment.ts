@@ -9,17 +9,23 @@ export default attachMiddleware().post(
     try {
       const id = req.query.id as string
       const { increment = 1 } = req.body
-      const obituary = (
-        await req.db
-          .collection<Omit<IObituary, '_id'>>('obituaries')
-          .findOneAndUpdate(
-            { _id: new ObjectID(id) },
-            { $inc: { appreciations: increment } },
-            {
-              returnDocument: 'after',
-            }
-          )
-      ).value
+
+      let obituary: Omit<IObituary, '_id'>
+      if (ObjectID.isValid(id)) {
+        obituary = (
+          await req.db
+            .collection<Omit<IObituary, '_id'>>('obituaries')
+            .findOneAndUpdate(
+              { _id: new ObjectID(id) },
+              { $inc: { appreciations: increment } },
+              {
+                returnDocument: 'after',
+              }
+            )
+        ).value
+      } else {
+        //
+      }
 
       return res.status(200).json(obituary)
     } catch (err) {
