@@ -21,7 +21,7 @@ describe('createObituary', () => {
       long_text: '',
       middlename: '',
       relative: '',
-      appreciations: 0,
+      is_crawled: true,
     }
     expect(
       createObituary({
@@ -48,7 +48,7 @@ describe('createObituary', () => {
       long_text: 'Some description',
       middlename: 'middlename',
       relative: 'relatives',
-      appreciations: 0,
+      is_crawled: true,
     }
     expect(
       createObituary({

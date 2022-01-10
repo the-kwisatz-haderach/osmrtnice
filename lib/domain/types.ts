@@ -28,7 +28,6 @@ export interface IObituary {
   size?: 'regular' | 'large'
   additional_information?: string
   preamble?: string
-  appreciations: number
   date_created: string
   date_updated?: string
   faith?: FaithType

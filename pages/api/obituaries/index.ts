@@ -1,6 +1,10 @@
 import { ObjectID } from 'mongodb'
 import { NextApiResponse } from 'next'
-import { IObituary, ObituaryType } from '../../../lib/domain/types'
+import {
+  IAppreciation,
+  IObituary,
+  ObituaryType,
+} from '../../../lib/domain/types'
 import Storyblok from '../../../lib/storyblok/client'
 import { Story } from '../../../lib/storyblok/types'
 import attachMiddleware from '../../../middleware'
@@ -45,15 +49,25 @@ export default attachMiddleware().get(
       const storiesCount = storyBlokObituaries.length
       const limitDiff = parsedLimit - storiesCount
 
-      const formattedStories = storyBlokObituaries.map<IObituary>(
-        (story: Story<Omit<IObituary, '_id'>>) => ({
-          ...story.content,
-          date_created: story.first_published_at,
-          date_updated: story.published_at,
-          _id: story.uuid,
-          is_crawled: false,
-        })
-      )
+      const appreciations = await req.db
+        .collection<IAppreciation>('appreciations')
+        .find({ _id: { $in: storyBlokObituaries.map((data) => data.uuid) } })
+        .toArray()
+
+      const formattedStories = storyBlokObituaries.map<
+        IObituary & { appreciations: number }
+      >((story: Story<Omit<IObituary, '_id'>>) => ({
+        ...story.content,
+        date_created: story.first_published_at,
+        date_updated: story.published_at,
+        _id: story.uuid,
+        is_crawled: false,
+        appreciations:
+          appreciations.find((appreciation) => appreciation._id === story.uuid)
+            ?.quantity ?? 0,
+      }))
+
+      const $regex = new RegExp(search.split(/s+/).join('|'), 'i')
 
       const obituaries: IObituary[] =
         limitDiff > 0
@@ -61,46 +75,58 @@ export default attachMiddleware().get(
               JSON.stringify(
                 await req.db
                   .collection<Omit<IObituary, '_id'>>('obituaries')
-                  .find({
-                    ...(category && {
-                      $and: [
-                        {
-                          type: category as ObituaryType,
-                        },
-                      ],
-                    }),
-                    ...(search && {
-                      $or: [
-                        {
-                          firstname: {
-                            $regex: new RegExp(
-                              search.split(/s+/).join('|'),
-                              'i'
-                            ),
-                          },
-                        },
-                        {
-                          middlename: {
-                            $regex: new RegExp(
-                              search.split(/s+/).join('|'),
-                              'i'
-                            ),
-                          },
-                        },
-                        {
-                          surname: {
-                            $regex: new RegExp(
-                              search.split(/s+/).join('|'),
-                              'i'
-                            ),
-                          },
-                        },
-                      ],
-                    }),
-                    ...(next && {
-                      _id: { $gt: new ObjectID(next) },
-                    }),
-                  })
+                  .aggregate([
+                    {
+                      $match: {
+                        ...(category && {
+                          $and: [
+                            {
+                              type: category as ObituaryType,
+                            },
+                          ],
+                        }),
+                        ...(search && {
+                          $or: [
+                            {
+                              firstname: {
+                                $regex,
+                              },
+                            },
+                            {
+                              middlename: {
+                                $regex,
+                              },
+                            },
+                            {
+                              surname: {
+                                $regex,
+                              },
+                            },
+                          ],
+                        }),
+                        ...(next && {
+                          _id: { $gt: new ObjectID(next) },
+                        }),
+                      },
+                    },
+                    {
+                      $lookup: {
+                        from: 'appreciations',
+                        localField: '_id',
+                        foreignField: '_id',
+                        as: 'appreciations',
+                      },
+                    },
+                    {
+                      $unwind: {
+                        path: '$appreciations',
+                        preserveNullAndEmptyArrays: true,
+                      },
+                    },
+                    {
+                      $addFields: { appreciations: '$appreciations.quantity' },
+                    },
+                  ])
                   .limit(limitDiff + 1)
                   .toArray()
               )

@@ -8,7 +8,6 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import axios from 'axios'
 import { capitalize } from 'lodash'
 import { ObjectID } from 'mongodb'
 import { GetStaticPaths, GetStaticProps } from 'next'
@@ -22,11 +21,16 @@ import { AppreciationIndicator } from '../../components/AppreciationIndicator'
 import { RichText } from '../../components/RichText'
 import { TextBlock } from '../../components/TextBlock'
 import { connectToDb } from '../../db'
+import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
 import { createMetaTitle, obituaryTypes } from '../../lib/domain'
-import { IObituary } from '../../lib/domain/types'
+import { IAppreciation, IObituary } from '../../lib/domain/types'
 import Storyblok from '../../lib/storyblok/client'
 import { Story } from '../../lib/storyblok/types'
 import { formatDate } from '../../utils/formatDate'
+
+interface Props extends IObituary {
+  appreciations: number
+}
 
 export default function Obituary({
   _id,
@@ -45,7 +49,7 @@ export default function Obituary({
   relative,
   additional_information,
   type,
-}: IObituary): ReactElement {
+}: Props): ReactElement {
   const fullname = [firstname, middlename, surname].join(' ')
   const { isFallback } = useRouter()
   const { t } = useTranslation()
@@ -56,29 +60,31 @@ export default function Obituary({
         : `https:${image}`
       : '/images/placeholder-obit-image.jpeg'
   )
-  const [localAppreciations, setLocalAppreciations] = useState(appreciations)
   const [isClicked, setIsClicked] = useState(
     Boolean(
       typeof window !== 'undefined' && window.localStorage.getItem(_id)
     ) || false
   )
 
+  const { mutate, data } = useIncrementAppreciation()
+
   const onShowAppreciation = async () => {
-    try {
-      await axios.post(`/api/obituaries/${_id}/appreciation/increment`, {
+    mutate(
+      {
+        id: _id,
         increment: isClicked ? -1 : 1,
-      })
-      if (isClicked) {
-        window.localStorage.removeItem(_id)
-        setLocalAppreciations((curr) => curr - 1)
-      } else {
-        window.localStorage.setItem(_id, 'true')
-        setLocalAppreciations((curr) => curr + 1)
+      },
+      {
+        onSuccess: () => {
+          if (isClicked) {
+            window.localStorage.removeItem(_id)
+          } else {
+            window.localStorage.setItem(_id, 'true')
+          }
+          setIsClicked((curr) => !curr)
+        },
       }
-      setIsClicked((curr) => !curr)
-    } catch (err) {
-      console.error(err)
-    }
+    )
   }
 
   const shareToFacebook = () => {
@@ -260,7 +266,7 @@ export default function Obituary({
               >
                 <AppreciationIndicator
                   size="large"
-                  appreciations={localAppreciations}
+                  appreciations={data?.quantity ?? appreciations}
                   onClick={onShowAppreciation}
                   isClicked={isClicked}
                   faithType={faith}
@@ -279,6 +285,7 @@ export const getStaticProps: GetStaticProps<
   { id: string; category: string }
 > = async ({ params, locale }) => {
   const id = params.id
+  const db = await (await connectToDb()).db
   let obituary: IObituary
   if (!ObjectID.isValid(params.id)) {
     const story = await Storyblok.getStory(id, {
@@ -294,16 +301,24 @@ export const getStaticProps: GetStaticProps<
   } else {
     obituary = JSON.parse(
       JSON.stringify(
-        await (await connectToDb()).db
+        await db
           .collection<Omit<IObituary, '_id'>>('obituaries')
           .findOne({ _id: new ObjectID(params.id) })
       )
     )
   }
+  const appreciations = (
+    await db.collection<Omit<IAppreciation, '_id'>>('appreciations').findOne({
+      _id: ObjectID.isValid(params.id)
+        ? ObjectID.createFromHexString(params.id)
+        : params.id,
+    })
+  ).quantity
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       ...obituary,
+      appreciations,
     },
   }
 }

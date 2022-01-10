@@ -14,7 +14,6 @@ export default function createObituary(
     middlename: input.middlename || '',
     relative: input.relative || '',
     long_text: input.long_text || '',
-    appreciations: 0,
     is_crawled: true,
   }
 }

@@ -13,10 +13,13 @@ import { RichText } from '../RichText'
 import { formatDate } from '../../utils/formatDate'
 import { IObituary } from '../../lib/domain/types'
 import { AppreciationIndicator } from '../AppreciationIndicator'
-import axios from 'axios'
 import { Link } from '../Link'
-import { useMutation } from 'react-query'
 import { useTranslation } from 'next-i18next'
+import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
+
+interface Props extends IObituary {
+  appreciations?: number
+}
 
 export default function Obituary({
   _id,
@@ -28,10 +31,10 @@ export default function Obituary({
   date_of_birth,
   date_of_death,
   image,
-  appreciations,
+  appreciations = 0,
   faith,
   type = 'obituary',
-}: IObituary): ReactElement {
+}: Props): ReactElement {
   const { t } = useTranslation()
   const [src, setSrc] = useState(
     image
@@ -44,28 +47,21 @@ export default function Obituary({
     Boolean(typeof window !== 'undefined' && window.localStorage.getItem(_id))
   )
   const formattedType = t(type.toLowerCase().replace('_', '-'))
-  const { data, mutate } = useMutation<IObituary, unknown, string>(
-    'incrementAppreciation',
-    async (id: string) => {
-      const res = await axios.post<IObituary>(
-        `/api/appreciations/${id}/appreciation/increment`,
-        {
-          increment: isClicked ? -1 : 1,
-        }
-      )
-      return res.data
-    },
-    {
-      onSuccess: () => {
-        if (isClicked) {
-          window.localStorage.removeItem(_id)
-        } else {
-          window.localStorage.setItem(_id, 'true')
-        }
-        setIsClicked((curr) => !curr)
-      },
-    }
-  )
+  const { data, mutate } = useIncrementAppreciation()
+  const onClickAppreciation = () =>
+    mutate(
+      { id: _id, increment: isClicked ? -1 : 1 },
+      {
+        onSuccess: () => {
+          if (isClicked) {
+            window.localStorage.removeItem(_id)
+          } else {
+            window.localStorage.setItem(_id, 'true')
+          }
+          setIsClicked((curr) => !curr)
+        },
+      }
+    )
 
   return (
     <Box
@@ -159,10 +155,10 @@ export default function Obituary({
         <Divider flex={1} alignSelf="flex-end" />
         <Flex alignItems="flex-end" justifyContent="space-between" width="100%">
           <AppreciationIndicator
-            appreciations={data?.appreciations ?? appreciations}
+            appreciations={data?.quantity ?? appreciations}
             faithType={faith}
             isClicked={isClicked}
-            onClick={() => mutate(_id)}
+            onClick={onClickAppreciation}
           />
           <Link href={`/${formattedType}/${_id}`} prefetch={false}>
             {t('search-results-view_full')}

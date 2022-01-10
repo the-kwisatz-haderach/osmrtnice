@@ -1,7 +1,5 @@
-import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { useInfiniteQuery } from 'react-query'
 import React, { ReactElement, useCallback, useRef, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
@@ -9,12 +7,12 @@ import Storyblok from '../../lib/storyblok/client'
 import { PageStory } from '../../lib/storyblok/types'
 import { SearchInput } from '../../components/SearchInput'
 import { ObituaryGrid } from '../../components/ObituaryGrid'
-import { IObituary } from '../../lib/domain/types'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { obituaryTypes } from '../../lib/domain'
 import { TopScroll } from '../../components/TopScroll'
 import { ProgressBar } from '../../components/ProgessBar'
+import { useObituaries } from '../../hooks/reactQuery/queries'
 
 interface Props {
   story: PageStory
@@ -40,25 +38,10 @@ export default function Obituaries({ story, category }: Props): ReactElement {
     isFetching,
     isPlaceholderData,
     isFetchingNextPage,
-  } = useInfiniteQuery<{
-    data: IObituary[]
-    next?: string
-  }>(
-    [category, category, query],
-    async ({ pageParam }: { pageParam?: string }) => {
-      const res = await axios.get(
-        `/api/obituaries?search=${query}&category=${category}&limit=100&next=${
-          pageParam ?? ''
-        }`
-      )
-      return res.data
-    },
-    {
-      placeholderData: { pages: [], pageParams: [] },
-      getNextPageParam: (lastPage) => lastPage.next,
-      keepPreviousData: true,
-    }
-  )
+  } = useObituaries({
+    category,
+    query,
+  })
 
   return (
     <div>
