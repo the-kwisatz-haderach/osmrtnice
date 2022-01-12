@@ -16,6 +16,7 @@ import { AppreciationIndicator } from '../AppreciationIndicator'
 import { Link } from '../Link'
 import { useTranslation } from 'next-i18next'
 import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
+import useModal from '../../contexts/ModalProvider'
 
 interface Props extends IObituary {
   appreciations?: number
@@ -63,6 +64,11 @@ export default function Obituary({
       }
     )
 
+  const { open } = useModal()
+  const openModal = () => {
+    open('AnotherModal', { lol: 'test' })
+  }
+
   return (
     <Box
       height="100%"
@@ -79,6 +85,7 @@ export default function Obituary({
         })`,
       }}
     >
+      <button onClick={openModal}>Open modal</button>
       <VStack p={6} flexDir="column" spacing={3} h="100%">
         <Text
           className="capitalize"

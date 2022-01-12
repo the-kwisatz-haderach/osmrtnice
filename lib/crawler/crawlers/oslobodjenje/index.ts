@@ -5,5 +5,5 @@ import pageProcessor from './pageProcessor'
 export const siteProcessor = createSiteProcessor(
   pageProcessor,
   nextPageNavigator,
-  (_, page) => page > 1
+  (_, page) => page > 2
 )

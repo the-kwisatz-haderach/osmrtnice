@@ -105,7 +105,11 @@ export default attachMiddleware().get(
                           ],
                         }),
                         ...(next && {
-                          _id: { $gt: new ObjectID(next) },
+                          _id: {
+                            $gt: ObjectID.isValid(next)
+                              ? ObjectID.createFromHexString(next)
+                              : next,
+                          },
                         }),
                       },
                     },

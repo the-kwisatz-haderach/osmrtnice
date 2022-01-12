@@ -2,18 +2,24 @@ import axios from 'axios'
 import { useInfiniteQuery } from 'react-query'
 import { IObituary } from '../../lib/domain/types'
 
-export const useObituaries = (params: { category?: string; query?: string }) =>
+interface Input {
+  category?: string
+  query?: string
+  limit?: number
+}
+
+export const useObituaries = (params: Input) =>
   useInfiniteQuery<{
     data: IObituary[]
     next?: string
     nextPage?: string
   }>(
     ['obituaries', params],
-    async ({ pageParam }: { pageParam?: string }) => {
+    async ({ pageParam = '' }: { pageParam?: string }) => {
       const res = await axios.get(
         `/api/obituaries?search=${params.query || ''}&category=${
           params.category || ''
-        }&limit=100&next=${pageParam ?? ''}`
+        }&limit=${params.limit || 60}&${pageParam}`
       )
       return res.data
     },

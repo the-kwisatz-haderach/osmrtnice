@@ -1,18 +1,20 @@
 import App from 'next/app'
 import { ComponentProps, ComponentType, ReactElement } from 'react'
 import { appWithTranslation } from 'next-i18next'
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
-import { AppProvider, IAppContext } from '../contexts/AppContext'
+
+import {
+  AppProvider,
+  IAppContext,
+  ReactQueryProvider,
+  ChakraProvider,
+  ModalProvider,
+} from '../contexts'
 import { IntersectionObserverProvider } from '../hooks/useIntersectionObserver'
 import { MainLayout } from '../layouts/MainLayout'
 import { makeAppLinks } from '../lib/storyblok/makeAppLinks'
 import Storyblok from '../lib/storyblok/client'
 import { StoryBlokLink } from '../lib/storyblok/common/types'
 import { IGlobalSettings, Story } from '../lib/storyblok/types'
-import '@fontsource/dancing-script/700.css'
-import '@fontsource/nunito'
 import '../styles/global.css'
 
 interface Props<T extends ComponentType> extends IAppContext {
@@ -20,20 +22,6 @@ interface Props<T extends ComponentType> extends IAppContext {
   pageProps: ComponentProps<T>
 }
 
-const theme = extendTheme({
-  fonts: {
-    heading: 'Dancing Script',
-    body: 'Nunito',
-  },
-})
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-})
 const observerOptions = { threshold: 0.8 }
 
 function MyApp<T extends ComponentType<any>>({
@@ -42,17 +30,18 @@ function MyApp<T extends ComponentType<any>>({
   ...appContext
 }: Props<T>): ReactElement {
   return (
-    <ChakraProvider theme={theme}>
-      <AppProvider {...appContext}>
-        <IntersectionObserverProvider options={observerOptions}>
-          <MainLayout>
-            <QueryClientProvider client={queryClient}>
-              <Component {...pageProps} />
-              <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-          </MainLayout>
-        </IntersectionObserverProvider>
-      </AppProvider>
+    <ChakraProvider>
+      <ReactQueryProvider>
+        <AppProvider {...appContext}>
+          <IntersectionObserverProvider options={observerOptions}>
+            <MainLayout>
+              <ModalProvider>
+                <Component {...pageProps} />
+              </ModalProvider>
+            </MainLayout>
+          </IntersectionObserverProvider>
+        </AppProvider>
+      </ReactQueryProvider>
     </ChakraProvider>
   )
 }
