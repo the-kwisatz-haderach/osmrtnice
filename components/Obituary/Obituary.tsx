@@ -16,26 +16,27 @@ import { AppreciationIndicator } from '../AppreciationIndicator'
 import { Link } from '../Link'
 import { useTranslation } from 'next-i18next'
 import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
-import useModal from '../../contexts/ModalProvider'
+import useModal from '../../contexts/ModalContext/'
 
 interface Props extends IObituary {
-  appreciations?: number
+  appreciations: number
 }
 
-export default function Obituary({
-  _id,
-  firstname,
-  middlename,
-  surname,
-  preamble,
-  long_text,
-  date_of_birth,
-  date_of_death,
-  image,
-  appreciations = 0,
-  faith,
-  type = 'obituary',
-}: Props): ReactElement {
+export default function Obituary(props: Props): ReactElement {
+  const {
+    image,
+    _id,
+    type,
+    preamble,
+    long_text,
+    date_of_birth,
+    date_of_death,
+    appreciations,
+    faith,
+    firstname,
+    middlename,
+    surname,
+  } = props
   const { t } = useTranslation()
   const [src, setSrc] = useState(
     image
@@ -66,7 +67,13 @@ export default function Obituary({
 
   const { open } = useModal()
   const openModal = () => {
-    open('AnotherModal', { lol: 'test' })
+    open('ObituaryModal', {
+      props,
+      rootModalProps: {
+        size: 'xl',
+        colorScheme: 'orange',
+      },
+    })
   }
 
   return (

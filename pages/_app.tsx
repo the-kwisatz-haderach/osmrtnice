@@ -1,7 +1,6 @@
 import App from 'next/app'
 import { ComponentProps, ComponentType, ReactElement } from 'react'
 import { appWithTranslation } from 'next-i18next'
-
 import {
   AppProvider,
   IAppContext,
