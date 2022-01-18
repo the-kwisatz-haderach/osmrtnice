@@ -92,7 +92,6 @@ export default function Obituary(props: Props): ReactElement {
         })`,
       }}
     >
-      <button onClick={openModal}>Open modal</button>
       <VStack p={6} flexDir="column" spacing={3} h="100%">
         <Text
           className="capitalize"
@@ -174,7 +173,11 @@ export default function Obituary(props: Props): ReactElement {
             isClicked={isClicked}
             onClick={onClickAppreciation}
           />
-          <Link href={`/${formattedType}/${_id}`} prefetch={false}>
+          <Link
+            onClick={openModal}
+            href={`/${formattedType}/${_id}`}
+            prefetch={false}
+          >
             {t('search-results-view_full')}
           </Link>
         </Flex>

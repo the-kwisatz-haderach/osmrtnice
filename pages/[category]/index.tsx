@@ -13,13 +13,20 @@ import { obituaryTypes } from '../../lib/domain'
 import { TopScroll } from '../../components/TopScroll'
 import { ProgressBar } from '../../components/ProgessBar'
 import { useObituaries } from '../../hooks/reactQuery/queries'
+import { connectToDb } from '../../db'
+import { getObituaries } from '../../lib/domain/getObituaries'
 
 interface Props {
   story: PageStory
   category: string
+  initialData: Awaited<ReturnType<typeof getObituaries>>
 }
 
-export default function Obituaries({ story, category }: Props): ReactElement {
+export default function Obituaries({
+  story,
+  category,
+  initialData,
+}: Props): ReactElement {
   const { t } = useTranslation()
   const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
@@ -38,10 +45,18 @@ export default function Obituaries({ story, category }: Props): ReactElement {
     isFetching,
     isPlaceholderData,
     isFetchingNextPage,
-  } = useObituaries({
-    category,
-    query,
-  })
+  } = useObituaries(
+    {
+      category,
+      query,
+    },
+    {
+      initialData: {
+        pages: [initialData],
+        pageParams: [],
+      },
+    }
+  )
 
   return (
     <div>
@@ -91,11 +106,16 @@ export const getStaticProps: GetStaticProps = async ({
     version: 'draft',
     language: locale,
   })
+  const { db } = await connectToDb()
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       story: story.data.story,
       category,
+      initialData: await getObituaries(db, {
+        limit: 50,
+        category: category as string,
+      }),
     },
     revalidate: 60,
   }

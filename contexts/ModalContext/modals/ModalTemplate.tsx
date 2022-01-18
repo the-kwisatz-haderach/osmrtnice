@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const ModalTemplate: React.FC<Props> = ({ title, footer, children }) => (
-  <ModalContent minW="75%">
+  <ModalContent maxW="1000px">
     <ModalHeader>{title}</ModalHeader>
     <ModalCloseButton />
     <ModalBody>{children}</ModalBody>

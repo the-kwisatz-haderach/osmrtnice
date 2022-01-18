@@ -7,8 +7,6 @@ export default async (
   switch (req.method) {
     case 'POST': {
       try {
-        console.log(req.body)
-        console.log(req.headers)
         res.status(200).json({ text: 'Wrong endpoint...' })
         break
       } catch (err) {

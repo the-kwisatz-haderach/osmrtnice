@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useInfiniteQuery } from 'react-query'
+import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query'
 import { IObituary } from '../../lib/domain/types'
 
 interface Input {
@@ -8,7 +8,14 @@ interface Input {
   limit?: number
 }
 
-export const useObituaries = (params: Input) =>
+export const useObituaries = (
+  params: Input,
+  options?: UseInfiniteQueryOptions<{
+    data: IObituary[]
+    next?: string
+    nextPage?: string
+  }>
+) =>
   useInfiniteQuery<{
     data: IObituary[]
     next?: string
@@ -24,7 +31,8 @@ export const useObituaries = (params: Input) =>
       return res.data
     },
     {
-      placeholderData: { pages: [], pageParams: [] },
+      ...options,
+      refetchOnMount: false,
       getNextPageParam: (lastPage) => {
         let nextString: string[] = []
         if (lastPage.next) {

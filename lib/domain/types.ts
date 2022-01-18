@@ -1,5 +1,13 @@
 import { Richtext } from 'storyblok-js-client'
 
+export interface IObituaryQuery {
+  next?: string
+  nextPage?: string
+  search?: string
+  category?: string
+  limit?: number
+}
+
 export type ObituaryType =
   | 'in-memoriam'
   | 'obituary'

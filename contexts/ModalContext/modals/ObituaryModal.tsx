@@ -6,7 +6,7 @@ export const ObituaryModal: React.FC<IObituary & { appreciations: number }> = (
   props
 ) => {
   return (
-    <ModalTemplate title={props.firstname}>
+    <ModalTemplate>
       <ObituaryLarge {...props} />
     </ModalTemplate>
   )

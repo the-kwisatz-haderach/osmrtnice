@@ -12,12 +12,16 @@ import { useTranslation } from 'next-i18next'
 import { TopScroll } from '../components/TopScroll'
 import { ProgressBar } from '../components/ProgessBar'
 import { useObituaries } from '../hooks/reactQuery/queries'
+import { getObituaries } from '../lib/domain/getObituaries'
+import { connectToDb } from '../db'
+import { Awaited } from '../utility-types'
 
 interface Props {
   story: PageStory
+  initialData: Awaited<ReturnType<typeof getObituaries>>
 }
 
-export default function Home({ story }: Props): ReactElement {
+export default function Home({ story, initialData }: Props): ReactElement {
   const { t } = useTranslation()
   const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
@@ -36,7 +40,15 @@ export default function Home({ story }: Props): ReactElement {
     isLoading,
     isFetchingNextPage,
     isPlaceholderData,
-  } = useObituaries({ query })
+  } = useObituaries(
+    { query },
+    {
+      initialData: {
+        pages: [initialData],
+        pageParams: [],
+      },
+    }
+  )
 
   return (
     <div>
@@ -84,10 +96,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
     cv: Date.now(),
     language: locale,
   })
+  const { db } = await connectToDb()
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       story: res.data.story as PageStory,
+      initialData: await getObituaries(db, {
+        limit: 50,
+      }),
     },
   }
 }

@@ -9,5 +9,5 @@ export const obituaryTypes: ObituaryType[] = [
   'obituary',
 ]
 
-export const createMetaTitle = (...names: any[]) =>
+export const createMetaTitle = (...names: string[]) =>
   [SITE_NAME, ...names].join(' | ')
