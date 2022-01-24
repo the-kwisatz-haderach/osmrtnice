@@ -3,7 +3,7 @@ import { Richtext } from 'storyblok-js-client'
 import { useRouter } from 'next/router'
 import { RichText } from '../../RichText'
 import { LinkField } from '../../../lib/storyblok/common/types'
-import { Box, Button, Container, Flex, HStack, Text } from '@chakra-ui/react'
+import { Box, Button, Container, HStack, Text } from '@chakra-ui/react'
 
 interface Props {
   title: string

@@ -1,4 +1,4 @@
-export const formatDate = (timestamp: string, locales = 'hr-HR'): string => {
+export const formatDate = (timestamp: string, locale?: string): string => {
   try {
     if (!timestamp) return ''
     const trimmed = timestamp.trim().replace(/\s+/, '')
@@ -10,7 +10,9 @@ export const formatDate = (timestamp: string, locales = 'hr-HR'): string => {
     date.setDate(day)
     date.setMonth(month - 1)
     date.setFullYear(year)
-    const formatted = new Intl.DateTimeFormat(locales).format(date)
+    const formatted = new Intl.DateTimeFormat(
+      locale || navigator.language
+    ).format(date)
     if (trimmed && !formatted) {
       return trimmed
     }

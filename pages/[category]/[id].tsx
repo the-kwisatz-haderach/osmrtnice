@@ -72,42 +72,51 @@ export const getStaticProps: GetStaticProps<
   IObituary,
   { id: string; category: string }
 > = async ({ params, locale }) => {
-  const id = params.id
-  const db = await (await connectToDb()).db
-  let obituary: IObituary
-  if (!ObjectID.isValid(params.id)) {
-    const story = await Storyblok.getStory(id, {
-      find_by: 'uuid',
-    })
-    obituary = {
-      ...(story.data.story.content as Story<Omit<IObituary, '_id'>>['content']),
-      date_created: story.data.story.first_published_at,
-      date_updated: story.data.story.published_at,
-      _id: story.data.story.uuid,
-      is_crawled: false,
-    }
-  } else {
-    obituary = JSON.parse(
-      JSON.stringify(
-        await db
-          .collection<Omit<IObituary, '_id'>>('obituaries')
-          .findOne({ _id: new ObjectID(params.id) })
+  try {
+    const db = await (await connectToDb()).db
+    let obituary: IObituary
+    if (!ObjectID.isValid(params.id)) {
+      const story = await Storyblok.getStory(
+        `${params.category}/${params.id}`,
+        {
+          version: 'draft',
+          language: locale,
+        }
       )
-    )
-  }
-  const appreciations = (
-    await db.collection<Omit<IAppreciation, '_id'>>('appreciations').findOne({
-      _id: ObjectID.isValid(params.id)
-        ? ObjectID.createFromHexString(params.id)
-        : params.id,
-    })
-  ).quantity
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-      ...obituary,
-      appreciations,
-    },
+      obituary = {
+        ...(story.data.story.content as Story<
+          Omit<IObituary, '_id'>
+        >['content']),
+        date_created: story.data.story.first_published_at,
+        date_updated: story.data.story.published_at,
+        _id: story.data.story.uuid,
+        is_crawled: false,
+      }
+    } else {
+      obituary = JSON.parse(
+        JSON.stringify(
+          await db
+            .collection<Omit<IObituary, '_id'>>('obituaries')
+            .findOne({ _id: new ObjectID(params.id) })
+        )
+      )
+    }
+    const appreciations = (
+      await db.collection<Omit<IAppreciation, '_id'>>('appreciations').findOne({
+        _id: ObjectID.isValid(params.id)
+          ? ObjectID.createFromHexString(params.id)
+          : obituary._id,
+      })
+    ).quantity
+    return {
+      props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+        ...obituary,
+        appreciations,
+      },
+    }
+  } catch (err) {
+    console.error(err)
   }
 }
 
