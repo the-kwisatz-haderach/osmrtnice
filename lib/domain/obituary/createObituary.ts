@@ -5,6 +5,7 @@ export default function createObituary(
 ): Omit<IObituary, '_id'> {
   return {
     date_created: new Date().toISOString(),
+    date_updated: new Date().toISOString(),
     firstname: input.firstname,
     surname: input.surname,
     date_of_birth: input.date_of_birth,
