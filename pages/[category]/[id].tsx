@@ -101,13 +101,16 @@ export const getStaticProps: GetStaticProps<
         )
       )
     }
-    const appreciations = (
-      await db.collection<Omit<IAppreciation, '_id'>>('appreciations').findOne({
-        _id: ObjectID.isValid(params.id)
-          ? ObjectID.createFromHexString(params.id)
-          : obituary._id,
-      })
-    ).quantity
+    const appreciations =
+      (
+        await db
+          .collection<Omit<IAppreciation, '_id'>>('appreciations')
+          .findOne({
+            _id: ObjectID.isValid(params.id)
+              ? ObjectID.createFromHexString(params.id)
+              : obituary._id,
+          })
+      )?.quantity || 0
     return {
       props: {
         ...(await serverSideTranslations(locale, ['common'])),
