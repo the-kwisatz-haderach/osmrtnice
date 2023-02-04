@@ -1,7 +1,13 @@
 import { Db, ObjectID } from 'mongodb'
 import Storyblok from '../storyblok/client'
 import { Story } from '../storyblok/types'
-import { IAppreciation, IObituary, IObituaryQuery, ObituaryType } from './types'
+import {
+  IAppreciation,
+  IObituary,
+  IObituaryFull,
+  IObituaryQuery,
+  ObituaryType,
+} from './types'
 
 export async function getObituaries(
   db: Db,
@@ -57,7 +63,7 @@ export async function getObituaries(
 
   const $regex = new RegExp(search.split(/s+/).join('|'), 'i')
 
-  const obituaries: IObituary[] =
+  const obituaries: IObituaryFull[] =
     limitDiff > 0
       ? JSON.parse(
           JSON.stringify(

@@ -15,6 +15,7 @@ import { ProgressBar } from '../../components/ProgessBar'
 import { useObituaries } from '../../hooks/reactQuery/queries'
 import { connectToDb } from '../../db'
 import { getObituaries } from '../../lib/domain/getObituaries'
+import { Awaited } from '../../utility-types'
 
 interface Props {
   story: PageStory

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query'
-import { IObituary } from '../../lib/domain/types'
+import { IObituaryFull } from '../../lib/domain/types'
 
 interface Input {
   category?: string
@@ -11,13 +11,13 @@ interface Input {
 export const useObituaries = (
   params: Input,
   options?: UseInfiniteQueryOptions<{
-    data: IObituary[]
+    data: IObituaryFull[]
     next?: string
     nextPage?: string
   }>
 ) =>
   useInfiniteQuery<{
-    data: IObituary[]
+    data: IObituaryFull[]
     next?: string
     nextPage?: string
   }>(

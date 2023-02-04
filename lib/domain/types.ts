@@ -42,6 +42,10 @@ export interface IObituary {
   is_crawled: boolean
 }
 
+export interface IObituaryFull extends IObituary {
+  appreciations: number
+}
+
 export interface IObituaryInput {
   firstname: string
   middlename?: string
