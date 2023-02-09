@@ -25,7 +25,8 @@ export interface IObituary {
   _id: string
   firstname: string
   surname: string
-  middlename?: string
+  name_misc?: string
+  prefix?: string
   date_of_birth: string
   date_of_death: string
   image?: string
@@ -44,17 +45,4 @@ export interface IObituary {
 
 export interface IObituaryFull extends IObituary {
   appreciations: number
-}
-
-export interface IObituaryInput {
-  firstname: string
-  middlename?: string
-  surname: string
-  date_of_birth: string
-  date_of_death: string
-  relative?: string
-  long_text?: string
-  image?: string
-  type?: ObituaryType
-  faith?: FaithType
 }

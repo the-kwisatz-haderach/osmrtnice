@@ -4,12 +4,24 @@ function isISOString(str: string): boolean {
   return d instanceof Date && !isNaN(d as any) && d.toISOString() === str // valid date
 }
 
-export const formatDate = (timestamp: string, locale?: string): string => {
+function isStoryBlokDate(str: string): boolean {
+  return /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/.test(str)
+}
+
+interface Options extends Intl.DateTimeFormatOptions {
+  locale?: string
+}
+
+export const formatDate = (
+  timestamp: string,
+  { locale, ...options }: Options = { locale: '' }
+): string => {
   try {
-    if (isISOString(timestamp)) {
-      return new Intl.DateTimeFormat(locale || navigator.language).format(
-        Date.parse(timestamp)
-      )
+    if (isISOString(timestamp) || isStoryBlokDate(timestamp)) {
+      return new Intl.DateTimeFormat(
+        locale || navigator.language,
+        options
+      ).format(Date.parse(timestamp))
     }
     return ''
   } catch {

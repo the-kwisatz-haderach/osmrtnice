@@ -9,7 +9,6 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import Image from 'next/image'
-import { RichText } from '../RichText'
 import { formatDate } from '../../utils/formatDate'
 import { IObituary } from '../../lib/domain/types'
 import { AppreciationIndicator } from '../AppreciationIndicator'
@@ -17,6 +16,9 @@ import { Link } from '../Link'
 import { useTranslation } from 'next-i18next'
 import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
 import useModal from '../../contexts/ModalContext/'
+import Storyblok from '../../lib/storyblok/client'
+
+const htmlTagsRegexp = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
 
 interface Props extends IObituary {
   appreciations: number
@@ -34,9 +36,14 @@ export default function Obituary(props: Props): ReactElement {
     appreciations,
     faith,
     firstname,
-    middlename,
+    name_misc,
     surname,
+    prefix,
   } = props
+  const fullname =
+    (prefix ? `${prefix} ` : '') +
+    [firstname, surname].join(' ') +
+    (name_misc ? ` - ${name_misc}` : '')
   const { t } = useTranslation()
   const [src, setSrc] = useState(
     image
@@ -45,25 +52,13 @@ export default function Obituary(props: Props): ReactElement {
         : `https:${image}`
       : '/images/placeholder-obit-image.jpeg'
   )
-  const [isClicked, setIsClicked] = useState(
-    Boolean(typeof window !== 'undefined' && window.localStorage.getItem(_id))
+  const isClicked = Boolean(
+    typeof window !== 'undefined' && window.localStorage.getItem(_id)
   )
   const formattedType = t(type.toLowerCase().replace('_', '-'))
-  const { data, mutate } = useIncrementAppreciation()
+  const { mutate } = useIncrementAppreciation()
   const onClickAppreciation = () =>
-    mutate(
-      { id: _id, increment: isClicked ? -1 : 1 },
-      {
-        onSuccess: () => {
-          if (isClicked) {
-            window.localStorage.removeItem(_id)
-          } else {
-            window.localStorage.setItem(_id, 'true')
-          }
-          setIsClicked((curr) => !curr)
-        },
-      }
-    )
+    mutate({ id: _id, increment: isClicked ? -1 : 1 })
 
   const { open } = useModal()
   const openModal = () => {
@@ -108,6 +103,8 @@ export default function Obituary(props: Props): ReactElement {
           width={140}
           height={140}
           position="relative"
+          onClick={openModal}
+          cursor="pointer"
         >
           <Image
             src={src}
@@ -124,8 +121,14 @@ export default function Obituary(props: Props): ReactElement {
             </Text>
           )}
           <Box>
-            <Heading as="h4" fontSize="2xl" mb={2}>
-              {[firstname, middlename, surname].join(' ')}
+            <Heading
+              onClick={openModal}
+              cursor="pointer"
+              as="h4"
+              fontSize="2xl"
+              mb={2}
+            >
+              {fullname}
             </Heading>
             <HStack
               hidden={!date_of_birth && !date_of_death}
@@ -134,41 +137,44 @@ export default function Obituary(props: Props): ReactElement {
               fontWeight="bold"
             >
               <Text fontSize="sm" hidden={!date_of_birth}>
-                {formatDate(date_of_birth)}
+                {formatDate(date_of_birth, {
+                  year: 'numeric',
+                })}
               </Text>
               <Text hidden={!date_of_birth || !date_of_death} fontSize="sm">
                 -
               </Text>
               <Text fontSize="sm" hidden={!date_of_death}>
-                {formatDate(date_of_death)}
+                {formatDate(date_of_death, {
+                  year: 'numeric',
+                })}
               </Text>
             </HStack>
           </Box>
         </VStack>
-        {long_text &&
-          (typeof long_text === 'string' ? (
-            <Text
-              className="capitalize"
-              fontSize="sm"
-              textAlign="justify"
-              sx={{
-                display: '-webkit-box',
-                WebkitLineClamp: 6,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}
-            >
-              {long_text}
-            </Text>
-          ) : (
-            <RichText className="capitalize" textAlign="justify">
-              {long_text}
-            </RichText>
-          ))}
+        {long_text && (
+          <Text
+            className="capitalize"
+            textAlign="justify"
+            fontSize="sm"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 6,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {typeof long_text === 'string'
+              ? long_text.replace(htmlTagsRegexp, '')
+              : Storyblok.richTextResolver
+                  .render(long_text)
+                  .replace(htmlTagsRegexp, '')}
+          </Text>
+        )}
         <Divider flex={1} alignSelf="flex-end" />
         <Flex alignItems="flex-end" justifyContent="space-between" width="100%">
           <AppreciationIndicator
-            appreciations={data?.quantity ?? appreciations}
+            appreciations={appreciations}
             faithType={faith}
             isClicked={isClicked}
             onClick={onClickAppreciation}

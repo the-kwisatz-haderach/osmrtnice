@@ -87,7 +87,7 @@ export async function getObituaries(
                           },
                         },
                         {
-                          middlename: {
+                          name_misc: {
                             $regex,
                           },
                         },

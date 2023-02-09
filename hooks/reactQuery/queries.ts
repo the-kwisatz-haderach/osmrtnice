@@ -1,6 +1,10 @@
 import axios from 'axios'
-import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query'
-import { IObituaryFull } from '../../lib/domain/types'
+import {
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
+  useQuery,
+} from 'react-query'
+import { IAppreciation, IObituaryFull } from '../../lib/domain/types'
 
 interface Input {
   category?: string
@@ -46,3 +50,13 @@ export const useObituaries = (
       keepPreviousData: true,
     }
   )
+
+export const useAppreciations = (id: string) =>
+  useQuery<Omit<IAppreciation, '_id'>>({
+    queryKey: ['appreciations', id],
+    placeholderData: { quantity: 0 },
+    queryFn: async () => {
+      const res = await axios.get(`/api/appreciations/${id}`)
+      return res.data
+    },
+  })

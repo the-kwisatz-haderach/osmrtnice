@@ -3,10 +3,14 @@ import React, { ReactElement, PropsWithChildren } from 'react'
 import { Richtext } from 'storyblok-js-client'
 import Storyblok from '../../lib/storyblok/client'
 
-export type Props = PropsWithChildren<{ children: Richtext }> & BoxProps
+export type Props = PropsWithChildren<{ children: Richtext | string }> &
+  BoxProps
 
 const RichText: React.FC<Props> = ({ children, ...props }): ReactElement => {
-  const richText = Storyblok.richTextResolver.render(children)
+  const richText =
+    typeof children === 'string'
+      ? children
+      : Storyblok.richTextResolver.render(children)
   return (
     <Box
       {...props}

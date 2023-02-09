@@ -10,21 +10,18 @@ import {
 import Image from 'next/image'
 import { RichText } from '../RichText'
 import { formatDate } from '../../utils/formatDate'
-import { IObituary } from '../../lib/domain/types'
+import { IObituaryFull } from '../../lib/domain/types'
 import { AppreciationIndicator } from '../AppreciationIndicator'
 import { useTranslation } from 'next-i18next'
 import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
 import { useState } from 'react'
 import { TextBlock } from '../TextBlock'
-
-interface Props extends IObituary {
-  appreciations: number
-}
+import { useAppreciations } from '../../hooks/reactQuery/queries'
 
 export const ObituaryLarge = ({
   _id,
   firstname,
-  middlename,
+  name_misc,
   surname,
   date_of_birth,
   date_of_death,
@@ -33,13 +30,19 @@ export const ObituaryLarge = ({
   long_text,
   date_created,
   date_updated,
-  appreciations,
   faith,
   relative,
   additional_information,
-  type,
-}: Props) => {
-  const fullname = [firstname, middlename, surname].join(' ')
+  is_crawled,
+  prefix,
+}: IObituaryFull) => {
+  const {
+    data: { quantity },
+  } = useAppreciations(_id)
+  const fullname =
+    (prefix ? `${prefix} ` : '') +
+    [firstname, surname].join(' ') +
+    (name_misc ? ` - ${name_misc}` : '')
   const { t } = useTranslation()
   const [src, setSrc] = useState(
     image
@@ -48,31 +51,18 @@ export const ObituaryLarge = ({
         : `https:${image}`
       : '/images/placeholder-obit-image.jpeg'
   )
-  const [isClicked, setIsClicked] = useState(
+  const isClicked =
     Boolean(
       typeof window !== 'undefined' && window.localStorage.getItem(_id)
     ) || false
-  )
 
-  const { mutate, data } = useIncrementAppreciation()
+  const { mutate } = useIncrementAppreciation()
 
   const onShowAppreciation = async () => {
-    mutate(
-      {
-        id: _id,
-        increment: isClicked ? -1 : 1,
-      },
-      {
-        onSuccess: () => {
-          if (isClicked) {
-            window.localStorage.removeItem(_id)
-          } else {
-            window.localStorage.setItem(_id, 'true')
-          }
-          setIsClicked((curr) => !curr)
-        },
-      }
-    )
+    mutate({
+      id: _id,
+      increment: isClicked ? -1 : 1,
+    })
   }
 
   const shareToFacebook = () => {
@@ -84,8 +74,8 @@ export const ObituaryLarge = ({
   }
 
   return (
-    <div>
-      <VStack mb={10}>
+    <Box py={8}>
+      <VStack mb={10} px={[4, 6, 10]}>
         <Box
           flexShrink={0}
           position="relative"
@@ -116,24 +106,34 @@ export const ObituaryLarge = ({
             textAlign="center"
             as="h1"
             lineHeight={1.1}
-            fontSize={['4xl', '6xl', '8xl']}
+            fontSize={['3xl', '4xl', '6xl']}
           >
             {fullname}
           </Heading>
-          {(date_of_birth || date_of_death) && (
-            <HStack fontSize={['lg', '2xl', '4xl']} fontWeight="bold">
-              {date_of_birth ? <Text>{formatDate(date_of_birth)}</Text> : ''}
-              {(date_of_birth || date_of_death) && <Text>-</Text>}
-              {date_of_death ? <Text>{formatDate(date_of_death)}</Text> : ''}
-            </HStack>
-          )}
+          <HStack
+            hidden={!date_of_birth && !date_of_death}
+            fontSize={['lg', 'xl', '4xl']}
+            fontWeight="bold"
+          >
+            <Text hidden={!date_of_birth}>
+              {formatDate(date_of_birth, {
+                year: 'numeric',
+              })}
+            </Text>
+            <Text hidden={!(date_of_birth && date_of_death)}>-</Text>
+            <Text hidden={!date_of_death}>
+              {formatDate(date_of_death, {
+                year: 'numeric',
+              })}
+            </Text>
+          </HStack>
         </VStack>
         {preamble && (
           <Text
             fontStyle="italic"
             textAlign="center"
             color="blackAlpha.500"
-            fontSize={['lg', '2xl']}
+            fontSize={['lg', 'xl']}
           >
             {preamble}
           </Text>
@@ -142,32 +142,39 @@ export const ObituaryLarge = ({
       <VStack spacing={5}>
         {long_text && (
           <Box
+            textAlign={is_crawled ? 'center' : 'unset'}
             width="100%"
-            py={[6, 8, 12]}
-            px={[6, 10, 16]}
-            backgroundColor="orange.400"
-            color="white"
             align="start"
             mx={{ md: -10 }}
+            px={[4, 6, 10]}
           >
-            {typeof long_text === 'string' ? (
-              <Text fontSize={['lg', 'xl', '2xl']}>{long_text}</Text>
-            ) : (
-              <RichText>{long_text}</RichText>
-            )}
+            <RichText>{long_text}</RichText>
           </Box>
         )}
         {relative && (
-          <Flex py={[2, 4]} px={[4, 6]} width="100%">
-            <Text fontSize={['md', 'lg']}>{relative}</Text>
+          <Flex width="100%" backgroundColor="orange.400" color="white">
+            <Text py={6} px={[4, 6, 10]} fontSize={['sm', 'md']}>
+              <b style={{ textTransform: 'capitalize' }}>{t('relatives')}:</b>{' '}
+              {relative}
+            </Text>
           </Flex>
         )}
         {additional_information && (
-          <Flex py={[2, 4]} px={[4, 6]} width="100%">
-            <Text fontSize={['md', 'lg']}>{additional_information}</Text>
+          <Flex px={[4, 6, 10]} width="100%">
+            <Text
+              p={5}
+              borderWidth={1}
+              borderStyle="dashed"
+              borderColor="gray.200"
+              width="100%"
+              fontSize={['sm', 'md']}
+            >
+              {additional_information}
+            </Text>
           </Flex>
         )}
         <Flex
+          px={[2, 4, 8]}
           textAlign="center"
           width="100%"
           flexWrap="wrap"
@@ -183,7 +190,9 @@ export const ObituaryLarge = ({
             backgroundColor="gray.700"
             label={t('published')}
           >
-            <Text fontSize={['md', 'lg']}>{formatDate(date_created)}</Text>
+            <Text fontSize={['sm', 'md', 'lg']}>
+              {formatDate(date_created)}
+            </Text>
           </TextBlock>
           <TextBlock
             flex={1}
@@ -191,7 +200,7 @@ export const ObituaryLarge = ({
             backgroundColor="gray.700"
             label={t('updated')}
           >
-            <Text fontSize={['md', 'lg']}>
+            <Text fontSize={['sm', 'md', 'lg']}>
               {formatDate(date_updated) || 'N/A'}
             </Text>
           </TextBlock>
@@ -219,7 +228,7 @@ export const ObituaryLarge = ({
           >
             <AppreciationIndicator
               size="large"
-              appreciations={data?.quantity ?? appreciations}
+              appreciations={quantity}
               onClick={onShowAppreciation}
               isClicked={isClicked}
               faithType={faith}
@@ -227,6 +236,6 @@ export const ObituaryLarge = ({
           </TextBlock>
         </Flex>
       </VStack>
-    </div>
+    </Box>
   )
 }

@@ -21,14 +21,14 @@ interface Props extends IObituary {
 export default function Obituary(props: Props): ReactElement {
   const {
     firstname,
-    middlename,
+    name_misc,
     surname,
     preamble,
     image,
     long_text,
     type,
   } = props
-  const fullname = [firstname, middlename, surname].join(' ')
+  const fullname = [firstname, surname, name_misc].join(' ')
   const { isFallback } = useRouter()
   const { t } = useTranslation()
 

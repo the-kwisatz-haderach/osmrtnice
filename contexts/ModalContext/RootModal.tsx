@@ -23,7 +23,7 @@ export function RootModal<T extends keyof IModals>({
   return (
     <Modal onClose={close} isOpen={name !== null} {...rootModalProps}>
       <ModalOverlay />
-      <CurrentModal {...(props as any)} />
+      <CurrentModal {...props} />
     </Modal>
   )
 }
