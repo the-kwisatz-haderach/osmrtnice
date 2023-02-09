@@ -3,7 +3,7 @@ import {
   useInfiniteQuery,
   UseInfiniteQueryOptions,
   useQuery,
-} from 'react-query'
+} from '@tanstack/react-query'
 import { IAppreciation, IObituaryFull } from '../../lib/domain/types'
 
 interface Input {
