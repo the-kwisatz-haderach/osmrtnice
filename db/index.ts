@@ -21,8 +21,8 @@ export async function connectToDb(): Promise<{
   if (cached.conn) {
     return cached.conn
   }
-
-  if (cached.promise !== null) {
+  // eslint-disable-next-line
+  if (!cached.promise) {
     const opts = {
       useNewUrlParser: true,
       useUnifiedTopology: true,

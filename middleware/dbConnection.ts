@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next'
-import { connectToDb } from '../db'
+import { connectToDb } from 'db'
 import { EnhancedNextApiRequest } from './types'
 
 export const dbConnection = async (

@@ -15,8 +15,15 @@
     "strictNullChecks": false,
     "isolatedModules": true,
     "downlevelIteration": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": "."
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/pathTranslations.js"],
+  "include": [
+    "src",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "lib/pathTranslations.js"
+  ],
   "exclude": ["node_modules"]
 }

@@ -14,11 +14,12 @@
       "jsx": true
     }
   },
-  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "plugins": ["import", "@typescript-eslint", "react", "prettier"],
   "extends": [
     "standard-with-typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
+    "plugin:import/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
@@ -59,9 +60,8 @@
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },
     "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
+      "typescript": true,
+      "node": true
     }
   }
 }
