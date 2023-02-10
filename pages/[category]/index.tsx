@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import React, { ReactElement, useCallback, useRef, useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
 import Page from '../../components/StoryBlok/PageBlok/PageBlok'
 import Storyblok from '../../lib/storyblok/client'
@@ -16,6 +16,7 @@ import { useObituaries } from '../../hooks/reactQuery/queries'
 import { connectToDb } from '../../db'
 import { getObituaries } from '../../lib/domain/getObituaries'
 import { Awaited } from '../../utility-types'
+import { useScrollToTop } from 'hooks/useScrollToTop'
 
 interface Props {
   story: PageStory
@@ -30,13 +31,7 @@ export default function Obituaries({
 }: Props): ReactElement {
   const { t } = useTranslation()
   const router = useRouter()
-  const ref = useRef<HTMLDivElement>(null)
-
-  const scrollToTop = useCallback(() => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }, [ref])
+  const [ref, scrollToTop] = useScrollToTop<HTMLDivElement>()
   const [query, setQuery] = useState((router?.query?.search as string) ?? '')
   const {
     data,

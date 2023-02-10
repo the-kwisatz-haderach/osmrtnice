@@ -1,20 +1,21 @@
+import { ReactElement, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { ReactElement, useCallback, useRef, useState } from 'react'
-import { SearchInput } from '../components/SearchInput'
-import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import Storyblok from '../lib/storyblok/client'
-import { PageStory } from '../lib/storyblok/types'
 import { Box, Flex } from '@chakra-ui/react'
-import { ObituaryGrid } from '../components/ObituaryGrid'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { TopScroll } from '../components/TopScroll'
-import { ProgressBar } from '../components/ProgessBar'
-import { useObituaries } from '../hooks/reactQuery/queries'
-import { getObituaries } from '../lib/domain/getObituaries'
-import { connectToDb } from '../db'
-import { Awaited } from '../utility-types'
+import { SearchInput } from 'components/SearchInput'
+import Page from 'components/StoryBlok/PageBlok/PageBlok'
+import Storyblok from 'lib/storyblok/client'
+import { PageStory } from 'lib/storyblok/types'
+import { ObituaryGrid } from 'components/ObituaryGrid'
+import { TopScroll } from 'components/TopScroll'
+import { ProgressBar } from 'components/ProgessBar'
+import { useObituaries } from 'hooks/reactQuery/queries'
+import { getObituaries } from 'lib/domain/getObituaries'
+import { connectToDb } from 'db'
+import { Awaited } from 'utility-types'
+import { useScrollToTop } from 'hooks/useScrollToTop'
 
 interface Props {
   story: PageStory
@@ -24,13 +25,7 @@ interface Props {
 export default function Home({ story, initialData }: Props): ReactElement {
   const { t } = useTranslation()
   const router = useRouter()
-  const ref = useRef<HTMLDivElement>(null)
-
-  const scrollToTop = useCallback(() => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }, [ref])
+  const [ref, scrollToTop] = useScrollToTop<HTMLDivElement>()
   const [query, setQuery] = useState((router?.query?.search as string) ?? '')
   const {
     data,
