@@ -113,7 +113,7 @@ export const getStaticProps: GetStaticProps = async ({
         category: category as string,
       }),
     },
-    revalidate: 60,
+    revalidate: 60 * 60 * 4,
   }
 }
 
