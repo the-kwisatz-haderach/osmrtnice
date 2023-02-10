@@ -1,4 +1,5 @@
-import { ObituaryLarge } from '../../../components/Obituary/ObituaryLarge'
+import { ObituaryContainer } from '../../../components/Obituary'
+import { ObituaryLarge } from '../../../components/Obituary/components/ObituaryLarge'
 import { IObituary } from '../../../lib/domain/types'
 import { ModalTemplate } from './ModalTemplate'
 
@@ -7,7 +8,7 @@ export const ObituaryModal: React.FC<IObituary & { appreciations: number }> = (
 ) => {
   return (
     <ModalTemplate>
-      <ObituaryLarge {...props} />
+      <ObituaryContainer {...props} Renderer={ObituaryLarge} />
     </ModalTemplate>
   )
 }

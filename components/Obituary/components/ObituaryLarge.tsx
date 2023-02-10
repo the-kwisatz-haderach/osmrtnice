@@ -7,18 +7,18 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import Image from 'next/image'
-import { RichText } from '../RichText'
-import { formatDate } from '../../utils/formatDate'
-import { IObituaryFull } from '../../lib/domain/types'
-import { AppreciationIndicator } from '../AppreciationIndicator'
+import { useCallback } from 'react'
+import { RichText } from '../../RichText'
+import { formatDate } from '../../../utils/formatDate'
+import { AppreciationIndicator } from '../../AppreciationIndicator'
 import { useTranslation } from 'next-i18next'
-import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
-import { useState } from 'react'
-import { TextBlock } from '../TextBlock'
-import { useAppreciations } from '../../hooks/reactQuery/queries'
+import { TextBlock } from '../../TextBlock'
+import { useAppreciations } from '../../../hooks/reactQuery/queries'
+import { ObituaryImage } from './ObituaryImage'
+import { ObituaryRenderer } from '../ObituaryContainer'
+import { formatName } from '../helpers/formatName'
 
-export const ObituaryLarge = ({
+export const ObituaryLarge: ObituaryRenderer = ({
   _id,
   firstname,
   name_misc,
@@ -35,43 +35,23 @@ export const ObituaryLarge = ({
   additional_information,
   is_crawled,
   prefix,
-}: IObituaryFull) => {
+  onShowAppreciation,
+}) => {
   const {
     data: { quantity },
   } = useAppreciations(_id)
-  const fullname =
-    (prefix ? `${prefix} ` : '') +
-    [firstname, surname].join(' ') +
-    (name_misc ? ` - ${name_misc}` : '')
+  const fullname = formatName({ prefix, firstname, surname, name_misc })
   const { t } = useTranslation()
-  const [src, setSrc] = useState(
-    image
-      ? image.startsWith('http')
-        ? image
-        : `https:${image}`
-      : '/images/placeholder-obit-image.jpeg'
-  )
   const isClicked =
-    Boolean(
-      typeof window !== 'undefined' && window.localStorage.getItem(_id)
-    ) || false
+    typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
 
-  const { mutate } = useIncrementAppreciation()
-
-  const onShowAppreciation = async () => {
-    mutate({
-      id: _id,
-      increment: isClicked ? -1 : 1,
-    })
-  }
-
-  const shareToFacebook = () => {
+  const shareToFacebook = useCallback(() => {
     window?.FB?.ui({
       display: 'popup',
       method: 'share',
       href: window.location.href,
     })
-  }
+  }, [])
 
   return (
     <Box py={8}>
@@ -88,13 +68,7 @@ export const ObituaryLarge = ({
           borderColor="gray.400"
           mb={3}
         >
-          <Image
-            src={src}
-            layout="fill"
-            placeholder="blur"
-            blurDataURL="/images/placeholder-person.png"
-            onError={() => setSrc('/images/placeholder-obit-image.jpeg')}
-          />
+          <ObituaryImage imgSrc={image} />
         </Box>
         <VStack
           alignItems="center"

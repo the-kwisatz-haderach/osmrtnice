@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Button, Container, Flex, GridItem, SimpleGrid } from '@chakra-ui/react'
 import { IObituaryFull } from '../../lib/domain/types'
-import { Obituary, ObituarySkeleton } from '../Obituary'
+import { Obituary, ObituarySkeleton, ObituaryContainer } from '../Obituary'
 import { EmptyState } from '../EmptyState'
 import { useTranslation } from 'next-i18next'
 import { ResultsDescription } from './ResultsDescription'
@@ -40,7 +40,7 @@ export default function ObituaryGrid({
                     obituary.size === 'large' ? 2 : 1,
                   ]}
                 >
-                  <Obituary {...obituary} />
+                  <ObituaryContainer {...obituary} Renderer={Obituary} />
                 </GridItem>
               ))}
         </SimpleGrid>

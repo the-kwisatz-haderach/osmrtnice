@@ -46,13 +46,6 @@ module.exports = {
     )
   },
   images: {
-    domains: [
-      'picsum.photos',
-      'a.storyblok.com',
-      'cdn.oslobodjenje.ba',
-      'digital.avaz.ba',
-      'www.nekros.info',
-      'www.osmrtnica.ba',
-    ],
+    domains: ['picsum.photos', 'a.storyblok.com', 'www.osmrtnica.ba'],
   },
 }

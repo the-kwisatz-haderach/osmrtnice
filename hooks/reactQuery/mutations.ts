@@ -8,6 +8,7 @@ import { IAppreciation, IObituaryFull } from '../../lib/domain/types'
 
 export const useIncrementAppreciation = () => {
   const queryClient = useQueryClient()
+
   return useMutation<IAppreciation, unknown, { id: string; increment: number }>(
     ['incrementAppreciation'],
     async ({ id, increment }) => {

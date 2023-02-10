@@ -1,4 +1,5 @@
-import React, { ReactElement, useState } from 'react'
+import { throttle } from 'lodash'
+import React, { useCallback, useMemo } from 'react'
 import {
   Box,
   Divider,
@@ -8,23 +9,20 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import Image from 'next/image'
-import { formatDate } from '../../utils/formatDate'
-import { IObituary } from '../../lib/domain/types'
-import { AppreciationIndicator } from '../AppreciationIndicator'
-import { Link } from '../Link'
+import { formatDate } from '../../../utils/formatDate'
+import { AppreciationIndicator } from '../../AppreciationIndicator'
+import { Link } from '../../Link'
 import { useTranslation } from 'next-i18next'
-import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
-import useModal from '../../contexts/ModalContext/'
-import Storyblok from '../../lib/storyblok/client'
+import { useIncrementAppreciation } from '../../../hooks/reactQuery/mutations'
+import useModal from '../../../contexts/ModalContext'
+import Storyblok from '../../../lib/storyblok/client'
+import { ObituaryImage } from './ObituaryImage'
+import { formatName } from '../helpers/formatName'
+import { ObituaryRenderer } from '../ObituaryContainer'
 
 const htmlTagsRegexp = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
 
-interface Props extends IObituary {
-  appreciations: number
-}
-
-export default function Obituary(props: Props): ReactElement {
+export const Obituary: ObituaryRenderer = (props) => {
   const {
     image,
     _id,
@@ -40,28 +38,25 @@ export default function Obituary(props: Props): ReactElement {
     surname,
     prefix,
   } = props
-  const fullname =
-    (prefix ? `${prefix} ` : '') +
-    [firstname, surname].join(' ') +
-    (name_misc ? ` - ${name_misc}` : '')
+  const fullname = formatName({ prefix, firstname, surname, name_misc })
   const { t } = useTranslation()
-  const [src, setSrc] = useState(
-    image
-      ? image.startsWith('http')
-        ? image
-        : `https:${image}`
-      : '/images/placeholder-obit-image.jpeg'
-  )
-  const isClicked = Boolean(
-    typeof window !== 'undefined' && window.localStorage.getItem(_id)
-  )
+  const isClicked =
+    typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
+
   const formattedType = t(type.toLowerCase().replace('_', '-'))
   const { mutate } = useIncrementAppreciation()
-  const onClickAppreciation = () =>
-    mutate({ id: _id, increment: isClicked ? -1 : 1 })
+  const throttledMutate = useMemo(() => throttle(mutate, 2000), [mutate])
+  const onClickAppreciation = useCallback(
+    () =>
+      throttledMutate({
+        id: _id,
+        increment: isClicked ? -1 : 1,
+      }),
+    [throttledMutate, _id, isClicked]
+  )
 
   const { open } = useModal()
-  const openModal = () => {
+  const openModal = useCallback(() => {
     open('ObituaryModal', {
       props,
       rootModalProps: {
@@ -69,7 +64,7 @@ export default function Obituary(props: Props): ReactElement {
         colorScheme: 'orange',
       },
     })
-  }
+  }, [open, props])
 
   return (
     <Box
@@ -106,13 +101,7 @@ export default function Obituary(props: Props): ReactElement {
           onClick={openModal}
           cursor="pointer"
         >
-          <Image
-            src={src}
-            layout="fill"
-            placeholder="blur"
-            blurDataURL="/images/placeholder-person.png"
-            onError={() => setSrc('/images/placeholder-obit-image.jpeg')}
-          />
+          <ObituaryImage imgSrc={image} />
         </Box>
         <VStack textAlign="center" spacing={3}>
           {preamble && (

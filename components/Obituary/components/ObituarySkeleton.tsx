@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Box, Skeleton, SkeletonText, VStack } from '@chakra-ui/react'
 
-export default function ObituarySkeleton(): ReactElement {
+export const ObituarySkeleton = (): ReactElement => {
   return (
     <Box
       height="100%"
