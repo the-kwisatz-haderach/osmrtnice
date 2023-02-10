@@ -8,10 +8,10 @@ const MONGODB_DB = process.env.MONGODB_DB || 'development'
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-let cached = (global as any).mongo
+let cached = global.mongo
 
 if (!cached) {
-  cached = (global as any).mongo = { conn: null, promise: null }
+  cached = global.mongo = { conn: null, promise: null }
 }
 
 export async function connectToDb(): Promise<{
@@ -22,18 +22,16 @@ export async function connectToDb(): Promise<{
     return cached.conn
   }
 
-  if (!cached.promise) {
+  if (cached.promise !== null) {
     const opts = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }
 
-    cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
-      return {
-        client,
-        db: client.db(MONGODB_DB),
-      }
-    })
+    cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => ({
+      dbClient: client,
+      db: client.db(MONGODB_DB),
+    }))
   }
   cached.conn = await cached.promise
   return cached.conn
