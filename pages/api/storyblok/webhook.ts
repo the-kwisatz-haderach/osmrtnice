@@ -16,7 +16,9 @@ export default attachMiddleware().post(
             const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${Storyblok.accessToken}`
             const storyRes = await fetch(url)
             if (storyRes.ok) {
-              const story: Story<IObituary> = await storyRes.json()
+              const {
+                story,
+              }: { story: Story<IObituary> } = await storyRes.json()
               const obituary: IObituary = {
                 _id: story.uuid,
                 firstname: story.content.firstname,
@@ -54,7 +56,9 @@ export default attachMiddleware().post(
             const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${Storyblok.accessToken}`
             const storyRes = await fetch(url)
             if (storyRes.ok) {
-              const story: Story<IObituary> = await storyRes.json()
+              const {
+                story,
+              }: { story: Story<IObituary> } = await storyRes.json()
               const result = await req.db
                 .collection('obituaries')
                 .deleteOne({ _id: story.uuid })
