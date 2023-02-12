@@ -48,10 +48,8 @@ export async function getObituaries(
     .find({ _id: { $in: storyBlokObituaries.map((data) => data.uuid) } })
     .toArray()
 
-  const formattedStories = storyBlokObituaries.map<
-    IObituary & { appreciations: number }
-  >((story: Story<Omit<IObituary, '_id'>>) => ({
-    ...story.content,
+  const formattedStories = storyBlokObituaries.map((story) => ({
+    ...((story.content as unknown) as Story<Omit<IObituary, '_id'>>['content']),
     date_created: story.first_published_at,
     date_updated: story.published_at,
     _id: story.uuid,

@@ -97,7 +97,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
       ...(await serverSideTranslations(locale, ['common'])),
       story: res.data.story as PageStory,
       initialData: await getObituaries(db, {
-        limit: 50,
+        limit: 9,
       }),
     },
     revalidate: 60 * 60 * 4,

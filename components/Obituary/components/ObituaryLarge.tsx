@@ -118,7 +118,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
           <Box
             textAlign={is_crawled ? 'center' : 'unset'}
             width="100%"
-            align="start"
+            alignItems="start"
             mx={{ md: -10 }}
             px={[4, 6, 10]}
           >
