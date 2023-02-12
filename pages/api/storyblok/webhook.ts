@@ -2,44 +2,67 @@ import { NextApiResponse } from 'next'
 import attachMiddleware from 'middleware'
 import { EnhancedNextApiRequest } from 'middleware/types'
 import Storyblok from 'lib/storyblok/client'
-
-type IStoryblokEventType = 'published' | 'unpublished' | 'deleted'
-
-interface IStoryblokEvent {
-  action: IStoryblokEventType
-  text: string
-  story_id: number
-  space_id: number
-}
-
-const isStoryblokEvent = (e: any): e is IStoryblokEvent => {
-  if (typeof e !== 'object' || e === null) return false
-  if (!('text' in e && typeof e.text === 'string')) return false
-  if (!('story_id' in e && typeof e.story_id === 'number')) return false
-  if (!('space_id' in e && typeof e.space_id === 'number')) return false
-  if (!('action' in e && typeof e.action === 'string')) return false
-  if (!['published', 'unpublished', 'deleted'].some((t) => t === e.action))
-    return false
-  return (e as IStoryblokEvent).text !== undefined
-}
+import { isStoryblokEvent } from './types'
+import { IObituary } from 'lib/domain/types'
+import { Story } from 'lib/storyblok/types'
 
 export default attachMiddleware().post(
-  async ({ body: event }: EnhancedNextApiRequest, res: NextApiResponse) => {
+  async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
     try {
+      const { body: event } = req
       if (isStoryblokEvent(event)) {
         switch (event.action) {
           case 'published': {
             const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${Storyblok.accessToken}`
-            const story = await fetch(url)
-            const parsed = await story.json()
-            return res.status(200).json(parsed)
+            const storyRes = await fetch(url)
+            if (storyRes.ok) {
+              const story: Story<IObituary> = await storyRes.json()
+              const obituary: IObituary = {
+                _id: story.uuid,
+                firstname: story.content.firstname,
+                surname: story.content.surname,
+                name_misc: story.content.name_misc,
+                prefix: story.content.prefix,
+                preamble: story.content.preamble,
+                additional_information: story.content.additional_information,
+                long_text: story.content.long_text,
+                city: story.content.city,
+                date_created: story.first_published_at,
+                date_updated: story.published_at,
+                date_of_birth: story.content.date_of_birth,
+                date_of_death: story.content.date_of_death,
+                faith: story.content.faith,
+                is_crawled: false,
+                relative: story.content.relative,
+                size: story.content.size,
+                type: story.content.type,
+                image: story.content.image,
+              }
+              const result = await req.db
+                .collection('obituaries')
+                .findOneAndUpdate({ _id: obituary._id }, obituary, {
+                  upsert: true,
+                })
+              if (result.ok === 1) {
+                return res.status(200).json(story)
+              }
+            }
+            break
           }
-          case 'unpublished': {
-            const story = await Storyblok.getStory(event.story_id.toString())
-            return res.status(200).json(story)
-          }
+          case 'unpublished':
           case 'deleted': {
-            return res.status(200).end()
+            const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${Storyblok.accessToken}`
+            const storyRes = await fetch(url)
+            if (storyRes.ok) {
+              const story: Story<IObituary> = await storyRes.json()
+              const result = await req.db
+                .collection('obituaries')
+                .deleteOne({ _id: story.uuid })
+              if (result.result.ok === 1) {
+                return res.status(200).end()
+              }
+            }
+            break
           }
           default: {
             return res.status(404).end()
