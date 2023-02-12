@@ -29,8 +29,10 @@ export default attachMiddleware().post(
       if (isStoryblokEvent(event)) {
         switch (event.action) {
           case 'published': {
-            const story = await Storyblok.getStory(event.story_id.toString())
-            return res.status(200).json(story)
+            const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${Storyblok.accessToken}`
+            const story = await fetch(url)
+            const parsed = await story.json()
+            return res.status(200).json(parsed)
           }
           case 'unpublished': {
             const story = await Storyblok.getStory(event.story_id.toString())
@@ -44,6 +46,7 @@ export default attachMiddleware().post(
           }
         }
       }
+      return res.status(400).end()
     } catch (err) {
       console.error(err)
       res.status(500).end()
