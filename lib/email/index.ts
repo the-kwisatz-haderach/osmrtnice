@@ -1,6 +1,6 @@
-import nodemailer, { SendMailOptions } from 'nodemailer'
+import { createTransport, SendMailOptions } from 'nodemailer'
 
-const transporter = nodemailer.createTransport({
+const transporter = createTransport({
   port: Number.parseInt(process.env.EMAIL_PORT ?? ''),
   host: process.env.EMAIL_HOST,
   auth: {

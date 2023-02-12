@@ -10,7 +10,7 @@ export default async (
         res.status(200).json({ text: 'Wrong endpoint...' })
         break
       } catch (err) {
-        console.error(err.message)
+        console.error(err)
         res.status(400).end()
         break
       }

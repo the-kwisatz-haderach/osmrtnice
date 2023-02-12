@@ -11,7 +11,10 @@ export const TranslatedLink: React.FC<LinkProps> = ({
   const localePath: string =
     locale === defaultLocale || !locale ? '' : `/${locale}`
   // Get translated route for non-default locales
-  const translatedPath: string = pathTranslations[locale]?.[href as string]
+  const translatedPath: string =
+    pathTranslations[locale as 'hr']?.[
+      href as keyof typeof pathTranslations['hr']
+    ]
   // Set `as` prop to change displayed URL in browser
   const as = translatedPath ? `${localePath}${translatedPath}` : undefined
   return (

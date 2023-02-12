@@ -7,7 +7,7 @@ export const useOutsideClick = <E extends Element>(
   const memoizedOnOutsideClick = useRef(onOutsideClick).current
 
   useEffect(() => {
-    const listener = (e: PointerEvent): void => {
+    const listener: EventListener = (e): void => {
       const isOutsideClick = e.composedPath().every((el) => el !== ref.current)
       if (isOutsideClick) {
         memoizedOnOutsideClick()

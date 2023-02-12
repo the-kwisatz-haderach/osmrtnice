@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, DetailedHTMLProps } from 'react'
 import Image from 'next/image'
 import { InfoList } from '../InfoList'
 import { FooterBottom } from './components/FooterBottom'
@@ -12,10 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 interface Props
-  extends React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLElement>,
-    HTMLElement
-  > {
+  extends DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
   menuItems: IMenuItem[]
   address: string
   phone: string

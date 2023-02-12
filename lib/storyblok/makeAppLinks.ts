@@ -1,11 +1,13 @@
 import { IAppContext } from '../../contexts/AppContext'
 import { StoryBlokLink } from './common/types'
 
+type IAppLinks = Record<string, IAppContext['menuItems']>
+
 export const makeAppLinks = (
   defaultLocale: string,
   ignorePaths: string[] = []
-) => (links: StoryBlokLink[]): { [key: string]: IAppContext['menuItems'] } => {
-  return links.reduce((acc, curr) => {
+) => (links: StoryBlokLink[]): IAppLinks =>
+  links.reduce<IAppLinks>((acc, curr) => {
     if (ignorePaths.includes(curr.slug)) {
       return acc
     }
@@ -30,4 +32,3 @@ export const makeAppLinks = (
       ],
     }
   }, {})
-}

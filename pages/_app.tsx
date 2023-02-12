@@ -1,4 +1,4 @@
-import App from 'next/app'
+import App, { AppContext } from 'next/app'
 import { ComponentProps, ComponentType, ReactElement } from 'react'
 import { appWithTranslation } from 'next-i18next'
 import {
@@ -45,7 +45,9 @@ function MyApp<T extends ComponentType<any>>({
   )
 }
 
-MyApp.getInitialProps = async (appContext): Promise<IAppContext> => {
+MyApp.getInitialProps = async (
+  appContext: AppContext
+): Promise<IAppContext> => {
   const initialProps = await App.getInitialProps(appContext)
   const [data, response] = await Promise.all([
     Storyblok.getStory('global', {

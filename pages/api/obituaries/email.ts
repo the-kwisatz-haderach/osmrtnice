@@ -25,7 +25,7 @@ export default async (
         })
         res.status(204).json({ messageId })
       } catch (err) {
-        console.error(err.message)
+        console.error(err)
         res.status(400).end()
       }
       break

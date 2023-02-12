@@ -1,4 +1,5 @@
 import { Box, Container } from '@chakra-ui/react'
+import { ObituaryContainer } from 'components/Obituary'
 import { capitalize } from 'lodash'
 import { ObjectID } from 'mongodb'
 import { GetStaticPaths, GetStaticProps } from 'next'
@@ -61,7 +62,7 @@ export default function Obituary(props: Props): ReactElement {
           px={[4, 6, 10]}
           py={[6, 8, 14]}
         >
-          <ObituaryLarge {...props} />
+          <ObituaryContainer {...props} Renderer={ObituaryLarge} />
         </Container>
       </Box>
     </div>
@@ -137,7 +138,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
             .limit(100)
             .toArray()
         )
-      ).flatMap((entry) => ({
+      ).flatMap((entry: IObituary) => ({
         params: { id: entry._id, category: type },
       }))
     )
