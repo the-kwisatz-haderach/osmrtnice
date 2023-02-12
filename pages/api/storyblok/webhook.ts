@@ -23,20 +23,18 @@ const isStoryblokEvent = (e: any): e is IStoryblokEvent => {
   return (e as IStoryblokEvent).text !== undefined
 }
 
-export default attachMiddleware().get(
+export default attachMiddleware().post(
   async ({ body: event }: EnhancedNextApiRequest, res: NextApiResponse) => {
     try {
       if (isStoryblokEvent(event)) {
         switch (event.action) {
           case 'published': {
             const story = await Storyblok.getStory(event.story_id.toString())
-            console.log(story)
-            return res.status(200).end()
+            return res.status(200).json(story)
           }
           case 'unpublished': {
             const story = await Storyblok.getStory(event.story_id.toString())
-            console.log(story)
-            return res.status(200).end()
+            return res.status(200).json(story)
           }
           case 'deleted': {
             return res.status(200).end()
