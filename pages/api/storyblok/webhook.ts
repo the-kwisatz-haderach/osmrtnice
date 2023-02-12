@@ -13,7 +13,7 @@ interface IStoryblokEvent {
 }
 
 const isStoryblokEvent = (e: any): e is IStoryblokEvent => {
-  if (typeof e !== 'object' || e !== null) return false
+  if (typeof e !== 'object' || e === null) return false
   if (!('text' in e && typeof e.text === 'string')) return false
   if (!('story_id' in e && typeof e.story_id === 'number')) return false
   if (!('space_id' in e && typeof e.space_id === 'number')) return false
