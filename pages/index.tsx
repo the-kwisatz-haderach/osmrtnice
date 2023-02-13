@@ -16,6 +16,7 @@ import { getObituaries } from 'lib/domain/getObituaries'
 import { connectToDb } from 'db'
 import { Awaited } from 'utility-types'
 import { useScrollToTop } from 'hooks/useScrollToTop'
+import { DEFAULT_LIST_LIMIT, REVALIDATE_TIME_SECONDS } from 'lib/constants'
 
 interface Props {
   story: PageStory
@@ -97,9 +98,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
       ...(await serverSideTranslations(locale, ['common'])),
       story: res.data.story as PageStory,
       initialData: await getObituaries(db, {
-        limit: 9,
+        limit: DEFAULT_LIST_LIMIT,
       }),
     },
-    revalidate: 60 * 60 * 4,
+    revalidate: REVALIDATE_TIME_SECONDS,
   }
 }

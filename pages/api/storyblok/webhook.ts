@@ -19,8 +19,8 @@ export default attachMiddleware().post(
               const {
                 story,
               }: { story: Story<IObituary> } = await storyRes.json()
-              const obituary: IObituary = {
-                _id: story.uuid,
+              const obituary: Omit<IObituary, '_id'> = {
+                storyId: story.id,
                 firstname: story.content.firstname,
                 surname: story.content.surname,
                 name_misc: story.content.name_misc,
@@ -39,32 +39,24 @@ export default attachMiddleware().post(
                 size: story.content.size,
                 type: story.content.type,
                 image: story.content.image,
+                appreciations: 0,
               }
               const result = await req.db
                 .collection('obituaries')
-                .findOneAndUpdate({ _id: obituary._id }, obituary, {
-                  upsert: true,
-                })
-              if (result.ok === 1) {
-                return res.status(200).json(story)
+                .insertOne(obituary)
+              if (result.result.ok === 1) {
+                return res.status(200).end()
               }
             }
             break
           }
           case 'unpublished':
           case 'deleted': {
-            const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${Storyblok.accessToken}`
-            const storyRes = await fetch(url)
-            if (storyRes.ok) {
-              const {
-                story,
-              }: { story: Story<IObituary> } = await storyRes.json()
-              const result = await req.db
-                .collection('obituaries')
-                .deleteOne({ _id: story.uuid })
-              if (result.result.ok === 1) {
-                return res.status(200).end()
-              }
+            const result = await req.db
+              .collection('obituaries')
+              .deleteOne({ storyId: event.story_id })
+            if (result.result.ok === 1) {
+              return res.status(200).end()
             }
             break
           }

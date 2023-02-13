@@ -13,33 +13,37 @@ import { formatDate } from '../../../utils/formatDate'
 import { AppreciationIndicator } from '../../AppreciationIndicator'
 import { useTranslation } from 'next-i18next'
 import { TextBlock } from '../../TextBlock'
-import { useAppreciations } from '../../../hooks/reactQuery/queries'
 import { ObituaryImage } from './ObituaryImage'
 import { ObituaryRenderer } from '../ObituaryContainer'
 import { formatName } from '../helpers/formatName'
+import { useObituary } from 'hooks/reactQuery/queries'
 
 export const ObituaryLarge: ObituaryRenderer = ({
-  _id,
-  firstname,
-  name_misc,
-  surname,
-  date_of_birth,
-  date_of_death,
-  image,
-  preamble,
-  long_text,
-  date_created,
-  date_updated,
-  faith,
-  relative,
-  additional_information,
-  is_crawled,
-  prefix,
   onShowAppreciation,
+  ...props
 }) => {
+  const { data } = useObituary(props._id, {
+    initialData: props,
+  })
   const {
-    data: { quantity },
-  } = useAppreciations(_id)
+    _id,
+    firstname,
+    name_misc,
+    surname,
+    date_of_birth,
+    date_of_death,
+    image,
+    preamble,
+    long_text,
+    date_created,
+    date_updated,
+    faith,
+    relative,
+    additional_information,
+    is_crawled,
+    prefix,
+    appreciations,
+  } = data
   const fullname = formatName({ prefix, firstname, surname, name_misc })
   const { t } = useTranslation()
   const isClicked =
@@ -202,7 +206,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
           >
             <AppreciationIndicator
               size="large"
-              appreciations={quantity}
+              appreciations={appreciations}
               onClick={onShowAppreciation}
               isClicked={isClicked}
               faithType={faith}

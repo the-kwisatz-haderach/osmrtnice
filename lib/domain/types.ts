@@ -2,7 +2,6 @@ import { Richtext } from 'storyblok-js-client'
 
 export interface IObituaryQuery {
   next?: string
-  nextPage?: string
   search?: string
   category?: string
   limit?: number
@@ -16,13 +15,9 @@ export type ObituaryType =
 
 export type FaithType = 'christian' | 'muslim'
 
-export interface IAppreciation {
-  _id: string
-  quantity: number
-}
-
 export interface IObituary {
   _id: string
+  storyId: number
   firstname: string
   surname: string
   name_misc?: string
@@ -41,8 +36,5 @@ export interface IObituary {
   date_updated?: string
   faith?: FaithType
   is_crawled: boolean
-}
-
-export interface IObituaryFull extends IObituary {
   appreciations: number
 }

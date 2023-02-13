@@ -3,8 +3,9 @@ import {
   useInfiniteQuery,
   UseInfiniteQueryOptions,
   useQuery,
+  UseQueryOptions,
 } from '@tanstack/react-query'
-import { IAppreciation, IObituaryFull } from '../../lib/domain/types'
+import { IObituary } from '../../lib/domain/types'
 
 interface Input {
   category?: string
@@ -12,51 +13,49 @@ interface Input {
   limit?: number
 }
 
+export const useObituary = (id: string, options?: UseQueryOptions<IObituary>) =>
+  useQuery<IObituary>({
+    ...options,
+    queryKey: ['obituaries', id],
+    queryFn: async () => {
+      const res = await axios.get<IObituary>('/api/obituaries/' + id)
+      return res.data
+    },
+  })
+
 export const useObituaries = (
   params: Input,
   options?: UseInfiniteQueryOptions<{
-    data: IObituaryFull[]
+    data: IObituary[]
     next?: string
-    nextPage?: string
   }>
 ) =>
   useInfiniteQuery<{
-    data: IObituaryFull[]
+    data: IObituary[]
     next?: string
-    nextPage?: string
   }>(
-    ['obituaries', params],
+    ['obituariesInfinite', params],
     async ({ pageParam = '' }: { pageParam?: string }) => {
-      const res = await axios.get(
-        `/api/obituaries?search=${params.query || ''}&category=${
-          params.category || ''
-        }&limit=${params.limit || 60}&${pageParam}`
-      )
+      const query = new URLSearchParams()
+      if (params.query) {
+        query.append('search', params.query)
+      }
+      if (params.category) {
+        query.append('category', params.category)
+      }
+      if (pageParam) {
+        query.append('next', pageParam)
+      }
+      if (params.limit) {
+        query.append('limit', params.limit.toString())
+      }
+      const res = await axios.get('/api/obituaries?' + query.toString())
       return res.data
     },
     {
       ...options,
       refetchOnMount: false,
-      getNextPageParam: (lastPage) => {
-        let nextString: string[] = []
-        if (lastPage.next) {
-          nextString.push(`next=${lastPage.next}`)
-        }
-        if (lastPage.nextPage) {
-          nextString.push(`nextPage=${lastPage.nextPage}`)
-        }
-        return nextString.join('&') || undefined
-      },
+      getNextPageParam: (lastPage) => lastPage.next,
       keepPreviousData: true,
     }
   )
-
-export const useAppreciations = (id: string) =>
-  useQuery<Omit<IAppreciation, '_id'>>({
-    queryKey: ['appreciations', id],
-    placeholderData: { quantity: 0 },
-    queryFn: async () => {
-      const res = await axios.get(`/api/appreciations/${id}`)
-      return res.data
-    },
-  })

@@ -1,15 +1,15 @@
 import { useCallback, useMemo } from 'react'
 import { throttle } from 'lodash'
-import { IObituaryFull } from '../../lib/domain/types'
+import { IObituary } from '../../lib/domain/types'
 import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
 
-interface RendererProps extends IObituaryFull {
+interface RendererProps extends IObituary {
   onShowAppreciation: () => void
 }
 
 export type ObituaryRenderer = React.FC<RendererProps>
 
-interface Props extends IObituaryFull {
+interface Props extends IObituary {
   Renderer: ObituaryRenderer
 }
 

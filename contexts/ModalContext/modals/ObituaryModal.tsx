@@ -3,9 +3,7 @@ import { ObituaryLarge } from '../../../components/Obituary/components/ObituaryL
 import { IObituary } from '../../../lib/domain/types'
 import { ModalTemplate } from './ModalTemplate'
 
-export const ObituaryModal: React.FC<IObituary & { appreciations: number }> = (
-  props
-) => {
+export const ObituaryModal: React.FC<IObituary> = (props) => {
   return (
     <ModalTemplate>
       <ObituaryContainer {...props} Renderer={ObituaryLarge} />

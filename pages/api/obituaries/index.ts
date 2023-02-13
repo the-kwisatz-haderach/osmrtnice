@@ -7,14 +7,13 @@ import { EnhancedNextApiRequest } from '../../../middleware/types'
 export default attachMiddleware().get(
   async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
     try {
-      const { data, next, nextPage } = await getObituaries(
+      const { data, next } = await getObituaries(
         req.db,
         parseObituaryQuery(req.query)
       )
       res.status(200).json({
         data,
         next,
-        nextPage,
       })
     } catch (err) {
       console.error(err)

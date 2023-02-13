@@ -11,15 +11,9 @@ import React, { ReactElement } from 'react'
 import { ObituaryLarge } from '../../components/Obituary/components/ObituaryLarge'
 import { connectToDb } from '../../db'
 import { createMetaTitle, obituaryTypes } from '../../lib/domain'
-import { IAppreciation, IObituary } from '../../lib/domain/types'
-import Storyblok from '../../lib/storyblok/client'
-import { Story } from '../../lib/storyblok/types'
+import { IObituary } from '../../lib/domain/types'
 
-interface Props extends IObituary {
-  appreciations: number
-}
-
-export default function Obituary(props: Props): ReactElement {
+export default function Obituary(props: IObituary): ReactElement {
   const {
     firstname,
     name_misc,
@@ -74,49 +68,18 @@ export const getStaticProps: GetStaticProps<
   { id: string; category: string }
 > = async ({ params, locale }) => {
   try {
-    const db = await (await connectToDb()).db
-    let obituary: IObituary
-    if (!ObjectID.isValid(params.id)) {
-      const story = await Storyblok.getStory(
-        `${params.category}/${params.id}`,
-        {
-          version: 'draft',
-          language: locale,
-        }
-      )
-      obituary = {
-        ...(story.data.story.content as Story<
-          Omit<IObituary, '_id'>
-        >['content']),
-        date_created: story.data.story.first_published_at,
-        date_updated: story.data.story.published_at,
-        _id: story.data.story.uuid,
-        is_crawled: false,
-      }
-    } else {
-      obituary = JSON.parse(
-        JSON.stringify(
-          await db
-            .collection<Omit<IObituary, '_id'>>('obituaries')
-            .findOne({ _id: new ObjectID(params.id) })
-        )
-      )
-    }
-    const appreciations =
-      (
+    const { db } = await connectToDb()
+    const obituary: IObituary = JSON.parse(
+      JSON.stringify(
         await db
-          .collection<Omit<IAppreciation, '_id'>>('appreciations')
-          .findOne({
-            _id: ObjectID.isValid(params.id)
-              ? ObjectID.createFromHexString(params.id)
-              : obituary._id,
-          })
-      )?.quantity || 0
+          .collection<Omit<IObituary, '_id'>>('obituaries')
+          .findOne({ _id: new ObjectID(params.id) })
+      )
+    )
     return {
       props: {
         ...(await serverSideTranslations(locale, ['common'])),
         ...obituary,
-        appreciations,
       },
     }
   } catch (err) {

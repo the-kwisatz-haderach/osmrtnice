@@ -4,33 +4,41 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query'
-import { IAppreciation, IObituaryFull } from '../../lib/domain/types'
+import { IObituary } from 'lib/domain/types'
 
 export const useIncrementAppreciation = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<IAppreciation, unknown, { id: string; increment: number }>(
+  return useMutation<
+    { appreciations: number },
+    unknown,
+    { id: string; increment: number }
+  >(
     ['incrementAppreciation'],
     async ({ id, increment }) => {
-      const res = await axios.post<IAppreciation>('/api/appreciations', {
-        id,
-        increment,
-      })
+      const res = await axios.post<{ appreciations: number }>(
+        '/api/appreciations',
+        {
+          id,
+          increment,
+        }
+      )
       return res.data
     },
     {
       onSuccess: (data, { id }) => {
-        queryClient.invalidateQueries(['appreciations', id])
-        queryClient.setQueryData(['appreciations', id], data)
+        queryClient.invalidateQueries(['obituaries', id])
+        queryClient.invalidateQueries(['obituariesInfinite'], {
+          type: 'inactive',
+        })
         queryClient.setQueriesData<
           InfiniteData<{
-            data: IObituaryFull[]
+            data: IObituary[]
             next?: string
-            nextPage?: string
           }>
         >(
           {
-            queryKey: ['obituaries'],
+            queryKey: ['obituariesInfinite'],
             predicate: (q) => q.isActive(),
           },
           (old) => ({
@@ -41,7 +49,7 @@ export const useIncrementAppreciation = () => {
                 obit._id === id
                   ? {
                       ...obit,
-                      appreciations: data.quantity,
+                      appreciations: data.appreciations,
                     }
                   : obit
               ),

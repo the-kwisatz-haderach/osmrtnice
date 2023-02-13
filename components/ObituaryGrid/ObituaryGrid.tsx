@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react'
 import { Button, Container, Flex, GridItem, SimpleGrid } from '@chakra-ui/react'
-import { IObituaryFull } from '../../lib/domain/types'
+import { IObituary } from '../../lib/domain/types'
 import { Obituary, ObituarySkeleton, ObituaryContainer } from '../Obituary'
 import { EmptyState } from '../EmptyState'
 import { useTranslation } from 'next-i18next'
 import { ResultsDescription } from './ResultsDescription'
 
 interface Props {
-  obituaries: IObituaryFull[]
+  obituaries: IObituary[]
   onLoadMore: () => void
   hasMore: boolean
   isLoading: boolean
