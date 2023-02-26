@@ -61,8 +61,10 @@ export async function getObituaries(
     )
   )
 
+  const data = obituaries.slice(0, limit)
+
   return {
-    data: obituaries.slice(0, -1),
-    next: obituaries.length > limit ? obituaries.slice(-1)[0]?._id : null,
+    data,
+    next: obituaries.length > limit ? data[data.length - 1]?._id : null,
   }
 }

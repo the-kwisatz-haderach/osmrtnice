@@ -41,7 +41,7 @@ export default function Home({ story, initialData }: Props): ReactElement {
     {
       initialData: {
         pages: [initialData],
-        pageParams: [],
+        pageParams: [undefined],
       },
     }
   )

@@ -17,6 +17,7 @@ import { connectToDb } from '../../db'
 import { getObituaries } from '../../lib/domain/getObituaries'
 import { Awaited } from '../../utility-types'
 import { useScrollToTop } from 'hooks/useScrollToTop'
+import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
 
 interface Props {
   story: PageStory
@@ -49,7 +50,7 @@ export default function Obituaries({
     {
       initialData: {
         pages: [initialData],
-        pageParams: [],
+        pageParams: [undefined],
       },
     }
   )
@@ -109,11 +110,10 @@ export const getStaticProps: GetStaticProps = async ({
       story: story.data.story,
       category,
       initialData: await getObituaries(db, {
-        limit: 50,
         category: category as string,
       }),
     },
-    revalidate: 60 * 60 * 4,
+    revalidate: REVALIDATE_TIME_SECONDS,
   }
 }
 
