@@ -17,46 +17,47 @@ export async function getObituaries(
     JSON.stringify(
       await db
         .collection<Omit<IObituary, '_id'>>('obituaries')
-        .aggregate([
+        .find(
           {
-            $match: {
-              ...(category && {
-                $and: [
-                  {
-                    type: category as ObituaryType,
-                  },
-                ],
-              }),
-              ...(search && {
-                $or: [
-                  {
-                    firstname: {
-                      $regex,
-                    },
-                  },
-                  {
-                    name_misc: {
-                      $regex,
-                    },
-                  },
-                  {
-                    surname: {
-                      $regex,
-                    },
-                  },
-                ],
-              }),
-              ...(next && {
-                _id: {
-                  $gt: ObjectID.isValid(next)
-                    ? ObjectID.createFromHexString(next)
-                    : next,
+            ...(category && {
+              $and: [
+                {
+                  type: category as ObituaryType,
                 },
-              }),
-            },
+              ],
+            }),
+            ...(search && {
+              $or: [
+                {
+                  firstname: {
+                    $regex,
+                  },
+                },
+                {
+                  name_misc: {
+                    $regex,
+                  },
+                },
+                {
+                  surname: {
+                    $regex,
+                  },
+                },
+              ],
+            }),
+            ...(next && {
+              _id: {
+                $lt: ObjectID.isValid(next)
+                  ? ObjectID.createFromHexString(next)
+                  : next,
+              },
+            }),
           },
-        ])
-        .limit(limit + 1)
+          {
+            limit: limit + 1,
+            sort: { _id: -1 },
+          }
+        )
         .toArray()
     )
   )
