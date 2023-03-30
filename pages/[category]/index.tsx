@@ -13,23 +13,18 @@ import { obituaryTypes } from '../../lib/domain'
 import { TopScroll } from '../../components/TopScroll'
 import { ProgressBar } from '../../components/ProgessBar'
 import { useObituaries } from '../../hooks/reactQuery/queries'
-import { connectToDb } from '../../db'
 import { getObituaries } from '../../lib/domain/getObituaries'
-import { Awaited } from '../../utility-types'
 import { useScrollToTop } from 'hooks/useScrollToTop'
 import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
+import { connectToDb } from 'db'
 
 interface Props {
   story: PageStory
   category: string
-  initialData: Awaited<ReturnType<typeof getObituaries>>
 }
 
-export default function Obituaries({
-  story,
-  category,
-  initialData,
-}: Props): ReactElement {
+export default function Obituaries({ story, category }: Props): ReactElement {
   const { t } = useTranslation()
   const router = useRouter()
   const [ref, scrollToTop] = useScrollToTop<HTMLDivElement>()
@@ -40,7 +35,6 @@ export default function Obituaries({
     fetchNextPage,
     isLoading,
     isFetching,
-    isPlaceholderData,
     isFetchingNextPage,
   } = useObituaries(
     {
@@ -48,8 +42,8 @@ export default function Obituaries({
       query,
     },
     {
-      initialData: {
-        pages: [initialData],
+      placeholderData: {
+        pages: [],
         pageParams: [undefined],
       },
     }
@@ -72,10 +66,10 @@ export default function Obituaries({
           placeholder={t('search-placeholder')}
         />
       </Flex>
-      <ProgressBar show={isLoading || isFetching || isPlaceholderData} />
+      <ProgressBar show={isFetching} />
       <Box my={14}>
         <ObituaryGrid
-          isLoading={isLoading || isPlaceholderData}
+          isLoading={isLoading}
           isLoadingNext={isFetchingNextPage}
           obituaries={data.pages.flatMap((page) => page.data)}
           hasMore={hasNextPage}
@@ -99,19 +93,21 @@ export const getStaticProps: GetStaticProps = async ({
   params: { category },
   locale,
 }) => {
+  const queryClient = new QueryClient()
+  const { db } = await connectToDb()
+  await queryClient.prefetchQuery(['obituariesInfinite', { category }], () =>
+    getObituaries(db, { category: category as string })
+  )
   const story = await Storyblok.getStory(category as string, {
     version: 'draft',
     language: locale,
   })
-  const { db } = await connectToDb()
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       story: story.data.story,
       category,
-      initialData: await getObituaries(db, {
-        category: category as string,
-      }),
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: REVALIDATE_TIME_SECONDS,
   }

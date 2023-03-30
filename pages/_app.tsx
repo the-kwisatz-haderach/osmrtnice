@@ -1,10 +1,9 @@
 import App, { AppContext } from 'next/app'
-import { ComponentProps, ComponentType, ReactElement } from 'react'
+import { ComponentProps, ComponentType, ReactElement, useState } from 'react'
 import { appWithTranslation } from 'next-i18next'
 import {
   AppProvider,
   IAppContext,
-  ReactQueryProvider,
   ChakraProvider,
   ModalProvider,
 } from '../contexts'
@@ -15,6 +14,12 @@ import Storyblok from '../lib/storyblok/client'
 import { StoryBlokLink } from '../lib/storyblok/common/types'
 import { IGlobalSettings, Story } from '../lib/storyblok/types'
 import '../styles/global.css'
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 interface Props<T extends ComponentType> extends IAppContext {
   Component: T
@@ -28,19 +33,33 @@ function MyApp<T extends ComponentType<any>>({
   pageProps,
   ...appContext
 }: Props<T>): ReactElement {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            refetchOnMount: true,
+          },
+        },
+      })
+  )
   return (
     <ChakraProvider>
-      <ReactQueryProvider>
-        <AppProvider {...appContext}>
-          <IntersectionObserverProvider options={observerOptions}>
-            <MainLayout>
-              <ModalProvider>
-                <Component {...pageProps} />
-              </ModalProvider>
-            </MainLayout>
-          </IntersectionObserverProvider>
-        </AppProvider>
-      </ReactQueryProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <AppProvider {...appContext}>
+            <IntersectionObserverProvider options={observerOptions}>
+              <MainLayout>
+                <ModalProvider>
+                  <Component {...pageProps} />
+                </ModalProvider>
+              </MainLayout>
+            </IntersectionObserverProvider>
+          </AppProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </Hydrate>
+      </QueryClientProvider>
     </ChakraProvider>
   )
 }

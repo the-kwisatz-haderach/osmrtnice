@@ -14,16 +14,15 @@ import { ProgressBar } from 'components/ProgessBar'
 import { useObituaries } from 'hooks/reactQuery/queries'
 import { getObituaries } from 'lib/domain/getObituaries'
 import { connectToDb } from 'db'
-import { Awaited } from 'utility-types'
 import { useScrollToTop } from 'hooks/useScrollToTop'
 import { DEFAULT_LIST_LIMIT, REVALIDATE_TIME_SECONDS } from 'lib/constants'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 interface Props {
   story: PageStory
-  initialData: Awaited<ReturnType<typeof getObituaries>>
 }
 
-export default function Home({ story, initialData }: Props): ReactElement {
+export default function Home({ story }: Props): ReactElement {
   const { t } = useTranslation()
   const router = useRouter()
   const [ref, scrollToTop] = useScrollToTop<HTMLDivElement>()
@@ -35,12 +34,11 @@ export default function Home({ story, initialData }: Props): ReactElement {
     fetchNextPage,
     isLoading,
     isFetchingNextPage,
-    isPlaceholderData,
   } = useObituaries(
     { query },
     {
-      initialData: {
-        pages: [initialData],
+      placeholderData: {
+        pages: [],
         pageParams: [undefined],
       },
     }
@@ -63,10 +61,10 @@ export default function Home({ story, initialData }: Props): ReactElement {
           placeholder={t('search-placeholder')}
         />
       </Flex>
-      <ProgressBar show={isLoading || isFetching || isPlaceholderData} />
+      <ProgressBar show={isLoading || isFetching} />
       <Box my={14}>
         <ObituaryGrid
-          isLoading={isLoading || isPlaceholderData}
+          isLoading={isLoading}
           isLoadingNext={isFetchingNextPage}
           obituaries={data.pages.flatMap((page) => page.data)}
           hasMore={hasNextPage}
@@ -92,14 +90,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
     cv: Date.now(),
     language: locale,
   })
+  const queryClient = new QueryClient()
   const { db } = await connectToDb()
+  await queryClient.prefetchQuery(['obituariesInfinite'], () =>
+    getObituaries(db, { limit: DEFAULT_LIST_LIMIT })
+  )
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       story: res.data.story as PageStory,
-      initialData: await getObituaries(db, {
-        limit: DEFAULT_LIST_LIMIT,
-      }),
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: REVALIDATE_TIME_SECONDS,
   }
