@@ -1,5 +1,5 @@
-import { throttle } from 'lodash'
-import React, { useCallback, useMemo } from 'react'
+// import { throttle } from 'lodash'
+import React, { useCallback } from 'react'
 import {
   Box,
   Divider,
@@ -10,10 +10,10 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { formatDate } from '../../../utils/formatDate'
-import { AppreciationIndicator } from '../../AppreciationIndicator'
+// import { AppreciationIndicator } from '../../AppreciationIndicator'
 import { Link } from '../../Link'
 import { useTranslation } from 'next-i18next'
-import { useIncrementAppreciation } from '../../../hooks/reactQuery/mutations'
+// import { useIncrementAppreciation } from '../../../hooks/reactQuery/mutations'
 import useModal from '../../../contexts/ModalContext'
 import Storyblok from '../../../lib/storyblok/client'
 import { ObituaryImage } from './ObituaryImage'
@@ -31,8 +31,6 @@ export const Obituary: ObituaryRenderer = (props) => {
     long_text,
     date_of_birth,
     date_of_death,
-    appreciations,
-    faith,
     firstname,
     name_misc,
     surname,
@@ -44,16 +42,16 @@ export const Obituary: ObituaryRenderer = (props) => {
     typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
 
   const formattedType = t(type.toLowerCase().replace('_', '-'))
-  const { mutate } = useIncrementAppreciation()
-  const throttledMutate = useMemo(() => throttle(mutate, 2000), [mutate])
-  const onClickAppreciation = useCallback(
-    () =>
-      throttledMutate({
-        id: _id,
-        increment: isClicked ? -1 : 1,
-      }),
-    [throttledMutate, _id, isClicked]
-  )
+  // const { mutate } = useIncrementAppreciation()
+  // const throttledMutate = useMemo(() => throttle(mutate, 2000), [mutate])
+  // const onClickAppreciation = useCallback(
+  //   () =>
+  //     throttledMutate({
+  //       id: _id,
+  //       increment: isClicked ? -1 : 1,
+  //     }),
+  //   [throttledMutate, _id, isClicked]
+  // )
 
   const { open } = useModal()
   const openModal = useCallback(() => {
@@ -161,13 +159,13 @@ export const Obituary: ObituaryRenderer = (props) => {
           </Text>
         )}
         <Divider flex={1} alignSelf="flex-end" />
-        <Flex alignItems="flex-end" justifyContent="space-between" width="100%">
-          <AppreciationIndicator
+        <Flex alignItems="flex-end" justifyContent="flex-end" width="100%">
+          {/* <AppreciationIndicator
             appreciations={appreciations}
             faithType={faith}
             isClicked={isClicked}
             onClick={onClickAppreciation}
-          />
+          /> */}
           <Link
             onClick={openModal}
             href={`/${formattedType}/${_id}`}

@@ -1,16 +1,44 @@
+import crypto from 'crypto'
 import { NextApiResponse } from 'next'
 import attachMiddleware from 'middleware'
 import { EnhancedNextApiRequest } from 'middleware/types'
 import Storyblok from 'lib/storyblok/client'
-import { isStoryblokEvent } from './types'
+import { isStoryblokEvent, IStoryblokEvent } from './types'
 import { IObituary } from 'lib/domain/types'
 import { Story } from 'lib/storyblok/types'
+
+const isValidSignature = (
+  signature: unknown,
+  event: IStoryblokEvent
+): boolean => {
+  if (typeof signature !== 'string') return false
+  try {
+    const secret = process.env.STORYBLOK_WEBHOOK_SECRET
+    const bodyHmac = crypto
+      .createHmac('sha1', secret)
+      .update(JSON.stringify(event))
+      .digest('hex')
+    if (bodyHmac !== signature) return false
+    return true
+  } catch (err) {
+    if (err instanceof Error) {
+      console.warn(err?.message)
+    } else {
+      console.warn(err)
+    }
+    return false
+  }
+}
 
 export default attachMiddleware().post(
   async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
     try {
+      const webhookSignature = req.headers['webhook-signature']
       const { body: event } = req
-      if (isStoryblokEvent(event)) {
+      if (
+        isStoryblokEvent(event) &&
+        isValidSignature(webhookSignature, event)
+      ) {
         switch (event.action) {
           case 'published': {
             const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${Storyblok.accessToken}`

@@ -10,7 +10,7 @@ import {
 import { useCallback } from 'react'
 import { RichText } from '../../RichText'
 import { formatDate } from '../../../utils/formatDate'
-import { AppreciationIndicator } from '../../AppreciationIndicator'
+// import { AppreciationIndicator } from '../../AppreciationIndicator'
 import { useTranslation } from 'next-i18next'
 import { TextBlock } from '../../TextBlock'
 import { ObituaryImage } from './ObituaryImage'
@@ -26,7 +26,6 @@ export const ObituaryLarge: ObituaryRenderer = ({
     initialData: props,
   })
   const {
-    _id,
     firstname,
     name_misc,
     surname,
@@ -37,17 +36,15 @@ export const ObituaryLarge: ObituaryRenderer = ({
     long_text,
     date_created,
     date_updated,
-    faith,
     relative,
     additional_information,
     is_crawled,
     prefix,
-    appreciations,
   } = data
   const fullname = formatName({ prefix, firstname, surname, name_misc })
   const { t } = useTranslation()
-  const isClicked =
-    typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
+  // const isClicked =
+  //   typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
 
   const shareToFacebook = useCallback(() => {
     window?.FB?.ui({
@@ -199,7 +196,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
               </svg>
             </Button>
           </TextBlock>
-          <TextBlock
+          {/* <TextBlock
             flex={1}
             backgroundColor="gray.100"
             label={t('pay_respects')}
@@ -211,7 +208,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
               isClicked={isClicked}
               faithType={faith}
             />
-          </TextBlock>
+          </TextBlock> */}
         </Flex>
       </VStack>
     </Box>

@@ -1,6 +1,6 @@
 type IStoryblokEventType = 'published' | 'unpublished' | 'deleted'
 
-interface IStoryblokEvent {
+export interface IStoryblokEvent {
   action: IStoryblokEventType
   text: string
   story_id: number
