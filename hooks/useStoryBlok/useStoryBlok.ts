@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { StoryData } from 'storyblok-js-client'
-import Storyblok from '../../lib/storyblok/client'
 
 export default function useStoryblok<T extends StoryData>(originalStory: T): T {
   let [story, setStory] = useState(originalStory)
@@ -38,7 +37,7 @@ export default function useStoryblok<T extends StoryData>(originalStory: T): T {
     const existingScript = document.getElementById('storyblokBridge')
     if (!existingScript) {
       const script = document.createElement('script')
-      script.src = `https://app.storyblok.com/f/storyblok-latest.js?t=${Storyblok.accessToken}`
+      script.src = `https://app.storyblok.com/f/storyblok-latest.js?t=${process.env.STORYBLOK_TOKEN}`
       script.id = 'storyblokBridge'
       document.body.appendChild(script)
       script.onload = () => {

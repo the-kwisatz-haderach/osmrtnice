@@ -34,15 +34,7 @@ export default function Home({ story }: Props): ReactElement {
     fetchNextPage,
     isLoading,
     isFetchingNextPage,
-  } = useObituaries(
-    { query },
-    {
-      placeholderData: {
-        pages: [],
-        pageParams: [undefined],
-      },
-    }
-  )
+  } = useObituaries({ query })
 
   return (
     <div>

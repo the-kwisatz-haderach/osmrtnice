@@ -56,5 +56,9 @@ export const useObituaries = (
       ...options,
       getNextPageParam: (lastPage) => lastPage?.next,
       keepPreviousData: true,
+      placeholderData: {
+        pages: [],
+        pageParams: [undefined],
+      },
     }
   )

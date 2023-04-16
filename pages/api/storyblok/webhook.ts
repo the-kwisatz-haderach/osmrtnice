@@ -2,7 +2,6 @@ import crypto from 'crypto'
 import { NextApiResponse } from 'next'
 import attachMiddleware from 'middleware'
 import { EnhancedNextApiRequest } from 'middleware/types'
-import Storyblok from 'lib/storyblok/client'
 import { isStoryblokEvent, IStoryblokEvent } from './types'
 import { IObituary } from 'lib/domain/types'
 import { Story } from 'lib/storyblok/types'
@@ -41,7 +40,7 @@ export default attachMiddleware().post(
       ) {
         switch (event.action) {
           case 'published': {
-            const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${Storyblok.accessToken}`
+            const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${process.env.STORYBLOK_TOKEN}`
             const storyRes = await fetch(url)
             if (storyRes.ok) {
               const {

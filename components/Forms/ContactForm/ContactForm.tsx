@@ -76,7 +76,6 @@ export default function ContactForm(): ReactElement {
             }}
             render={({ field: { value, onChange } }) => (
               <Input
-                autoFocus
                 autoComplete="given-name"
                 id="firstname"
                 type="text"

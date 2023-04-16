@@ -36,18 +36,10 @@ export default function Obituaries({ story, category }: Props): ReactElement {
     isLoading,
     isFetching,
     isFetchingNextPage,
-  } = useObituaries(
-    {
-      category,
-      query,
-    },
-    {
-      placeholderData: {
-        pages: [],
-        pageParams: [undefined],
-      },
-    }
-  )
+  } = useObituaries({
+    category,
+    query,
+  })
 
   return (
     <div>
