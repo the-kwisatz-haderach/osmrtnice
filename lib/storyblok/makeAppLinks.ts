@@ -6,7 +6,7 @@ type IAppLinks = Record<string, IAppContext['menuItems']>
 export const makeAppLinks = (
   defaultLocale: string,
   ignorePaths: string[] = []
-) => (links: StoryBlokLink[]): IAppLinks =>
+) => (links: StoryBlokLink[] = []): IAppLinks =>
   links.reduce<IAppLinks>((acc, curr) => {
     if (ignorePaths.includes(curr.slug)) {
       return acc

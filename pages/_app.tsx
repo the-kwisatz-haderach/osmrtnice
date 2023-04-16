@@ -67,26 +67,26 @@ MyApp.getInitialProps = async (
   appContext: AppContext
 ): Promise<IAppContext> => {
   const initialProps = await App.getInitialProps(appContext)
-  const [data, response] = await Promise.all([
+  const [globalResponse, linksResponse] = await Promise.all([
     Storyblok.getStory('global', {
-      version: 'draft',
+      version: 'published',
     }),
     Storyblok.get('cdn/links', {
-      version: 'draft',
+      version: 'published',
     }),
   ])
 
-  const { links }: { links: Record<string, StoryBlokLink> } = response.data
+  const { links }: { links: Record<string, StoryBlokLink> } = linksResponse.data
 
   const myLinks = Object.values(links)
     .filter((link) => link.slug !== 'global' && link.parent_id === 0)
     .sort((a, b) => b.position - a.position)
 
-  const { content } = data.data.story as Story<IGlobalSettings>
+  const { content } = globalResponse.data.story as Story<IGlobalSettings>
 
   return {
     ...initialProps,
-    menuItems: makeAppLinks('hr', ['privacy-policy'])(myLinks).hr,
+    menuItems: makeAppLinks('hr', ['privacy-policy'])(myLinks)?.hr || [],
     ...content,
   }
 }

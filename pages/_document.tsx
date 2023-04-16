@@ -28,6 +28,7 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
           <script
+            async
             dangerouslySetInnerHTML={{
               __html: `window.fbAsyncInit = function() {
               FB.init({
