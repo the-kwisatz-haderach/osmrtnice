@@ -24,17 +24,17 @@ const htmlTagsRegexp = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
 
 export const Obituary: ObituaryRenderer = (props) => {
   const {
-    image,
+    image = '',
     _id,
-    type,
-    preamble,
-    long_text,
-    date_of_birth,
-    date_of_death,
-    firstname,
-    name_misc,
-    surname,
-    prefix,
+    type = 'obituary',
+    preamble = '',
+    long_text = '',
+    date_of_birth = '',
+    date_of_death = '',
+    firstname = '',
+    name_misc = '',
+    surname = '',
+    prefix = '',
   } = props
   const fullname = formatName({ prefix, firstname, surname, name_misc })
   const { t } = useTranslation()
