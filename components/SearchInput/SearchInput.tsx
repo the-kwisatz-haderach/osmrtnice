@@ -81,6 +81,7 @@ export default function SearchInput({
         type="submit"
         aria-label="submit"
         colorScheme="orange"
+        onClick={() => {}}
         height="100%"
         minH={[12, 16]}
         minW={16}
