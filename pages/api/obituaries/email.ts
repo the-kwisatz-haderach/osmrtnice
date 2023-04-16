@@ -18,17 +18,16 @@ export default async (
   switch (req.method) {
     case 'POST': {
       try {
-        let text = formatEmailMessage(req.body)
+        const text = formatEmailMessage(req.body)
         const messageId = await sendEmail({
           subject: `Message From preminuli.ba`,
           text,
         })
-        res.status(204).json({ messageId })
+        return res.status(204).json({ messageId })
       } catch (err) {
         console.error(err)
-        res.status(400).end()
+        return res.status(400).end()
       }
-      break
     }
     default: {
       res.status(404).end()
