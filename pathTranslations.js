@@ -6,7 +6,7 @@ module.exports.pathTranslations = {
     '/obituary/:id': '/osmrtnica/:id',
     '/gratitude-display': '/zbogom',
     '/last-greetings': '/posljednji-pozdrav',
-    '/in-memoriam': '/in-memoriam',
+    '/in-memoriam': '/sjecanja',
     '/contact': '/kontakt',
   },
 }

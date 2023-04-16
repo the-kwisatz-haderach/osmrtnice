@@ -54,7 +54,7 @@ export default function ContactForm(): ReactElement {
       p={[0, 6, 10]}
       boxShadow={{ sm: 'xl' }}
       width="100%"
-      maxW="xl"
+      maxW={['unset', 'unset', 'xl']}
       borderColor="gray.100"
       borderWidth={{ sm: 2 }}
       borderStyle="solid"
@@ -110,86 +110,90 @@ export default function ContactForm(): ReactElement {
           />
         </FormField>
       </Flex>
-      <Box width="100%">
-        <FormField errors={errors} htmlFor="email" label={t('mail')}>
-          <Controller
-            name="mail"
-            control={control}
-            rules={{
-              required: (t('required') as unknown) as string,
-            }}
-            render={({ field: { value, onChange } }) => (
-              <Input
-                value={value}
-                onChange={onChange}
-                autoComplete="email"
-                id="email"
-                type="email"
-              />
-            )}
-          />
-        </FormField>
-        <FormField errors={errors} htmlFor="phone" label={t('phone')}>
-          <Controller
-            name="phone"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <Input
-                autoComplete="phone"
-                id="phone"
-                type="tel"
-                value={value}
-                onChange={onChange}
-              />
-            )}
-          />
-        </FormField>
-      </Box>
-      <Box width="100%">
-        <FormField errors={errors} htmlFor="type" label={t('type')}>
-          <Controller
-            name="type"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <Select
-                onChange={onChange}
-                value={value}
-                autoComplete="off"
-                id="type"
-              >
-                <option value="" disabled>
-                  {t('select_placeholder')}
+      <FormField width="100%" errors={errors} htmlFor="email" label={t('mail')}>
+        <Controller
+          name="mail"
+          control={control}
+          rules={{
+            required: (t('required') as unknown) as string,
+          }}
+          render={({ field: { value, onChange } }) => (
+            <Input
+              value={value}
+              onChange={onChange}
+              autoComplete="email"
+              id="email"
+              type="email"
+            />
+          )}
+        />
+      </FormField>
+      <FormField
+        width="100%"
+        errors={errors}
+        htmlFor="phone"
+        label={t('phone')}
+      >
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field: { value, onChange } }) => (
+            <Input
+              autoComplete="phone"
+              id="phone"
+              type="tel"
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+      </FormField>
+      <FormField width="100%" errors={errors} htmlFor="type" label={t('type')}>
+        <Controller
+          name="type"
+          control={control}
+          render={({ field: { value, onChange } }) => (
+            <Select
+              onChange={onChange}
+              value={value}
+              autoComplete="off"
+              id="type"
+            >
+              <option value="" disabled>
+                {t('select_placeholder')}
+              </option>
+              {obituaryTypes.map((type) => (
+                <option key={type} value={type}>
+                  {t(type)}
                 </option>
-                {obituaryTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {t(type)}
-                  </option>
-                ))}
-              </Select>
-            )}
-          />
-        </FormField>
-      </Box>
-      <Box width="100%">
-        <FormField errors={errors} htmlFor="message" label={t('message')}>
-          <Controller
-            control={control}
-            name="message"
-            render={({ field: { onChange, value } }) => (
-              <Textarea
-                value={value}
-                onChange={onChange}
-                style={{
-                  minHeight: '2.5rem',
-                  maxHeight: '10rem',
-                }}
-                id="message"
-                rows={5}
-              />
-            )}
-          />
-        </FormField>
-      </Box>
+              ))}
+            </Select>
+          )}
+        />
+      </FormField>
+      <FormField
+        width="100%"
+        errors={errors}
+        htmlFor="message"
+        label={t('message')}
+      >
+        <Controller
+          control={control}
+          name="message"
+          render={({ field: { onChange, value } }) => (
+            <Textarea
+              value={value}
+              onChange={onChange}
+              style={{
+                minHeight: '2.5rem',
+                maxHeight: '10rem',
+              }}
+              id="message"
+              rows={5}
+            />
+          )}
+        />
+      </FormField>
       <Button
         alignSelf="flex-end"
         position="relative"

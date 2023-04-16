@@ -39,7 +39,6 @@ function MyApp<T extends ComponentType<any>>({
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false,
-            refetchOnMount: true,
           },
         },
       })

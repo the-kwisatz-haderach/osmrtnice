@@ -3,18 +3,18 @@ import Image from 'next/image'
 import { InfoList } from '../InfoList'
 import { FooterBottom } from './components/FooterBottom'
 import { IMenuItem } from '../../lib/storyblok/types'
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import { Box, Container, Flex, Heading, Text } from '@chakra-ui/react'
 import { useTranslation } from 'next-i18next'
 import {
   faPhone as phoneIcon,
   faMailBulk as mailIcon,
-  faLocationArrow as locationIcon,
+  // faLocationArrow as locationIcon,
 } from '@fortawesome/free-solid-svg-icons'
 
 interface Props
   extends DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
   menuItems: IMenuItem[]
-  address: string
+  ingress: string
   phone: string
   email: string
   logoSrc: string
@@ -22,7 +22,7 @@ interface Props
 
 export default function Footer({
   menuItems,
-  address,
+  ingress,
   phone,
   email,
   logoSrc,
@@ -30,6 +30,8 @@ export default function Footer({
   const { t } = useTranslation()
   return (
     <Box
+      display="flex"
+      flexDir="column"
       flex={1}
       as="footer"
       backgroundColor="gray.200"
@@ -37,8 +39,9 @@ export default function Footer({
       borderTopStyle="solid"
       borderTopColor="gray.300"
     >
-      <Flex
-        margin="auto"
+      <Container
+        display="flex"
+        mx="auto"
         maxW="container.xl"
         justifyContent="space-between"
         flexWrap="wrap"
@@ -47,23 +50,20 @@ export default function Footer({
         pt={10}
       >
         <Flex width={['100%', '100%', '50%']} flexWrap="wrap">
-          <Box mr={[8, 8, 16]} mb={8}>
+          <Box mr={[0, 8, 8, 16]} mb={8}>
             <Heading as="h3" size="xl" mb={4}>
               {t('contact-details')}
             </Heading>
+            <Text mb="2">{ingress}</Text>
             <InfoList
               items={[
-                {
-                  label: t('address'),
-                  content: address,
-                  icon: locationIcon,
-                },
                 { label: t('phone'), content: phone, icon: phoneIcon },
                 {
                   label: t('mail'),
                   content: email,
                   href: `mailto:${email}`,
                   icon: mailIcon,
+                  isMailto: true,
                 },
               ]}
             />
@@ -88,8 +88,9 @@ export default function Footer({
         >
           {logoSrc && <Image src={logoSrc} height={200} width={300} />}
         </Flex>
-      </Flex>
+      </Container>
       <Box
+        flex={1}
         backgroundColor="gray.300"
         borderTopColor="gray.400"
         borderTopWidth={2}

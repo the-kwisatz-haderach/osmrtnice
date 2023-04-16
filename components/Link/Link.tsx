@@ -18,10 +18,14 @@ export default function Link({
       <ChakraLink
         color="orange.400"
         fontWeight="bold"
-        onClick={(e) => {
-          e.preventDefault()
-          onClick()
-        }}
+        onClick={
+          onClick
+            ? (e) => {
+                e.preventDefault()
+                onClick()
+              }
+            : undefined
+        }
       >
         {children}
       </ChakraLink>

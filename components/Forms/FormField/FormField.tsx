@@ -10,7 +10,19 @@ export const FormField: React.FC<
   } & FlexProps
 > = ({ label, htmlFor, children, className, errors, ...props }) => {
   return (
-    <Flex flexDir="column-reverse" position="relative" {...props}>
+    <Flex
+      sx={{
+        '& > :nth-of-type(1):hover + *': {
+          color: 'orange.300',
+        },
+        '& > :nth-of-type(1):focus + *': {
+          color: 'orange.400',
+        },
+      }}
+      flexDir="column-reverse"
+      position="relative"
+      {...props}
+    >
       <ErrorMessage
         errors={errors}
         name={htmlFor}

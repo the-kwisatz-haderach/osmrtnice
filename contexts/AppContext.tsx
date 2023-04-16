@@ -4,16 +4,20 @@ import { IMenuItem } from '../lib/storyblok/types'
 export interface IAppContext {
   menuItems: IMenuItem[]
   logo?: ImageField
-  address: string
+  ingress: string
   phone: string
   email: string
+  showInfoBlock: boolean
+  infoBlockText: string
 }
 
 const defaultAppContext: IAppContext = {
   menuItems: [],
-  address: '',
+  ingress: '',
   phone: '',
   email: '',
+  showInfoBlock: false,
+  infoBlockText: '',
 }
 
 const AppContext = createContext(defaultAppContext)

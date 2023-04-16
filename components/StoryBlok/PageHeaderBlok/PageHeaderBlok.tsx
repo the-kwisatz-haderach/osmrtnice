@@ -30,12 +30,16 @@ export default function PageHeaderBlok({
           height="100%"
           py={10}
         >
-          <Box width="100%" textAlign={align}>
-            <Heading as="h1" fontSize={['4xl', '6xl', '6xl', '8xl']}>
+          <Box
+            width="100%"
+            maxWidth={['100%', '100%', '100%', '80%']}
+            textAlign={align}
+          >
+            <Heading mb="1rem" as="h1" fontSize={['4xl', '6xl', '6xl', '8xl']}>
               {title}
             </Heading>
             {subtitle && (
-              <Text mt={4} fontSize={['lg', 'xl', 'xl', '3xl']}>
+              <Text mt={4} fontSize={['lg', 'xl', 'xl', '2xl']}>
                 {subtitle}
               </Text>
             )}

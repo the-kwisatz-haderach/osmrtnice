@@ -17,8 +17,8 @@ export const FooterBottom = (): ReactElement => (
       <Text ml={2}>{new Date().getFullYear()}</Text>
       <Text ml={2}>{SITE_NAME}</Text>
     </HStack>
-    <TranslatedLink href="/privacy-policy" passHref>
+    {/* <TranslatedLink href="/privacy-policy" passHref>
       <Link>Politika privatnosti</Link>
-    </TranslatedLink>
+    </TranslatedLink> */}
   </Container>
 )

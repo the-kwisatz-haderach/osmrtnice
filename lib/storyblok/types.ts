@@ -65,9 +65,11 @@ export interface IMenuItem {
 
 export interface IGlobalSettings {
   logo: ImageField
-  address: string
+  ingress: string
   phone: string
   email: string
+  showInfoBlock: boolean
+  infoBlockText: string
 }
 
 export interface IGrid {
