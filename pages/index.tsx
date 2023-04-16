@@ -58,12 +58,12 @@ export default function Home({ story }: Props): ReactElement {
         <ObituaryGrid
           isLoading={isLoading}
           isLoadingNext={isFetchingNextPage}
-          obituaries={data.pages.flatMap((page) => page.data)}
+          obituaries={query ? data.pages.flatMap((page) => page.data) : []}
           hasMore={hasNextPage}
           onLoadMore={fetchNextPage}
         />
         <TopScroll
-          show={data.pages.some((page) => page.data.length > 10)}
+          show={query && data.pages.some((page) => page.data.length > 10)}
           margin="auto"
           maxW="container.xl"
           width="100%"
