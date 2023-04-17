@@ -71,13 +71,38 @@ MyApp.getInitialProps = async (
     }),
   ])
 
-  const { links }: { links: Record<string, StoryBlokLink> } = linksResponse.data
+  const {
+    links,
+  }: { links: Record<string, StoryBlokLink> } = linksResponse?.data || {
+    links: {},
+  }
 
   const myLinks = Object.values(links)
     .filter((link) => link.slug !== 'global' && link.parent_id === 0)
     .sort((a, b) => b.position - a.position)
 
-  const { content } = globalResponse.data.story as Story<IGlobalSettings>
+  const { content } = (globalResponse?.data
+    ?.story as Story<IGlobalSettings>) || {
+    content: {
+      showInfoBlock: true,
+      phone: '',
+      logo: {
+        alt: '',
+        copyright: '',
+        fieldtype: 'asset',
+        filename: '',
+        focus: null as null,
+        id: 0,
+        name: '',
+        title: '',
+      },
+      ingress: '',
+      infoBlockText: '',
+      email: '',
+      component: '',
+      _uid: '',
+    },
+  }
 
   return {
     ...initialProps,
