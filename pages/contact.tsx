@@ -1,14 +1,4 @@
-import {
-  Alert,
-  AlertDescription,
-  Box,
-  Container,
-  Heading,
-  HStack,
-  Stack,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
+import { Box, Container, Heading, Stack, Text } from '@chakra-ui/react'
 import { InfoList } from 'components/InfoList'
 import { GetStaticProps } from 'next'
 import { useTranslation } from 'next-i18next'

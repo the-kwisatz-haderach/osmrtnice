@@ -1,5 +1,5 @@
-import App, { AppContext } from 'next/app'
-import { ComponentProps, ComponentType, ReactElement, useState } from 'react'
+import App, { AppContext, AppProps } from 'next/app'
+import { ReactElement, useState } from 'react'
 import { appWithTranslation } from 'next-i18next'
 import {
   AppProvider,
@@ -21,18 +21,13 @@ import {
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-interface Props<T extends ComponentType> extends IAppContext {
-  Component: T
-  pageProps: ComponentProps<T>
-}
-
 const observerOptions = { threshold: 0.8 }
 
-function MyApp<T extends ComponentType<any>>({
+function MyApp({
   Component,
   pageProps,
   ...appContext
-}: Props<T>): ReactElement {
+}: AppProps & IAppContext): ReactElement {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -91,4 +86,4 @@ MyApp.getInitialProps = async (
   }
 }
 
-export default appWithTranslation(MyApp as any)
+export default appWithTranslation(MyApp)
