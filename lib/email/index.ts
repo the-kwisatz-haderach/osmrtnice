@@ -1,7 +1,7 @@
 import { createTransport, SendMailOptions } from 'nodemailer'
 
 const transporter = createTransport({
-  port: Number.parseInt(process.env.EMAIL_PORT ?? ''),
+  port: Number.parseInt(process.env.EMAIL_PORT ?? '465'),
   host: process.env.EMAIL_HOST,
   auth: {
     user: process.env.EMAIL_USER,

@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react'
 import {
-  Box,
   Button,
   Flex,
   Input,
   Select,
   Textarea,
+  useToast,
   VStack,
 } from '@chakra-ui/react'
 import axios from 'axios'
@@ -13,6 +13,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { FormField } from '../FormField/FormField'
 import { obituaryTypes } from '../../../lib/domain'
 import { useTranslation } from 'next-i18next'
+import { useMutation } from '@tanstack/react-query'
 
 interface IContactFormInput {
   firstname: string
@@ -25,6 +26,7 @@ interface IContactFormInput {
 
 export default function ContactForm(): ReactElement {
   const { t } = useTranslation()
+  const toast = useToast({ isClosable: true, position: 'top' })
   const {
     control,
     handleSubmit,
@@ -40,10 +42,44 @@ export default function ContactForm(): ReactElement {
       type: '',
     },
   })
+  const { mutate, isLoading } = useMutation(
+    async (input: IContactFormInput) =>
+      await axios.post('/api/obituaries/email', input),
+    {
+      onSuccess: () => {
+        toast({
+          title: t('toast-contact-form-success-title'),
+          description: t('toast-contact-form-success-description'),
+          status: 'success',
+        })
+        reset({
+          firstname: '',
+          lastname: '',
+          mail: '',
+          message: '',
+          phone: '',
+          type: '',
+        })
+      },
+      onError: (err) => {
+        let description = ''
+        if (err instanceof Error) {
+          description = err.message
+        }
+        toast({
+          title: t('toast-contact-form-error-title'),
+          description,
+          position: 'top',
+          status: 'error',
+        })
+      },
+    }
+  )
 
-  const onSubmit = handleSubmit(async (data) => {
-    await axios.post('/api/obituaries/email', data)
-    reset({})
+  const onSubmit = handleSubmit((data) => {
+    if (!isLoading) {
+      mutate(data)
+    }
   })
 
   return (
@@ -59,6 +95,15 @@ export default function ContactForm(): ReactElement {
       borderWidth={{ sm: 2 }}
       borderStyle="solid"
     >
+      <label className="honey" htmlFor="name"></label>
+      <input
+        className="honey"
+        autoComplete="off"
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Your name here"
+      />
       <Flex flexDir={['column', 'row']} wrap="wrap" width="100%">
         <FormField
           flex={1}
@@ -194,6 +239,7 @@ export default function ContactForm(): ReactElement {
         />
       </FormField>
       <Button
+        isLoading={isLoading}
         alignSelf="flex-end"
         position="relative"
         top={3}

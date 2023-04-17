@@ -1,5 +1,4 @@
-import React, { ReactElement, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import React, { ReactElement } from 'react'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
@@ -35,13 +34,7 @@ export default function MainNavigation({
 }: Props): ReactElement {
   const { t } = useTranslation()
   const [homeLink, ...links] = menuItems
-  const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  useEffect(() => {
-    onClose()
-  }, [router.pathname, onClose])
-
   return (
     <>
       <Box
@@ -110,6 +103,7 @@ export default function MainNavigation({
                 <Box width="100%" textAlign="center" key={i} height="100%">
                   <TranslatedLink passHref href={menuItem.href}>
                     <Button
+                      onClick={onClose}
                       isFullWidth
                       py={2}
                       variant={menuItem.href === '/contact' ? 'solid' : 'link'}

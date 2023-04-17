@@ -32,5 +32,8 @@
   "menu": "Izbornik",
   "relatives": "ožalošćeni",
   "404-header": "Oops!",
-  "404-body": "The page you're looking for doesn't exist."
+  "404-body": "The page you're looking for doesn't exist.",
+  "toast-contact-form-success-title": "Förfrågan skickad!",
+  "toast-contact-form-success-description": "vi återkommer lorem ipsum bla bla bla",
+  "toast-contact-form-error-title": "Greška!"
 }
