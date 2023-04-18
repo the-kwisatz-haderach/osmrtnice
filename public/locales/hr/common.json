@@ -32,8 +32,8 @@
   "menu": "Izbornik",
   "relatives": "ožalošćeni",
   "404-header": "Oops!",
-  "404-body": "The page you're looking for doesn't exist.",
-  "toast-contact-form-success-title": "Förfrågan skickad!",
-  "toast-contact-form-success-description": "vi återkommer lorem ipsum bla bla bla",
+  "404-body": "Stranica koju tražite nije pronađena.",
+  "toast-contact-form-success-title": "Hvala na upitu!",
+  "toast-contact-form-success-description": "Javit ćemo se uskoro.",
   "toast-contact-form-error-title": "Greška!"
 }
