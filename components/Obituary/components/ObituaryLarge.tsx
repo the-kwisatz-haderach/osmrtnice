@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Divider,
-  Flex,
   Heading,
   HStack,
   Text,
@@ -31,6 +30,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
     surname,
     date_of_birth,
     date_of_death,
+    type,
     image,
     preamble,
     long_text,
@@ -57,6 +57,15 @@ export const ObituaryLarge: ObituaryRenderer = ({
     <>
       <Box py={8} px={[4, 6, 10]}>
         <VStack mb={10}>
+          <Text
+            className="capitalize"
+            width="fit-content"
+            fontSize="sm"
+            color="gray.400"
+            mb={3}
+          >
+            {t(type)}
+          </Text>
           <Box
             flexShrink={0}
             position="relative"
@@ -93,12 +102,20 @@ export const ObituaryLarge: ObituaryRenderer = ({
               <Text hidden={!date_of_birth}>
                 {formatDate(date_of_birth, {
                   year: 'numeric',
+                  ...(type === 'in-memoriam' && {
+                    month: 'numeric',
+                    day: 'numeric',
+                  }),
                 })}
               </Text>
               <Text hidden={!(date_of_birth && date_of_death)}>-</Text>
               <Text hidden={!date_of_death}>
                 {formatDate(date_of_death, {
                   year: 'numeric',
+                  ...(type === 'in-memoriam' && {
+                    month: 'numeric',
+                    day: 'numeric',
+                  }),
                 })}
               </Text>
             </HStack>

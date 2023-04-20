@@ -126,6 +126,10 @@ export const Obituary: ObituaryRenderer = (props) => {
               <Text fontSize="sm" hidden={!date_of_birth}>
                 {formatDate(date_of_birth, {
                   year: 'numeric',
+                  ...(type === 'in-memoriam' && {
+                    month: 'numeric',
+                    day: 'numeric',
+                  }),
                 })}
               </Text>
               <Text hidden={!date_of_birth || !date_of_death} fontSize="sm">
@@ -134,6 +138,10 @@ export const Obituary: ObituaryRenderer = (props) => {
               <Text fontSize="sm" hidden={!date_of_death}>
                 {formatDate(date_of_death, {
                   year: 'numeric',
+                  ...(type === 'in-memoriam' && {
+                    month: 'numeric',
+                    day: 'numeric',
+                  }),
                 })}
               </Text>
             </HStack>
