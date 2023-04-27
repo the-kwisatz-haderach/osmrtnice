@@ -93,8 +93,8 @@ export const Obituary: ObituaryRenderer = (props) => {
           borderStyle="solid"
           borderWidth={1}
           borderColor="gray.300"
-          width={140}
-          height={140}
+          width={125}
+          height={150}
           position="relative"
           onClick={openModal}
           cursor="pointer"

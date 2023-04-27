@@ -69,8 +69,8 @@ export const ObituaryLarge: ObituaryRenderer = ({
           <Box
             flexShrink={0}
             position="relative"
-            width={200}
-            height={200}
+            width={150}
+            height={180}
             borderStyle="solid"
             boxShadow="xl"
             borderRadius={5}

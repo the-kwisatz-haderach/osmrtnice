@@ -16,6 +16,7 @@ export const ObituaryImage = ({ imgSrc }: Props) => {
   return (
     <NextImage
       src={src}
+      objectFit="cover"
       layout="fill"
       placeholder="blur"
       blurDataURL="/images/placeholder-person.png"
