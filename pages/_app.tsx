@@ -63,8 +63,12 @@ MyApp.getInitialProps = async (
 ): Promise<IAppContext> => {
   const initialProps = await App.getInitialProps(appContext)
   const [globalResponse, linksResponse] = await Promise.all([
-    Storyblok.getStory('global'),
-    Storyblok.get('cdn/links'),
+    Storyblok.getStory('global', {
+      version: 'draft',
+    }),
+    Storyblok.get('cdn/links', {
+      version: 'draft',
+    }),
   ])
 
   const {
