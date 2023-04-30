@@ -4,7 +4,9 @@ import { Footer } from '../../components/Footer'
 import { MainNavigation } from '../../components/MainNavigation'
 import useAppContext from '../../contexts/AppContext'
 
-let shouldRender = process.env.NODE_ENV !== 'production'
+let shouldRender =
+  process.env.NEXT_PUBLIC_NO_PASS === 'true' ||
+  process.env.NODE_ENV !== 'production'
 const correct_pass = process.env.NEXT_PUBLIC_PROD_PASS
 
 export default function MainLayout({
