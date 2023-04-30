@@ -4,9 +4,7 @@ import { Footer } from '../../components/Footer'
 import { MainNavigation } from '../../components/MainNavigation'
 import useAppContext from '../../contexts/AppContext'
 
-let shouldRender =
-  process.env.NEXT_PUBLIC_NO_PASS === 'true' ||
-  process.env.NODE_ENV !== 'production'
+let shouldRender = process.env.NODE_ENV !== 'production'
 const correct_pass = process.env.NEXT_PUBLIC_PROD_PASS
 
 export default function MainLayout({
@@ -14,26 +12,26 @@ export default function MainLayout({
 }: PropsWithChildren<any>): ReactElement {
   const { menuItems, logo, ...contactDetails } = useAppContext()
 
-  useEffect(() => {
-    const checkPassword = () => {
-      const password =
-        window.sessionStorage.getItem('pass') || window.prompt('Password')
-      if (password === correct_pass) {
-        window.sessionStorage.setItem('pass', correct_pass)
-        shouldRender = true
-      } else {
-        checkPassword()
-      }
-    }
+  // useEffect(() => {
+  //   const checkPassword = () => {
+  //     const password =
+  //       window.sessionStorage.getItem('pass') || window.prompt('Password')
+  //     if (password === correct_pass) {
+  //       window.sessionStorage.setItem('pass', correct_pass)
+  //       shouldRender = true
+  //     } else {
+  //       checkPassword()
+  //     }
+  //   }
 
-    if (!shouldRender) {
-      checkPassword()
-    }
-  }, [])
+  //   if (!shouldRender) {
+  //     checkPassword()
+  //   }
+  // }, [])
 
-  if (!shouldRender) {
-    return <></>
-  }
+  // if (!shouldRender) {
+  //   return <></>
+  // }
 
   return (
     <Flex flexDir="column" minH="100vh">
