@@ -79,7 +79,6 @@ export default function Home({ story }: Props): ReactElement {
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const res = await Storyblok.getStory('home', {
     version: 'draft',
-    cv: Date.now(),
     language: locale,
   })
   const queryClient = new QueryClient()
