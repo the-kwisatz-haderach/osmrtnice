@@ -4,6 +4,7 @@ import Page from '../components/StoryBlok/PageBlok/PageBlok'
 import { GetStaticProps } from 'next'
 import Storyblok from '../lib/storyblok/client'
 import { PageStory } from '../lib/storyblok/types'
+import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
 
 interface Props {
   story: PageStory
@@ -23,5 +24,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
       ...(await serverSideTranslations(locale, ['common'])),
       story: story.data.story,
     },
+    revalidate: REVALIDATE_TIME_SECONDS,
   }
 }

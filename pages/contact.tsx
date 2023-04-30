@@ -15,6 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import useAppContext from 'contexts/AppContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
 
 interface Props {
   story: PageStory
@@ -99,5 +100,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
       ...(await serverSideTranslations(locale, ['common'])),
       story: story.data.story,
     },
+    revalidate: REVALIDATE_TIME_SECONDS,
   }
 }
