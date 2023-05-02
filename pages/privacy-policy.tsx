@@ -16,7 +16,6 @@ export default function PrivacyPolicy({ story }: Props): ReactElement {
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const res = await Storyblok.getStory('privacy-policy', {
     version: 'draft',
-    cv: Date.now(),
     language: locale,
   })
   return {

@@ -67,23 +67,23 @@ export const getStaticProps: GetStaticProps<
   IObituary,
   { id: string; category: string }
 > = async ({ params, locale }) => {
-  try {
-    const { db } = await connectToDb()
-    const obituary: IObituary = JSON.parse(
-      JSON.stringify(
-        await db
-          .collection<Omit<IObituary, '_id'>>('obituaries')
-          .findOne({ _id: new ObjectID(params.id) })
-      )
+  const { db } = await connectToDb()
+  const obituary: IObituary = JSON.parse(
+    JSON.stringify(
+      await db
+        .collection<Omit<IObituary, '_id'>>('obituaries')
+        .findOne({
+          _id: ObjectID.isValid(params.id)
+            ? ObjectID.createFromHexString(params.id)
+            : new ObjectID(params.id),
+        })
     )
-    return {
-      props: {
-        ...(await serverSideTranslations(locale, ['common'])),
-        ...obituary,
-      },
-    }
-  } catch (err) {
-    console.error(err)
+  )
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      ...obituary,
+    },
   }
 }
 
@@ -98,7 +98,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
             .find({
               type,
             })
-            .limit(100)
+            .limit(50)
             .toArray()
         )
       ).flatMap((entry: IObituary) => ({
