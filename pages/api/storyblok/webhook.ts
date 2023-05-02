@@ -2,9 +2,8 @@ import crypto from 'crypto'
 import { NextApiResponse } from 'next'
 import attachMiddleware from 'middleware'
 import { EnhancedNextApiRequest } from 'middleware/types'
-import { isStoryblokEvent, IStoryblokEvent } from './types'
 import { IObituary } from 'lib/domain/types'
-import { Story } from 'lib/storyblok/types'
+import { isStoryblokEvent, IStoryblokEvent, Story } from 'lib/storyblok/types'
 
 const isValidSignature = (
   signature: unknown,
