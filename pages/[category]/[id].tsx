@@ -14,6 +14,11 @@ import { createMetaTitle, obituaryTypes } from '../../lib/domain'
 import { IObituary } from '../../lib/domain/types'
 
 export default function Obituary(props: IObituary): ReactElement {
+  const { isFallback } = useRouter()
+  const { t } = useTranslation()
+  if (!props || isFallback) {
+    return <></>
+  }
   const {
     firstname,
     name_misc,
@@ -24,12 +29,6 @@ export default function Obituary(props: IObituary): ReactElement {
     type,
   } = props
   const fullname = [firstname, surname, name_misc].join(' ')
-  const { isFallback } = useRouter()
-  const { t } = useTranslation()
-
-  if (isFallback) {
-    return <></>
-  }
 
   return (
     <div>
@@ -70,13 +69,11 @@ export const getStaticProps: GetStaticProps<
   const { db } = await connectToDb()
   const obituary: IObituary = JSON.parse(
     JSON.stringify(
-      await db
-        .collection<Omit<IObituary, '_id'>>('obituaries')
-        .findOne({
-          _id: ObjectID.isValid(params.id)
-            ? ObjectID.createFromHexString(params.id)
-            : new ObjectID(params.id),
-        })
+      await db.collection<Omit<IObituary, '_id'>>('obituaries').findOne({
+        _id: ObjectID.isValid(params.id)
+          ? ObjectID.createFromHexString(params.id)
+          : new ObjectID(params.id),
+      })
     )
   )
   return {
