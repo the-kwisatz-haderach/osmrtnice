@@ -2,29 +2,6 @@ const { PHASE_PRODUCTION_BUILD } = require('next/constants')
 const { i18n } = require('./next-i18next.config')
 const { pathTranslations } = require('./pathTranslations')
 
-const securityHeaders = [
-  {
-    key: 'X-DNS-Prefetch-Control',
-    value: 'on',
-  },
-  {
-    key: 'X-XSS-Protection',
-    value: '1; mode=block',
-  },
-  {
-    key: 'X-Frame-Options',
-    value: 'SAMEORIGIN',
-  },
-  {
-    key: 'X-Content-Type-Options',
-    value: 'nosniff',
-  },
-  {
-    key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin',
-  },
-]
-
 module.exports = (phase, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
   const config = {
@@ -36,17 +13,6 @@ module.exports = (phase, { defaultConfig }) => {
         cpus: 1,
       },
     }),
-    async headers() {
-      return process.env.NODE_ENV === 'development'
-        ? []
-        : [
-            {
-              // Apply these headers to all routes in your application.
-              source: '/(.*)',
-              headers: securityHeaders,
-            },
-          ]
-    },
     async rewrites() {
       return Object.values(pathTranslations).flatMap((paths) =>
         Object.entries(paths).map(([destination, source]) => ({
