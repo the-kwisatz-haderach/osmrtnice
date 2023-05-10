@@ -15,7 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import useAppContext from 'contexts/AppContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
+import { REVALIDATE_TIME_SECONDS, STORYBLOK_VERSION } from 'lib/constants'
 
 interface Props {
   story: PageStory
@@ -92,7 +92,7 @@ export default function Contact({ story }: Props): ReactElement {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const story = await Storyblok.getStory('contact', {
-    version: 'draft',
+    version: STORYBLOK_VERSION,
     language: locale,
   })
   return {

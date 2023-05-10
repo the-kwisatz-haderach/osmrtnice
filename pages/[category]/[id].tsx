@@ -1,5 +1,6 @@
 import { Box, Container } from '@chakra-ui/react'
 import { ObituaryContainer } from 'components/Obituary'
+import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
 import { capitalize } from 'lodash'
 import { ObjectID } from 'mongodb'
 import { GetStaticPaths, GetStaticProps } from 'next'
@@ -66,21 +67,29 @@ export const getStaticProps: GetStaticProps<
   IObituary,
   { id: string; category: string }
 > = async ({ params, locale }) => {
-  const { db } = await connectToDb()
-  const obituary: IObituary = JSON.parse(
-    JSON.stringify(
-      await db.collection<Omit<IObituary, '_id'>>('obituaries').findOne({
-        _id: ObjectID.isValid(params.id)
-          ? ObjectID.createFromHexString(params.id)
-          : new ObjectID(params.id),
-      })
+  try {
+    const { db } = await connectToDb()
+    const obituary: IObituary = JSON.parse(
+      JSON.stringify(
+        await db.collection<Omit<IObituary, '_id'>>('obituaries').findOne({
+          _id: ObjectID.isValid(params.id)
+            ? ObjectID.createFromHexString(params.id)
+            : new ObjectID(params.id),
+        })
+      )
     )
-  )
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-      ...obituary,
-    },
+    return {
+      props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+        ...obituary,
+      },
+    }
+  } catch (err) {
+    console.error(err)
+    return {
+      notFound: true,
+      revalidate: REVALIDATE_TIME_SECONDS,
+    }
   }
 }
 

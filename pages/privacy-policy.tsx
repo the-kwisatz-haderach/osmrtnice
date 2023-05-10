@@ -1,3 +1,4 @@
+import { STORYBLOK_VERSION } from 'lib/constants'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ReactElement } from 'react'
@@ -15,7 +16,7 @@ export default function PrivacyPolicy({ story }: Props): ReactElement {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const res = await Storyblok.getStory('privacy-policy', {
-    version: 'draft',
+    version: STORYBLOK_VERSION,
     language: locale,
   })
   return {

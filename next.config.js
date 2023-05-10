@@ -37,15 +37,12 @@ module.exports = (phase, { defaultConfig }) => {
       },
     }),
     async headers() {
-      return process.env.NODE_ENV === 'development'
-        ? []
-        : [
-            {
-              // Apply these headers to all routes in your application.
-              source: '/(.*)',
-              headers: securityHeaders,
-            },
-          ]
+      return [
+        ...(process.env.NODE_ENV === 'development' && {
+          source: '/(.*)',
+          headers: securityHeaders,
+        }),
+      ]
     },
     async rewrites() {
       return Object.values(pathTranslations).flatMap((paths) =>

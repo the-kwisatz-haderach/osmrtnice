@@ -15,7 +15,11 @@ import { useObituaries } from 'hooks/reactQuery/queries'
 import { getObituaries } from 'lib/domain/getObituaries'
 import { connectToDb } from 'db'
 import { useScrollToTop } from 'hooks/useScrollToTop'
-import { DEFAULT_LIST_LIMIT, REVALIDATE_TIME_SECONDS } from 'lib/constants'
+import {
+  DEFAULT_LIST_LIMIT,
+  REVALIDATE_TIME_SECONDS,
+  STORYBLOK_VERSION,
+} from 'lib/constants'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 interface Props {
@@ -78,7 +82,7 @@ export default function Home({ story }: Props): ReactElement {
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const res = await Storyblok.getStory('home', {
-    version: 'draft',
+    version: STORYBLOK_VERSION,
     language: locale,
   })
   const queryClient = new QueryClient()

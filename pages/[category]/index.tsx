@@ -15,7 +15,7 @@ import { ProgressBar } from '../../components/ProgessBar'
 import { useObituaries } from '../../hooks/reactQuery/queries'
 import { getObituaries } from '../../lib/domain/getObituaries'
 import { useScrollToTop } from 'hooks/useScrollToTop'
-import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
+import { REVALIDATE_TIME_SECONDS, STORYBLOK_VERSION } from 'lib/constants'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { connectToDb } from 'db'
 
@@ -85,23 +85,31 @@ export const getStaticProps: GetStaticProps = async ({
   params: { category },
   locale,
 }) => {
-  const queryClient = new QueryClient()
-  const { db } = await connectToDb()
-  await queryClient.prefetchQuery(['obituariesInfinite', { category }], () =>
-    getObituaries(db, { category: category as string })
-  )
-  const story = await Storyblok.getStory(category as string, {
-    version: 'draft',
-    language: locale,
-  })
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-      story: story.data.story,
-      category,
-      dehydratedState: dehydrate(queryClient),
-    },
-    revalidate: REVALIDATE_TIME_SECONDS,
+  try {
+    const queryClient = new QueryClient()
+    const { db } = await connectToDb()
+    await queryClient.prefetchQuery(['obituariesInfinite', { category }], () =>
+      getObituaries(db, { category: category as string })
+    )
+    const story = await Storyblok.getStory(category as string, {
+      version: STORYBLOK_VERSION,
+      language: locale,
+    })
+    return {
+      props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+        story: story?.data?.story,
+        category,
+        dehydratedState: dehydrate(queryClient),
+      },
+      revalidate: REVALIDATE_TIME_SECONDS,
+    }
+  } catch (err) {
+    console.error(err)
+    return {
+      notFound: true,
+      revalidate: REVALIDATE_TIME_SECONDS,
+    }
   }
 }
 
