@@ -1,7 +1,8 @@
+import { STORYBLOK_TOKEN } from 'lib/constants'
 import StoryblokClient from 'storyblok-js-client'
 
 const Storyblok = new StoryblokClient({
-  accessToken: process.env.STORYBLOK_TOKEN,
+  accessToken: STORYBLOK_TOKEN,
   cache: {
     clear: 'auto',
     type: 'memory',
