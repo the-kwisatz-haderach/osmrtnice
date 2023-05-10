@@ -66,14 +66,10 @@ MyApp.getInitialProps = async (
   try {
     const [globalResponse, linksResponse] = await Promise.all([
       Storyblok.getStory('global', {
-        token: STORYBLOK_TOKEN,
         version: STORYBLOK_VERSION,
-        language: appContext.ctx.locale,
       }),
       Storyblok.get('cdn/links', {
-        token: STORYBLOK_TOKEN,
         version: STORYBLOK_VERSION,
-        language: appContext.ctx.locale,
       }),
     ])
 
