@@ -17,7 +17,7 @@ interface Props
   ingress: string
   phone: string
   email: string
-  logoSrc: string
+  logoSrc?: string
 }
 
 export default function Footer({

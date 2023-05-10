@@ -25,7 +25,7 @@ import { useTranslation } from 'next-i18next'
 
 interface Props {
   menuItems: IMenuItem[]
-  logoSrc: string
+  logoSrc?: string
 }
 
 export default function MainNavigation({
