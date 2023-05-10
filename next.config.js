@@ -27,7 +27,7 @@ const securityHeaders = [
 
 module.exports = (phase, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
-  return {
+  const config = {
     ...defaultConfig,
     i18n,
     ...(phase === PHASE_PRODUCTION_BUILD && {
@@ -59,4 +59,5 @@ module.exports = (phase, { defaultConfig }) => {
       domains: ['picsum.photos', 'a.storyblok.com', 'www.osmrtnica.ba'],
     },
   }
+  return config
 }
