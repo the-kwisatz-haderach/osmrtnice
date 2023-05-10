@@ -20,6 +20,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { STORYBLOK_VERSION } from 'lib/constants'
 
 const observerOptions = { threshold: 0.8 }
 
@@ -65,11 +66,11 @@ MyApp.getInitialProps = async (
   try {
     const [globalResponse, linksResponse] = await Promise.all([
       Storyblok.getStory('global', {
-        version: 'draft',
+        version: STORYBLOK_VERSION,
         language: appContext.ctx.locale,
       }),
       Storyblok.get('cdn/links', {
-        version: 'draft',
+        version: STORYBLOK_VERSION,
         language: appContext.ctx.locale,
       }),
     ])
