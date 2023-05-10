@@ -15,15 +15,22 @@ export default function Services({ story }: Props): ReactElement {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
-  const story = await Storyblok.getStory('services', {
-    version: STORYBLOK_VERSION,
-    language: locale,
-  })
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-      story: story.data.story,
-    },
-    revalidate: REVALIDATE_TIME_SECONDS,
+  try {
+    const story = await Storyblok.getStory('services', {
+      version: STORYBLOK_VERSION,
+      language: locale,
+    })
+    return {
+      props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+        story: story.data.story,
+      },
+      revalidate: REVALIDATE_TIME_SECONDS,
+    }
+  } catch (err) {
+    console.error(err)
+    return {
+      notFound: true,
+    }
   }
 }
