@@ -40,11 +40,11 @@ module.exports = (phase, { defaultConfig }) => {
       return process.env.NODE_ENV === 'development'
         ? []
         : [
-            ...(process.env.NODE_ENV === 'development' && {
+            {
               // Apply these headers to all routes in your application.
               source: '/(.*)',
               headers: securityHeaders,
-            }),
+            },
           ]
     },
     async rewrites() {
