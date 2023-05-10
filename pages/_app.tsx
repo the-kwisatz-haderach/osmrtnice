@@ -20,7 +20,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { STORYBLOK_TOKEN, STORYBLOK_VERSION } from 'lib/constants'
+import { STORYBLOK_VERSION } from 'lib/constants'
 
 const observerOptions = { threshold: 0.8 }
 
@@ -63,65 +63,15 @@ MyApp.getInitialProps = async (
   appContext: AppContext
 ): Promise<IAppContext> => {
   const initialProps = await App.getInitialProps(appContext)
-  try {
-    const [globalResponse, linksResponse] = await Promise.all([
-      Storyblok.getStory('global', {
-        version: STORYBLOK_VERSION,
-      }),
-      Storyblok.get('cdn/links', {
-        version: STORYBLOK_VERSION,
-      }),
-    ])
 
-    const {
-      links,
-    }: { links: Record<string, StoryBlokLink> } = linksResponse?.data || {
-      links: {},
-    }
-
-    const myLinks = Object.values(links)
-      .filter((link) => link.slug !== 'global' && link.parent_id === 0)
-      .sort((a, b) => b.position - a.position)
-
-    const { content } = (globalResponse?.data
-      ?.story as Story<IGlobalSettings>) || {
-      content: {
-        showInfoBlock: true,
-        phone: '',
-        logo: {
-          alt: '',
-          copyright: '',
-          fieldtype: 'asset',
-          filename: '',
-          focus: null as null,
-          id: 0,
-          name: '',
-          title: '',
-        },
-        ingress: '',
-        infoBlockText: '',
-        email: '',
-        component: '',
-        _uid: '',
-      },
-    }
-
-    return {
-      ...initialProps,
-      menuItems: makeAppLinks('hr', ['privacy-policy'])(myLinks)?.hr || [],
-      ...content,
-    }
-  } catch (err) {
-    console.error(err)
-    return {
-      ...initialProps,
-      menuItems: [],
-      email: '',
-      infoBlockText: '',
-      ingress: '',
-      phone: '',
-      showInfoBlock: false,
-    }
+  return {
+    ...initialProps,
+    menuItems: [],
+    email: '',
+    infoBlockText: '',
+    ingress: '',
+    phone: '',
+    showInfoBlock: false,
   }
 }
 
