@@ -4,6 +4,7 @@ import attachMiddleware from 'middleware'
 import { EnhancedNextApiRequest } from 'middleware/types'
 import { IObituary } from 'lib/domain/types'
 import { isStoryblokEvent, IStoryblokEvent, Story } from 'lib/storyblok/types'
+import { STORYBLOK_TOKEN, STORYBLOK_WEBHOOK_SECRET } from 'lib/constants'
 
 const isValidSignature = (
   signature: unknown,
@@ -11,7 +12,7 @@ const isValidSignature = (
 ): boolean => {
   if (typeof signature !== 'string') return false
   try {
-    const secret = process.env.STORYBLOK_WEBHOOK_SECRET
+    const secret = STORYBLOK_WEBHOOK_SECRET
     const bodyHmac = crypto
       .createHmac('sha1', secret)
       .update(JSON.stringify(event))
@@ -39,7 +40,7 @@ export default attachMiddleware().post(
       ) {
         switch (event.action) {
           case 'published': {
-            const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${process.env.STORYBLOK_TOKEN}`
+            const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${STORYBLOK_TOKEN}`
             const storyRes = await fetch(url)
             if (storyRes.ok) {
               const {

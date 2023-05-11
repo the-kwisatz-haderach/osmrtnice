@@ -24,13 +24,13 @@ import { TranslatedLink } from '../TranslatedLink'
 import { useTranslation } from 'next-i18next'
 
 interface Props {
-  menuItems: IMenuItem[]
+  menuItems?: IMenuItem[]
   logoSrc?: string
 }
 
 export default function MainNavigation({
-  menuItems,
-  logoSrc,
+  menuItems = [],
+  logoSrc = '',
 }: Props): ReactElement {
   const { t } = useTranslation()
   const [homeLink, ...links] = menuItems
