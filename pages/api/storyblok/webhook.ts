@@ -46,6 +46,9 @@ export default attachMiddleware().post(
               const {
                 story,
               }: { story: Story<IObituary> } = await storyRes.json()
+              if (story.content.component !== 'obituary') {
+                return res.status(200).end()
+              }
               const obituary: Omit<IObituary, '_id'> = {
                 storyId: story.id,
                 firstname: story.content.firstname,
