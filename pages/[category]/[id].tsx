@@ -1,7 +1,6 @@
 import { Box, Container } from '@chakra-ui/react'
 import { ObituaryContainer } from 'components/Obituary'
 import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
-import { capitalize } from 'lodash'
 import { ObjectID } from 'mongodb'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useTranslation } from 'next-i18next'
@@ -13,6 +12,8 @@ import { ObituaryLarge } from '../../components/Obituary/components/ObituaryLarg
 import { connectToDb } from '../../db'
 import { createMetaTitle, obituaryTypes } from '../../lib/domain'
 import { IObituary } from '../../lib/domain/types'
+
+const capitalize = (str = '') => str[0].toLocaleUpperCase() + str.slice(1)
 
 export default function Obituary(props: IObituary): ReactElement {
   const { isFallback } = useRouter()
@@ -114,6 +115,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   )
   return {
     paths: paths.flat(),
-    fallback: true,
+    fallback: 'blocking',
   }
 }

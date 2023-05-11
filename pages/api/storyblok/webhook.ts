@@ -82,10 +82,10 @@ export default attachMiddleware().post(
           }
           case 'unpublished':
           case 'deleted': {
-            const result = await req.db
+            const { result } = await req.db
               .collection('obituaries')
               .deleteOne({ storyId: event.story_id })
-            if (result.result.ok === 1) {
+            if (result.ok === 1) {
               return res.status(200).end()
             }
             break

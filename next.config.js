@@ -2,6 +2,10 @@ const { PHASE_PRODUCTION_BUILD } = require('next/constants')
 const { i18n } = require('./next-i18next.config')
 const { pathTranslations } = require('./pathTranslations')
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
 module.exports = (phase, { defaultConfig }) => {
   /** @type {import('next').NextConfig} */
   const config = {
@@ -25,5 +29,5 @@ module.exports = (phase, { defaultConfig }) => {
       domains: ['picsum.photos', 'a.storyblok.com', 'www.osmrtnica.ba'],
     },
   }
-  return config
+  return withBundleAnalyzer(config)
 }

@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
 import { IObituary } from '../../lib/domain/types'
 import { useIncrementAppreciation } from '../../hooks/reactQuery/mutations'
 

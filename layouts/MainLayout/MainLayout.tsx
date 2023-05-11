@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react'
-import React, { PropsWithChildren, ReactElement, useEffect } from 'react'
+import React, { PropsWithChildren, ReactElement } from 'react'
 import { Footer } from '../../components/Footer'
 import { MainNavigation } from '../../components/MainNavigation'
 import useAppContext from '../../contexts/AppContext'

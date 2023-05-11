@@ -1,9 +1,8 @@
 import { ReactElement } from 'react'
 import { faCopyright } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Container, HStack, Link, Text } from '@chakra-ui/react'
+import { Container, HStack, Text } from '@chakra-ui/react'
 import { SITE_NAME } from '../../../lib/domain'
-import { TranslatedLink } from '../../TranslatedLink'
 
 export const FooterBottom = (): ReactElement => (
   <Container

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint '**/*.{ts,js,tsx,jsx}'",
     "test": "jest --watchAll --detectOpenHandles",
-    "test:monitor": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage"
+    "test:monitor": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage",
+    "analyze": "ANALYZE=true yarn build"
   },
   "dependencies": {
     "@chakra-ui/react": "1.8.8",
@@ -21,6 +22,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@hookform/error-message": "^2.0.0",
+    "@next/bundle-analyzer": "^13.4.1",
     "@tanstack/react-query": "^4.24.4",
     "@tanstack/react-query-devtools": "^4.24.4",
     "axios": "^0.21.1",
@@ -41,6 +43,7 @@
     "storyblok-react": "^0.1.2"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^13.4.1",
     "@tsconfig/node16": "^1.0.3",
     "@types/faker": "^5.5.1",
     "@types/jest": "^26.0.24",

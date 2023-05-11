@@ -1,11 +1,15 @@
+import dynamic from 'next/dynamic'
 import React, { createContext, useCallback, useRef, useState } from 'react'
-import { RootModal } from './RootModal'
 import { IModalContext } from './types'
 
 export const ModalContext = createContext<IModalContext>({
   open: () => {},
   close: () => {},
 })
+
+const DynamicModal = dynamic(() =>
+  import('./RootModal').then((mod) => mod.RootModal)
+)
 
 export const ModalProvider: React.FC = ({ children }) => {
   const [modal, setModal] = useState<{
@@ -43,7 +47,7 @@ export const ModalProvider: React.FC = ({ children }) => {
   return (
     <ModalContext.Provider value={value.current}>
       {children}
-      <RootModal {...modal} close={close} />
+      <DynamicModal {...modal} close={close} />
     </ModalContext.Provider>
   )
 }

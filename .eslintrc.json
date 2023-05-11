@@ -24,7 +24,8 @@
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:react-hooks/recommended",
-    "prettier"
+    "prettier",
+    "plugin:@next/next/recommended"
   ],
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
