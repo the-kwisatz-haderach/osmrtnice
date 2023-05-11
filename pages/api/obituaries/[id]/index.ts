@@ -20,6 +20,7 @@ export default attachMiddleware()
           req.body,
           { returnDocument: 'after' }
         )
+        res.setHeader('Cache-Control', 's-maxage=3600, max-age=0')
         return res.status(200).json(obituary)
       } catch (err) {
         console.error(err)

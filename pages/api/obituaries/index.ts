@@ -11,6 +11,7 @@ export default attachMiddleware().get(
         req.db,
         parseObituaryQuery(req.query)
       )
+      res.setHeader('Cache-Control', 's-maxage=3600, max-age=0')
       res.status(200).json({
         data,
         next,

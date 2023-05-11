@@ -17,6 +17,19 @@ module.exports = (phase, { defaultConfig }) => {
         cpus: 1,
       },
     }),
+    async headers() {
+      return [
+        {
+          source: '/_next/image(.*)',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 's-maxage=86400, max-age=0',
+            },
+          ],
+        },
+      ]
+    },
     async rewrites() {
       return Object.values(pathTranslations).flatMap((paths) =>
         Object.entries(paths).map(([destination, source]) => ({
