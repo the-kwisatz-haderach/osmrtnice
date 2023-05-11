@@ -1,3 +1,4 @@
+import Storyblok from 'lib/storyblok/client'
 import { useEffect, useState } from 'react'
 import { StoryData } from 'storyblok-js-client'
 
@@ -11,7 +12,7 @@ export default function useStoryblok<T extends StoryData>(originalStory: T): T {
   // adds the events for updating the visual editor
   // see https://www.storyblok.com/docs/guide/essentials/visual-editor#initializing-the-storyblok-js-bridge
   function initEventListeners(): void {
-    if (window.storyblok) {
+    if (window.storyblok && Storyblok.accessToken) {
       window.storyblok.init()
 
       // reload on Next.js page on save or publish event in the Visual Editor
@@ -37,7 +38,8 @@ export default function useStoryblok<T extends StoryData>(originalStory: T): T {
     const existingScript = document.getElementById('storyblokBridge')
     if (!existingScript) {
       const script = document.createElement('script')
-      script.src = `https://app.storyblok.com/f/storyblok-latest.js?t=${process.env.STORYBLOK_TOKEN}`
+
+      script.src = `https://app.storyblok.com/f/storyblok-latest.js?t=${Storyblok.accessToken}`
       script.id = 'storyblokBridge'
       document.body.appendChild(script)
       script.onload = () => {
