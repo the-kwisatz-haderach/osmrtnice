@@ -84,12 +84,12 @@ export const getStaticProps: GetStaticProps<
         ...(await serverSideTranslations(locale, ['common'])),
         ...obituary,
       },
+      revalidate: REVALIDATE_TIME_SECONDS,
     }
   } catch (err) {
     console.error(err)
     return {
       notFound: true,
-      revalidate: REVALIDATE_TIME_SECONDS,
     }
   }
 }

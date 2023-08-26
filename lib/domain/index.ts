@@ -7,6 +7,7 @@ export const obituaryTypes: ObituaryType[] = [
   'in-memoriam',
   'last-greetings',
   'obituary',
+  'thank-you',
 ]
 
 export const createMetaTitle = (...names: string[]) =>

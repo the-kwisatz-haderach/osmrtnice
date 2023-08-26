@@ -8,5 +8,6 @@ module.exports.pathTranslations = {
     '/last-greetings': '/posljednji-pozdrav',
     '/in-memoriam': '/sjecanja',
     '/contact': '/kontakt',
+    '/thank-you': '/zahvala',
   },
 }

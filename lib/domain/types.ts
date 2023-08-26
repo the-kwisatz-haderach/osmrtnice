@@ -12,6 +12,7 @@ export type ObituaryType =
   | 'obituary'
   | 'gratitude-display'
   | 'last-greetings'
+  | 'thank-you'
 
 export type FaithType = 'christian' | 'muslim'
 
