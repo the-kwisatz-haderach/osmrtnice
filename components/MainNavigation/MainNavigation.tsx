@@ -55,6 +55,7 @@ export default function MainNavigation({
           maxW="container.xl"
           justifyContent="space-between"
           alignItems="center"
+          height="100%"
           px={4}
         >
           <TranslatedLink href={homeLink.href} passHref>
@@ -62,14 +63,17 @@ export default function MainNavigation({
               title={homeLink.label}
               as="a"
               position="relative"
-              width={120}
-              height={70}
+              width="100px"
+              height="30px"
             >
               {logoSrc && <Image src={logoSrc} alt="logo" layout="fill" />}
             </Box>
           </TranslatedLink>
           <HStack
             alignItems="center"
+            pos="relative"
+            top="2px"
+            h="100%"
             spacing={10}
             display={{ base: 'none', md: 'flex' }}
           >

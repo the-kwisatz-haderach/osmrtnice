@@ -80,14 +80,14 @@ export default function Footer({
             />
           </Box>
         </Flex>
-        <Flex
+        {/* <Flex
           alignItems="center"
           justifyContent="center"
           width={['100%', '100%', '50%']}
           flexWrap="wrap"
         >
-          {logoSrc && <Image src={logoSrc} height={200} width={300} />}
-        </Flex>
+          {logoSrc && <Image src={logoSrc} height={60} width={180} />}
+        </Flex> */}
       </Container>
       <Box
         flex={1}
