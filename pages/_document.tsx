@@ -8,7 +8,6 @@ class MyDocument extends Document {
         <Head>
           {process.env.NODE_ENV === 'production' && (
             <>
-              {/* <!-- Google Tag Manager --> */}
               <Script
                 id="google-tag-manager"
                 strategy="afterInteractive"
@@ -20,7 +19,6 @@ class MyDocument extends Document {
               })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM}');`,
                 }}
               ></Script>
-              {/* <!-- End Google Tag Manager --> */}
             </>
           )}
         </Head>
