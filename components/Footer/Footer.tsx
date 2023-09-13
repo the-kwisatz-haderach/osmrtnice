@@ -57,7 +57,13 @@ export default function Footer({
             <Text mb="2">{ingress}</Text>
             <InfoList
               items={[
-                { label: t('phone'), content: phone, icon: phoneIcon },
+                {
+                  label: t('phone'),
+                  content: phone,
+                  icon: phoneIcon,
+                  href: `tel:${phone.replace(/\s+/g, '')}`,
+                  isMailto: true,
+                },
                 {
                   label: t('mail'),
                   content: email,
@@ -74,7 +80,12 @@ export default function Footer({
             </Heading>
             <InfoList
               items={menuItems.map((menuItem) => ({
-                content: menuItem.label,
+                content:
+                  menuItem.href === '/thank-you'
+                    ? t('thank-you-plural')
+                    : menuItem.href === '/last-greetings'
+                    ? t('last-greetings-plural')
+                    : menuItem.label,
                 href: menuItem.href,
               }))}
             />

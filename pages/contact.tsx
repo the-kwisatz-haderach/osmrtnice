@@ -71,7 +71,13 @@ export default function Contact({ story }: Props): ReactElement {
               <Text mb="2">{ingress}</Text>
               <InfoList
                 items={[
-                  { label: t('phone'), content: phone, icon: phoneIcon },
+                  {
+                    label: t('phone'),
+                    content: phone,
+                    icon: phoneIcon,
+                    href: `tel:${phone.replace(/\s+/g, '')}`,
+                    isMailto: true,
+                  },
                   {
                     label: t('mail'),
                     content: email,

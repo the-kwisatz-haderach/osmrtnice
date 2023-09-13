@@ -206,11 +206,14 @@ export default function ContactForm(): ReactElement {
               <option value="" disabled>
                 {t('select_placeholder')}
               </option>
-              {obituaryTypes.map((type) => (
-                <option key={type} value={type}>
-                  {t(type)}
-                </option>
-              ))}
+              {obituaryTypes.map((type) => {
+                const label = t(type)
+                return (
+                  <option key={type} value={type}>
+                    {label[0].toLocaleUpperCase() + label.slice(1)}
+                  </option>
+                )
+              })}
             </Select>
           )}
         />
