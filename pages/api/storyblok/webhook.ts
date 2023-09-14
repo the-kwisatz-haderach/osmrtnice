@@ -70,6 +70,7 @@ export default attachMiddleware().post(
                 type: story.content.type,
                 image: story.content.image,
                 appreciations: 0,
+                symbol_image: story.content.symbol_image,
               }
               const result = await req.db
                 .collection('obituaries')
