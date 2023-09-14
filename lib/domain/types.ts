@@ -38,5 +38,8 @@ export interface IObituary {
   faith?: FaithType
   is_crawled: boolean
   appreciations: number
-  symbol_image?: string
+  symbol_image?: {
+    alt?: string
+    filename?: string
+  }
 }

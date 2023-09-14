@@ -38,7 +38,7 @@ export default attachMiddleware().post(
         isStoryblokEvent(event) &&
         isValidSignature(webhookSignature, event)
       ) {
-        switch (event.action) {
+        switch (event.action.toLowerCase()) {
           case 'published': {
             const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${STORYBLOK_TOKEN}`
             const storyRes = await fetch(url)
@@ -70,18 +70,29 @@ export default attachMiddleware().post(
                 type: story.content.type,
                 image: story.content.image,
                 appreciations: 0,
-                symbol_image: story.content.symbol_image,
+                symbol_image: {
+                  filename: story.content.symbol_image.filename,
+                  alt: story.content.symbol_image.alt,
+                },
               }
-              const result = await req.db
+              const { result } = await req.db
                 .collection('obituaries')
                 .insertOne(obituary)
-              if (result.result.ok === 1) {
+              if (result.ok === 1) {
                 return res.status(200).end()
               }
             }
             break
           }
-          case 'unpublished':
+          case 'unpublished': {
+            const { result } = await req.db
+              .collection('obituaries')
+              .deleteOne({ storyId: event.story_id })
+            if (result.ok === 1) {
+              return res.status(200).end()
+            }
+            break
+          }
           case 'deleted': {
             const { result } = await req.db
               .collection('obituaries')

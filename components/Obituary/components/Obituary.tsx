@@ -35,7 +35,7 @@ export const Obituary: ObituaryRenderer = (props) => {
     name_misc = '',
     surname = '',
     prefix = '',
-    symbol_image = '',
+    symbol_image = {},
   } = props
   const fullname = formatName({ prefix, firstname, surname, name_misc })
   const { t } = useTranslation()

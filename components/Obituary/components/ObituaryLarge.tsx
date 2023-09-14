@@ -39,7 +39,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
     additional_information,
     is_crawled,
     prefix,
-    symbol_image,
+    symbol_image = {},
   } = data
   const fullname = formatName({ prefix, firstname, surname, name_misc })
   const { t } = useTranslation()
