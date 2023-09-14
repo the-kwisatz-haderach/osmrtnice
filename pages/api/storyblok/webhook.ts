@@ -77,7 +77,10 @@ export default attachMiddleware().post(
               }
               const { result } = await req.db
                 .collection('obituaries')
-                .insertOne(obituary)
+                .updateOne({ storyId: event.story_id }, obituary, {
+                  upsert: true,
+                })
+
               if (result.ok === 1) {
                 return res.status(200).end()
               }
