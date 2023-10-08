@@ -11,7 +11,16 @@ export interface IObituaryQuery {
   limit?: number
 }
 
-export type ObituarySymbol = 'cross' | 'rose'
+export type ObituarySymbol =
+  | 'dove'
+  | 'anchor'
+  | 'atom'
+  | 'star_of_david'
+  | 'christian_cross'
+  | 'moon_star'
+  | 'orthodox_cross'
+  | 'olive_branch'
+  | 'rose'
 
 export type ObituaryType =
   | 'in-memoriam'
