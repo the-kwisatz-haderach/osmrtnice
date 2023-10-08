@@ -80,7 +80,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
             borderColor="gray.400"
             mb="1rem"
           >
-            <ObituaryImage imgSrc={image} />
+            <ObituaryImage img={image} />
           </Box>
           <VStack
             alignItems="center"

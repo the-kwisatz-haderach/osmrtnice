@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next'
-import { getObituaries } from '../../../lib/domain/getObituaries'
+import getObituaries from '../../../lib/domain/getObituaries'
 import { parseObituaryQuery } from '../../../lib/domain/parseObituaryQuery'
 import attachMiddleware from '../../../middleware'
 import { EnhancedNextApiRequest } from '../../../middleware/types'

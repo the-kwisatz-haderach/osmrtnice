@@ -69,6 +69,11 @@ export default attachMiddleware().post(
                 size: story.content.size,
                 type: story.content.type,
                 image: story.content.image,
+                image_second: story.content.image_second,
+                firstname_second: story.content.firstname_second,
+                surname_second: story.content.surname_second,
+                date_of_birth_second: story.content.date_of_birth_second,
+                date_of_death_second: story.content.date_of_death_second,
                 appreciations: 0,
                 symbol_image: {
                   filename: story.content.symbol_image.filename,

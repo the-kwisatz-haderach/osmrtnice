@@ -35,8 +35,18 @@ export const Obituary: ObituaryRenderer = (props) => {
     name_misc = '',
     surname = '',
     prefix = '',
+    image_second,
+    firstname_second,
+    surname_second,
+    date_of_birth_second,
+    date_of_death_second,
   } = props
-  const fullname = formatName({ prefix, firstname, surname, name_misc })
+  const hasSecond =
+    image_second &&
+    firstname_second &&
+    surname_second &&
+    date_of_birth_second &&
+    date_of_death_second
   const { t } = useTranslation()
   const isClicked =
     typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
@@ -89,64 +99,127 @@ export const Obituary: ObituaryRenderer = (props) => {
         >
           {t(type)}
         </Text>
-        <Box
-          borderStyle="solid"
-          borderWidth={1}
-          borderColor="gray.300"
-          width={125}
-          height={150}
-          position="relative"
-          onClick={openModal}
-          cursor="pointer"
-        >
-          <ObituaryImage imgSrc={image} />
-        </Box>
-        <VStack textAlign="center" spacing={3}>
-          {preamble && (
-            <Text fontSize="sm" fontStyle="italic">
-              {preamble}
-            </Text>
-          )}
-          <Box>
-            <Heading
+        <HStack>
+          <VStack textAlign="center" spacing={3}>
+            <Box
+              borderStyle="solid"
+              borderWidth={1}
+              borderColor="gray.300"
+              width={125}
+              height={150}
+              position="relative"
               onClick={openModal}
               cursor="pointer"
-              as="h4"
-              fontSize="2xl"
-              mb={2}
             >
-              {fullname}
-            </Heading>
-            <HStack
-              hidden={!date_of_birth && !date_of_death}
-              spacing={1}
-              justify="center"
-              fontWeight="bold"
-            >
-              <Text fontSize="sm" hidden={!date_of_birth}>
-                {formatDate(date_of_birth, {
-                  year: 'numeric',
-                  ...(type === 'in-memoriam' && {
-                    month: 'numeric',
-                    day: 'numeric',
-                  }),
-                })}
-              </Text>
-              <Text hidden={!date_of_birth || !date_of_death} fontSize="sm">
-                -
-              </Text>
-              <Text fontSize="sm" hidden={!date_of_death}>
-                {formatDate(date_of_death, {
-                  year: 'numeric',
-                  ...(type === 'in-memoriam' && {
-                    month: 'numeric',
-                    day: 'numeric',
-                  }),
-                })}
-              </Text>
-            </HStack>
-          </Box>
-        </VStack>
+              <ObituaryImage img={image} />
+            </Box>
+            <Box>
+              <Heading
+                onClick={openModal}
+                cursor="pointer"
+                as="h4"
+                fontSize="2xl"
+                mb={2}
+              >
+                {formatName({ prefix, firstname, surname, name_misc })}
+              </Heading>
+              <HStack
+                hidden={!date_of_birth && !date_of_death}
+                spacing={1}
+                justify="center"
+                fontWeight="bold"
+              >
+                <Text fontSize="sm" hidden={!date_of_birth}>
+                  {formatDate(date_of_birth, {
+                    year: 'numeric',
+                    ...(type === 'in-memoriam' && {
+                      month: 'numeric',
+                      day: 'numeric',
+                    }),
+                  })}
+                </Text>
+                <Text hidden={!date_of_birth || !date_of_death} fontSize="sm">
+                  -
+                </Text>
+                <Text fontSize="sm" hidden={!date_of_death}>
+                  {formatDate(date_of_death, {
+                    year: 'numeric',
+                    ...(type === 'in-memoriam' && {
+                      month: 'numeric',
+                      day: 'numeric',
+                    }),
+                  })}
+                </Text>
+              </HStack>
+            </Box>
+          </VStack>
+          {hasSecond && (
+            <VStack textAlign="center" spacing={3}>
+              <Box
+                borderStyle="solid"
+                borderWidth={1}
+                borderColor="gray.300"
+                width={125}
+                height={150}
+                position="relative"
+                onClick={openModal}
+                cursor="pointer"
+              >
+                <ObituaryImage img={image_second} />
+              </Box>
+              <Box>
+                <Heading
+                  onClick={openModal}
+                  cursor="pointer"
+                  as="h4"
+                  fontSize="2xl"
+                  mb={2}
+                >
+                  {formatName({
+                    firstname: firstname_second,
+                    surname: surname_second,
+                  })}
+                </Heading>
+                <HStack
+                  hidden={!date_of_birth_second && !date_of_death_second}
+                  spacing={1}
+                  justify="center"
+                  fontWeight="bold"
+                >
+                  <Text fontSize="sm" hidden={!date_of_birth_second}>
+                    {formatDate(date_of_birth_second, {
+                      year: 'numeric',
+                      ...(type === 'in-memoriam' && {
+                        month: 'numeric',
+                        day: 'numeric',
+                      }),
+                    })}
+                  </Text>
+                  <Text
+                    hidden={!date_of_birth_second || !date_of_death_second}
+                    fontSize="sm"
+                  >
+                    -
+                  </Text>
+                  <Text fontSize="sm" hidden={!date_of_death_second}>
+                    {formatDate(date_of_death_second, {
+                      year: 'numeric',
+                      ...(type === 'in-memoriam' && {
+                        month: 'numeric',
+                        day: 'numeric',
+                      }),
+                    })}
+                  </Text>
+                </HStack>
+              </Box>
+            </VStack>
+          )}
+        </HStack>
+        {preamble && (
+          <Text fontSize="sm" fontStyle="italic">
+            {preamble}
+          </Text>
+        )}
         {long_text && (
           <Text
             className="capitalize"

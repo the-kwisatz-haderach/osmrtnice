@@ -3,6 +3,30 @@ import { DEFAULT_LIST_LIMIT } from 'lib/constants'
 import { Db, ObjectID } from 'mongodb'
 import { IObituary, IObituaryQuery, ObituaryType } from './types'
 
+const withCache = (fn: typeof getObituaries): typeof getObituaries => {
+  return async (
+    db,
+    { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT }
+  ) => {
+    if (process.env.DISABLE_CACHE === 'true') {
+      return await fn(db, { next, search, category, limit })
+    }
+    const kvKey = [next, search, category, limit].join('&')
+    const cached = await kv.json.get(kvKey)
+    if (cached !== null) {
+      return cached
+    }
+
+    const res = await fn(db, { next, search, category, limit })
+    try {
+      await kv.json.set(kvKey, '$', JSON.stringify(res))
+    } catch (err) {
+      console.error(err)
+    }
+    return res
+  }
+}
+
 export async function getObituaries(
   db: Db,
   {
@@ -12,12 +36,6 @@ export async function getObituaries(
     limit = DEFAULT_LIST_LIMIT,
   }: IObituaryQuery
 ) {
-  const kvKey = [next, search, category, limit].join('&')
-  const cached = await kv.json.get(kvKey)
-  if (cached !== null) {
-    return cached
-  }
-
   const $regex = new RegExp(search.split(/\s+/).join('|'), 'i')
   const obituaries: IObituary[] = JSON.parse(
     JSON.stringify(
@@ -69,21 +87,11 @@ export async function getObituaries(
   )
 
   const data = obituaries.slice(0, limit)
-  try {
-    await kv.json.set(
-      kvKey,
-      '$',
-      JSON.stringify({
-        data,
-        next: obituaries.length > limit ? data[data.length - 1]?._id : null,
-      })
-    )
-  } catch (err) {
-    console.error(err)
-  }
 
   return {
     data,
     next: obituaries.length > limit ? data[data.length - 1]?._id : null,
   }
 }
+
+export default withCache(getObituaries)

@@ -1,5 +1,9 @@
 import { Richtext } from 'storyblok-js-client'
 
+export interface StoryblokAsset {
+  alt?: string
+  filename?: string
+}
 export interface IObituaryQuery {
   next?: string
   search?: string
@@ -27,7 +31,12 @@ export interface IObituary {
   prefix?: string
   date_of_birth: string
   date_of_death: string
-  image?: string
+  image?: string | StoryblokAsset
+  firstname_second?: string
+  surname_second?: string
+  image_second?: StoryblokAsset
+  date_of_birth_second?: string
+  date_of_death_second?: string
   type: ObituaryType
   long_text?: Richtext | string
   relative?: string
@@ -40,8 +49,5 @@ export interface IObituary {
   faith?: FaithType
   is_crawled: boolean
   appreciations: number
-  symbol_image?: {
-    alt?: string
-    filename?: string
-  }
+  symbol_image?: StoryblokAsset
 }
