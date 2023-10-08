@@ -19,7 +19,9 @@ const withCache = (fn: typeof getObituaries): typeof getObituaries => {
 
     const res = await fn(db, { next, search, category, limit })
     try {
-      await kv.json.set(kvKey, '$', JSON.stringify(res))
+      await kv.set(kvKey, JSON.stringify(res), {
+        ex: 60 * 5,
+      })
     } catch (err) {
       console.error(err)
     }
