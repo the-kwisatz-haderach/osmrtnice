@@ -5,6 +5,7 @@ import { Obituary, ObituarySkeleton, ObituaryContainer } from '../Obituary'
 import { EmptyState } from '../EmptyState'
 import { useTranslation } from 'next-i18next'
 import { ResultsDescription } from './ResultsDescription'
+import { isMultiObituary } from 'lib/domain/isMultiObituary'
 
 interface Props {
   obituaries: IObituary[]
@@ -36,8 +37,9 @@ export default function ObituaryGrid({
                   key={obituary._id}
                   colSpan={[
                     1,
-                    obituary.size === 'large' ? 2 : 1,
-                    obituary.size === 'large' ? 2 : 1,
+                    isMultiObituary(obituary) || obituary.size === 'large'
+                      ? 2
+                      : 1,
                   ]}
                 >
                   <ObituaryContainer {...obituary} Renderer={Obituary} />

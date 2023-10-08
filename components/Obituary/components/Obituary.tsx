@@ -19,6 +19,7 @@ import Storyblok from '../../../lib/storyblok/client'
 import { ObituaryImage } from './ObituaryImage'
 import { formatName } from '../helpers/formatName'
 import { ObituaryRenderer } from '../ObituaryContainer'
+import { isMultiObituary } from 'lib/domain/isMultiObituary'
 
 const htmlTagsRegexp = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
 
@@ -41,12 +42,6 @@ export const Obituary: ObituaryRenderer = (props) => {
     date_of_birth_second,
     date_of_death_second,
   } = props
-  const hasSecond =
-    image_second &&
-    firstname_second &&
-    surname_second &&
-    date_of_birth_second &&
-    date_of_death_second
   const { t } = useTranslation()
   const isClicked =
     typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
@@ -99,7 +94,7 @@ export const Obituary: ObituaryRenderer = (props) => {
         >
           {t(type)}
         </Text>
-        <HStack>
+        <Flex gap={10}>
           <VStack textAlign="center" spacing={3}>
             <Box
               borderStyle="solid"
@@ -153,7 +148,7 @@ export const Obituary: ObituaryRenderer = (props) => {
               </HStack>
             </Box>
           </VStack>
-          {hasSecond && (
+          {isMultiObituary(props) && (
             <VStack textAlign="center" spacing={3}>
               <Box
                 borderStyle="solid"
@@ -214,7 +209,7 @@ export const Obituary: ObituaryRenderer = (props) => {
               </Box>
             </VStack>
           )}
-        </HStack>
+        </Flex>
         {preamble && (
           <Text fontSize="sm" fontStyle="italic">
             {preamble}

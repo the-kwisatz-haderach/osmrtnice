@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Divider,
+  Flex,
   Heading,
   HStack,
   Text,
@@ -17,6 +18,7 @@ import { ObituaryRenderer } from '../ObituaryContainer'
 import { formatName } from '../helpers/formatName'
 import { useObituary } from 'hooks/reactQuery/queries'
 import Image from 'next/image'
+import { isMultiObituary } from 'lib/domain/isMultiObituary'
 
 export const ObituaryLarge: ObituaryRenderer = ({
   onShowAppreciation,
@@ -41,8 +43,12 @@ export const ObituaryLarge: ObituaryRenderer = ({
     is_crawled,
     prefix,
     symbol_image = {},
+    image_second,
+    firstname_second,
+    surname_second,
+    date_of_birth_second,
+    date_of_death_second,
   } = data
-  const fullname = formatName({ prefix, firstname, surname, name_misc })
   const { t } = useTranslation()
   // const isClicked =
   //   typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
@@ -58,7 +64,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
   return (
     <>
       <Box py={8} px={[4, 6, 10]}>
-        <VStack mb={10}>
+        <VStack spacing={4} mb={10}>
           <Text
             className="capitalize"
             width="fit-content"
@@ -68,67 +74,123 @@ export const ObituaryLarge: ObituaryRenderer = ({
           >
             {t(type)}
           </Text>
-          <Box
-            flexShrink={0}
-            position="relative"
-            width={150}
-            height={180}
-            borderStyle="solid"
-            boxShadow="xl"
-            borderRadius={5}
-            borderWidth={1}
-            borderColor="gray.400"
-            mb="1rem"
-          >
-            <ObituaryImage img={image} />
-          </Box>
-          <VStack
-            alignItems="center"
-            flex={1}
-            justifyContent="center"
-            spacing={3}
-          >
-            <Heading
-              mt={2}
-              textAlign="center"
-              as="h1"
-              lineHeight={1.1}
-              fontSize={['3xl', '4xl', '5xl']}
-            >
-              {fullname}
-            </Heading>
-            <HStack
-              hidden={!date_of_birth && !date_of_death}
-              fontSize={['lg', 'xl', '2xl']}
-              fontWeight="bold"
-            >
-              <Text hidden={!date_of_birth}>
-                {formatDate(date_of_birth, {
-                  year: 'numeric',
-                  ...(type === 'in-memoriam' && {
-                    month: 'numeric',
-                    day: 'numeric',
-                  }),
-                })}
-              </Text>
-              <Text hidden={!(date_of_birth && date_of_death)}>-</Text>
-              <Text hidden={!date_of_death}>
-                {formatDate(date_of_death, {
-                  year: 'numeric',
-                  ...(type === 'in-memoriam' && {
-                    month: 'numeric',
-                    day: 'numeric',
-                  }),
-                })}
-              </Text>
-            </HStack>
-          </VStack>
+          <Flex gap={16} width="100%" justifyContent="center">
+            <VStack alignItems="center" justifyContent="center" spacing={3}>
+              <Box
+                flexShrink={0}
+                position="relative"
+                width={150}
+                height={180}
+                borderStyle="solid"
+                boxShadow="xl"
+                borderRadius={5}
+                borderWidth={1}
+                borderColor="gray.400"
+                mb="1rem"
+              >
+                <ObituaryImage img={image} />
+              </Box>
+              <Heading
+                mt={2}
+                textAlign="center"
+                as="h1"
+                lineHeight={1.1}
+                fontSize={['2xl', '3xl', '3xl']}
+              >
+                {formatName({ prefix, firstname, surname, name_misc })}
+              </Heading>
+              <HStack
+                hidden={!date_of_birth && !date_of_death}
+                fontSize="lg"
+                fontWeight="bold"
+              >
+                <Text hidden={!date_of_birth}>
+                  {formatDate(date_of_birth, {
+                    year: 'numeric',
+                    ...(type === 'in-memoriam' && {
+                      month: 'numeric',
+                      day: 'numeric',
+                    }),
+                  })}
+                </Text>
+                <Text hidden={!(date_of_birth && date_of_death)}>-</Text>
+                <Text hidden={!date_of_death}>
+                  {formatDate(date_of_death, {
+                    year: 'numeric',
+                    ...(type === 'in-memoriam' && {
+                      month: 'numeric',
+                      day: 'numeric',
+                    }),
+                  })}
+                </Text>
+              </HStack>
+            </VStack>
+            {isMultiObituary(props) && (
+              <VStack alignItems="center" justifyContent="center" spacing={3}>
+                <Box
+                  flexShrink={0}
+                  position="relative"
+                  width={150}
+                  height={180}
+                  borderStyle="solid"
+                  boxShadow="xl"
+                  borderRadius={5}
+                  borderWidth={1}
+                  borderColor="gray.400"
+                  mb="1rem"
+                >
+                  <ObituaryImage img={image_second} />
+                </Box>
+                <Heading
+                  mt={2}
+                  textAlign="center"
+                  as="h1"
+                  lineHeight={1.1}
+                  fontSize={['2xl', '3xl', '3xl']}
+                >
+                  {formatName({
+                    firstname: firstname_second,
+                    surname: surname_second,
+                  })}
+                </Heading>
+                <HStack
+                  hidden={!date_of_birth_second && !date_of_death_second}
+                  fontSize="lg"
+                  fontWeight="bold"
+                >
+                  <Text hidden={!date_of_birth_second}>
+                    {formatDate(date_of_birth_second, {
+                      year: 'numeric',
+                      ...(type === 'in-memoriam' && {
+                        month: 'numeric',
+                        day: 'numeric',
+                      }),
+                    })}
+                  </Text>
+                  <Text
+                    hidden={!(date_of_birth_second && date_of_death_second)}
+                  >
+                    -
+                  </Text>
+                  <Text hidden={!date_of_death_second}>
+                    {formatDate(date_of_death_second, {
+                      year: 'numeric',
+                      ...(type === 'in-memoriam' && {
+                        month: 'numeric',
+                        day: 'numeric',
+                      }),
+                    })}
+                  </Text>
+                </HStack>
+              </VStack>
+            )}
+          </Flex>
           {preamble && (
             <Text
               fontStyle="italic"
               textAlign="center"
               color="blackAlpha.500"
-              fontSize={['lg', 'xl']}
+              fontSize="lg"
             >
               {preamble}
             </Text>
@@ -149,6 +211,8 @@ export const ObituaryLarge: ObituaryRenderer = ({
             <Box
               textAlign={{ md: is_crawled ? 'center' : 'unset' }}
               width="100%"
+              maxW={800}
+              mx="auto"
               alignItems="start"
             >
               <RichText>{long_text}</RichText>
@@ -160,18 +224,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
               {relative}
             </Text>
           )}
-          {additional_information && (
-            <Text
-              p={5}
-              borderWidth={1}
-              borderStyle="dashed"
-              borderColor="gray.200"
-              width="100%"
-              fontSize={['sm', 'md']}
-            >
-              {additional_information}
-            </Text>
-          )}
+
           {/* <TextBlock
             flex={1}
             backgroundColor="gray.100"
@@ -187,6 +240,19 @@ export const ObituaryLarge: ObituaryRenderer = ({
           </TextBlock> */}
         </VStack>
       </Box>
+      {additional_information && (
+        <Text
+          py={[6, 6, 8]}
+          px={[4, 6, 10]}
+          borderWidth={1}
+          bg="gray.100"
+          borderColor="gray.200"
+          width="100%"
+          fontSize="sm"
+        >
+          {additional_information}
+        </Text>
+      )}
       <Divider />
       <HStack py={[6, 6, 8]} px={[4, 6, 10]} justifyContent="space-between">
         <Box>
