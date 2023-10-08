@@ -7,6 +7,8 @@ export interface IObituaryQuery {
   limit?: number
 }
 
+export type ObituarySymbol = 'cross' | 'rose'
+
 export type ObituaryType =
   | 'in-memoriam'
   | 'obituary'

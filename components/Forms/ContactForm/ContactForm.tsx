@@ -2,8 +2,11 @@ import React, { ReactElement } from 'react'
 import {
   Button,
   Flex,
+  HStack,
   Input,
   Select,
+  Tag,
+  TagLabel,
   Textarea,
   useToast,
   VStack,
@@ -11,17 +14,19 @@ import {
 import axios from 'axios'
 import { Controller, useForm } from 'react-hook-form'
 import { FormField } from '../FormField/FormField'
-import { obituaryTypes } from '../../../lib/domain'
+import { obituarySymbols, obituaryTypes } from '../../../lib/domain'
 import { useTranslation } from 'next-i18next'
 import { useMutation } from '@tanstack/react-query'
 
-interface IContactFormInput {
+export interface IContactFormInput {
   firstname: string
   lastname: string
   phone: string
   mail: string
   message: string
   type: string
+  symbol: string
+  photo: FileList
 }
 
 export default function ContactForm(): ReactElement {
@@ -29,6 +34,7 @@ export default function ContactForm(): ReactElement {
   const toast = useToast({ isClosable: true, position: 'top' })
   const {
     control,
+    getValues,
     handleSubmit,
     reset,
     formState: { errors, isDirty },
@@ -40,11 +46,23 @@ export default function ContactForm(): ReactElement {
       message: '',
       phone: '',
       type: '',
+      symbol: '',
+      photo: [],
     },
   })
   const { mutate, isLoading } = useMutation(
-    async (input: IContactFormInput) =>
-      await axios.post('/api/obituaries/email', input),
+    async ({ photo, ...input }: IContactFormInput) => {
+      const honey = document.getElementById('name') as HTMLInputElement
+      if (honey.value !== '') {
+        return
+      }
+      const formData = new FormData()
+      Array.from(photo).forEach((file) => {
+        formData.append('files', file)
+      })
+      formData.set('input', JSON.stringify(input))
+      return await axios.post('/api/obituaries/email', formData)
+    },
     {
       onSuccess: () => {
         toast({
@@ -59,6 +77,8 @@ export default function ContactForm(): ReactElement {
           message: '',
           phone: '',
           type: '',
+          symbol: '',
+          photo: [],
         })
       },
       onError: (err) => {
@@ -85,6 +105,9 @@ export default function ContactForm(): ReactElement {
   return (
     <VStack
       as="form"
+      action="/api/obituaries/email"
+      method="post"
+      encType="multipart/form-data"
       spacing={3}
       onSubmit={onSubmit}
       p={[0, 6, 10]}
@@ -192,32 +215,63 @@ export default function ContactForm(): ReactElement {
           )}
         />
       </FormField>
-      <FormField width="100%" errors={errors} htmlFor="type" label={t('type')}>
-        <Controller
-          name="type"
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <Select
-              onChange={onChange}
-              value={value}
-              autoComplete="off"
-              id="type"
-            >
-              <option value="" disabled>
-                {t('select_placeholder')}
-              </option>
-              {obituaryTypes.map((type) => {
-                const label = t(type)
-                return (
-                  <option key={type} value={type}>
-                    {label[0].toLocaleUpperCase() + label.slice(1)}
-                  </option>
-                )
-              })}
-            </Select>
-          )}
-        />
-      </FormField>
+      <Flex flexDir={['column', 'row']} wrap="wrap" width="100%" gap={4}>
+        <FormField flex={1} errors={errors} htmlFor="type" label={t('type')}>
+          <Controller
+            name="type"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <Select
+                onChange={onChange}
+                value={value}
+                autoComplete="off"
+                id="type"
+              >
+                <option value="" disabled>
+                  {t('select_placeholder')}
+                </option>
+                {obituaryTypes.map((type) => {
+                  const label = t(type)
+                  return (
+                    <option key={type} value={type}>
+                      {label[0].toLocaleUpperCase() + label.slice(1)}
+                    </option>
+                  )
+                })}
+              </Select>
+            )}
+          />
+        </FormField>
+        <FormField
+          flex={1}
+          errors={errors}
+          htmlFor="symbol"
+          label={t('symbol')}
+        >
+          <Controller
+            name="symbol"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <Select
+                onChange={onChange}
+                value={value}
+                autoComplete="off"
+                id="symbol"
+              >
+                <option value="without_symbol">{t('without_symbol')}</option>
+                {obituarySymbols.map((type) => {
+                  const label = t(type)
+                  return (
+                    <option key={type} value={type}>
+                      {label[0].toLocaleUpperCase() + label.slice(1)}
+                    </option>
+                  )
+                })}
+              </Select>
+            )}
+          />
+        </FormField>
+      </Flex>
       <FormField
         width="100%"
         errors={errors}
@@ -241,18 +295,51 @@ export default function ContactForm(): ReactElement {
           )}
         />
       </FormField>
-      <Button
-        isLoading={isLoading}
-        alignSelf="flex-end"
-        position="relative"
-        top={3}
-        disabled={!isDirty || Object.keys(errors).length !== 0}
-        onClick={onSubmit}
-        type="submit"
-        colorScheme="orange"
+      <Flex
+        justifyContent="space-between"
+        width="100%"
+        flexDir={['column', 'row']}
+        gap={2}
       >
-        {t('submit')}
-      </Button>
+        <Controller
+          name="photo"
+          control={control}
+          render={({ field: { onChange } }) => {
+            return (
+              <Button as="label" cursor="pointer" colorScheme="gray">
+                {t('photo')}
+                <input
+                  type="file"
+                  style={{
+                    display: 'none',
+                  }}
+                  id="photo"
+                  multiple
+                  onChange={(event) => {
+                    onChange(event.target.files)
+                  }}
+                />
+              </Button>
+            )
+          }}
+        />
+        <Button
+          isLoading={isLoading}
+          disabled={!isDirty || Object.keys(errors).length !== 0}
+          onClick={onSubmit}
+          type="submit"
+          colorScheme="orange"
+        >
+          {t('submit')}
+        </Button>
+      </Flex>
+      <HStack width="100%" wrap="wrap" gap={2} spacing={0}>
+        {Array.from(getValues('photo')).map((file) => (
+          <Tag size="sm" key={file.name} borderRadius="full" variant="subtle">
+            <TagLabel>{file.name}</TagLabel>
+          </Tag>
+        ))}
+      </HStack>
     </VStack>
   )
 }

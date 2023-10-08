@@ -35,9 +35,6 @@ export default function Footer({
       flex={1}
       as="footer"
       backgroundColor="gray.200"
-      borderTopWidth={2}
-      borderTopStyle="solid"
-      borderTopColor="gray.300"
     >
       <Container
         display="flex"
@@ -103,8 +100,7 @@ export default function Footer({
       <Box
         flex={1}
         backgroundColor="gray.300"
-        borderTopColor="gray.400"
-        borderTopWidth={2}
+        borderTopWidth={1}
         borderTopStyle="solid"
       >
         <FooterBottom />
