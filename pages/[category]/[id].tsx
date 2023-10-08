@@ -37,7 +37,12 @@ export default function Obituary(props: IObituary): ReactElement {
       <Head>
         <title>{createMetaTitle(capitalize(t(type)), fullname)}</title>
         {preamble && <meta name="description" content={preamble} />}
-        {image && <meta property="og:image" content={image} />}
+        {image && (
+          <meta
+            property="og:image"
+            content={typeof image === 'string' ? image : image.filename}
+          />
+        )}
         {typeof long_text === 'string' && (
           <meta property="og:description" content={long_text} />
         )}
