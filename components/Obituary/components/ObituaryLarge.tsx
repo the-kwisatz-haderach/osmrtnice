@@ -16,6 +16,7 @@ import { ObituaryImage } from './ObituaryImage'
 import { ObituaryRenderer } from '../ObituaryContainer'
 import { formatName } from '../helpers/formatName'
 import { useObituary } from 'hooks/reactQuery/queries'
+import Image from 'next/image'
 
 export const ObituaryLarge: ObituaryRenderer = ({
   onShowAppreciation,
@@ -77,7 +78,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
             borderRadius={5}
             borderWidth={1}
             borderColor="gray.400"
-            mb={3}
+            mb="1rem"
           >
             <ObituaryImage imgSrc={image} />
           </Box>
@@ -85,19 +86,20 @@ export const ObituaryLarge: ObituaryRenderer = ({
             alignItems="center"
             flex={1}
             justifyContent="center"
-            spacing={4}
+            spacing={3}
           >
             <Heading
+              mt={2}
               textAlign="center"
               as="h1"
               lineHeight={1.1}
-              fontSize={['3xl', '4xl', '6xl']}
+              fontSize={['3xl', '4xl', '5xl']}
             >
               {fullname}
             </Heading>
             <HStack
               hidden={!date_of_birth && !date_of_death}
-              fontSize={['lg', 'xl', '4xl']}
+              fontSize={['lg', 'xl', '2xl']}
               fontWeight="bold"
             >
               <Text hidden={!date_of_birth}>
@@ -130,6 +132,16 @@ export const ObituaryLarge: ObituaryRenderer = ({
             >
               {preamble}
             </Text>
+          )}
+          {symbol_image.filename && (
+            <Box width="80px" height="100px" pos="relative" mt="1rem">
+              <Image
+                alt={symbol_image?.alt || ''}
+                src={symbol_image.filename}
+                layout="fill"
+                objectFit="cover"
+              />
+            </Box>
           )}
         </VStack>
         <VStack spacing={5}>
