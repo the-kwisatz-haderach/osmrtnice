@@ -29,7 +29,7 @@ const withCache = (fn: typeof getObituaries): typeof getObituaries => {
   }
 }
 
-export async function getObituaries(
+async function getObituaries(
   db: Db,
   {
     next = '',

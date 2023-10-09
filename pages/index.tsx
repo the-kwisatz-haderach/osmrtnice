@@ -12,7 +12,7 @@ import { ObituaryGrid } from 'components/ObituaryGrid'
 import { TopScroll } from 'components/TopScroll'
 import { ProgressBar } from 'components/ProgessBar'
 import { useObituaries } from 'hooks/reactQuery/queries'
-import { getObituaries } from 'lib/domain/getObituaries'
+import getObituaries from 'lib/domain/getObituaries'
 import { connectToDb } from 'db'
 import { useScrollToTop } from 'hooks/useScrollToTop'
 import {
