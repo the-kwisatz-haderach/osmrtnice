@@ -87,7 +87,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   })
   const queryClient = new QueryClient()
   const { db } = await connectToDb()
-  await queryClient.prefetchQuery(['obituariesInfinite'], () =>
+  await queryClient.prefetchQuery(['obituariesInfinite', { query: '' }], () =>
     getObituaries(db, { limit: DEFAULT_LIST_LIMIT })
   )
   return {
