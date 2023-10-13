@@ -30,6 +30,7 @@ export default function DynamicBlokComponent({ blok }: Props): ReactElement {
     console.error(`Missing component: ${blok.component}.`)
     return <div>There is no component defined for type: {blok.component}.</div>
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const Component: any = components[blok.component]
   return (
     <SbEditable content={blok}>
