@@ -12,7 +12,7 @@ const withCache = (fn: typeof getObituaries): typeof getObituaries => {
       return await fn(db, { next, search, category, limit })
     }
     const kvKey = [next, search, category, limit].join('&')
-    const cached = await kv.json.get(kvKey)
+    const cached = (await kv.get(kvKey)) as any
     if (cached !== null) {
       return cached
     }
