@@ -2,11 +2,17 @@ import React, { ReactElement } from 'react'
 import {
   Button,
   Flex,
+  FormLabel,
   HStack,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Tag,
   TagLabel,
+  Text,
   Textarea,
   useToast,
   VStack,
@@ -14,9 +20,12 @@ import {
 import axios from 'axios'
 import { Controller, useForm } from 'react-hook-form'
 import { FormField } from '../FormField/FormField'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronDown as menuIcon } from '@fortawesome/free-solid-svg-icons'
 import { obituarySymbols, obituaryTypes } from '../../../lib/domain'
 import { useTranslation } from 'next-i18next'
 import { useMutation } from '@tanstack/react-query'
+import Image from 'next/image'
 
 export interface IContactFormInput {
   firstname: string
@@ -46,7 +55,7 @@ export default function ContactForm(): ReactElement {
       message: '',
       phone: '',
       type: '',
-      symbol: '',
+      symbol: 'without_symbol',
       photo: [],
     },
   })
@@ -77,7 +86,7 @@ export default function ContactForm(): ReactElement {
           message: '',
           phone: '',
           type: '',
-          symbol: '',
+          symbol: 'without_symbol',
           photo: [],
         })
       },
@@ -245,35 +254,68 @@ export default function ContactForm(): ReactElement {
             )}
           />
         </FormField>
-        <FormField
-          flex={1}
-          errors={errors}
-          htmlFor="symbol"
-          label={t('symbol')}
-        >
+        <Flex flexDir="column" flex={1}>
+          <FormLabel fontWeight="bold" className="capitalize" htmlFor="symbol">
+            {t('symbol')}
+          </FormLabel>
           <Controller
             name="symbol"
             control={control}
-            render={({ field: { value, onChange } }) => (
-              <Select
-                onChange={onChange}
-                value={value}
-                autoComplete="off"
-                id="symbol"
-              >
-                <option value="without_symbol">{t('without_symbol')}</option>
-                {obituarySymbols.map((type) => {
-                  const label = t(type)
-                  return (
-                    <option key={type} value={type}>
-                      {label[0].toLocaleUpperCase() + label.slice(1)}
-                    </option>
-                  )
-                })}
-              </Select>
-            )}
+            render={({ field: { value, onChange } }) => {
+              const selectedImage = obituarySymbols.find(
+                (s) => s.type === value
+              )?.imgSrc
+              return (
+                <Menu>
+                  <MenuButton
+                    variant="outline"
+                    textTransform="capitalize"
+                    as={Button}
+                    rightIcon={<FontAwesomeIcon icon={menuIcon} />}
+                  >
+                    <Flex
+                      alignItems="center"
+                      gap={2}
+                      width="100%"
+                      justifyContent="center"
+                    >
+                      {selectedImage && (
+                        <Image src={selectedImage} width={20} height={20} />
+                      )}
+                      <Text fontWeight="normal" mt={1}>
+                        {t(value)}
+                      </Text>
+                    </Flex>
+                  </MenuButton>
+                  <MenuList textTransform="capitalize">
+                    <MenuItem
+                      onClick={() => onChange('without_symbol')}
+                      textTransform="capitalize"
+                    >
+                      {t('without_symbol')}
+                    </MenuItem>
+                    {obituarySymbols.map(({ type, imgSrc }) => {
+                      const label = t(type)
+                      return (
+                        <MenuItem
+                          key={type}
+                          onClick={() => onChange(type)}
+                          textTransform="capitalize"
+                          display="flex"
+                          alignItems="flex-end"
+                          gap={4}
+                        >
+                          <Image src={imgSrc} width={30} height={30} />
+                          <span>{label}</span>
+                        </MenuItem>
+                      )
+                    })}
+                  </MenuList>
+                </Menu>
+              )
+            }}
           />
-        </FormField>
+        </Flex>
       </Flex>
       <FormField
         width="100%"
