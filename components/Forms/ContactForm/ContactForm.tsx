@@ -177,7 +177,7 @@ export default function ContactForm(): ReactElement {
           />
         </FormField>
       </Flex>
-      <FormField width="100%" errors={errors} htmlFor="email" label={t('mail')}>
+      <FormField width="100%" errors={errors} htmlFor="mail" label={t('mail')}>
         <Controller
           name="mail"
           control={control}
@@ -189,7 +189,7 @@ export default function ContactForm(): ReactElement {
               value={value}
               onChange={onChange}
               autoComplete="email"
-              id="email"
+              id="mail"
               type="email"
             />
           )}
@@ -204,6 +204,9 @@ export default function ContactForm(): ReactElement {
         <Controller
           name="phone"
           control={control}
+          rules={{
+            required: (t('required') as unknown) as string,
+          }}
           render={({ field: { value, onChange } }) => (
             <Input
               autoComplete="phone"
@@ -299,7 +302,7 @@ export default function ContactForm(): ReactElement {
         justifyContent="space-between"
         width="100%"
         flexDir={['column', 'row']}
-        gap={2}
+        gap={4}
       >
         <Controller
           name="photo"
