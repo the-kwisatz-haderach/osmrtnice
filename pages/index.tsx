@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ReactElement, useState } from 'react'
 import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
@@ -67,7 +68,7 @@ export default function Home({ story }: Props): ReactElement {
           onLoadMore={fetchNextPage}
         />
         <TopScroll
-          show={data.pages.some((page) => page.data.length > 10)}
+          show={data.pages?.some((page) => page.data.length > 10)}
           margin="auto"
           maxW="container.xl"
           width="100%"
@@ -87,14 +88,34 @@ export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   })
   const queryClient = new QueryClient()
   const { db } = await connectToDb()
-  await queryClient.prefetchQuery(['obituariesInfinite', { query: '' }], () =>
-    getObituaries(db, { limit: DEFAULT_LIST_LIMIT })
+  await queryClient.prefetchInfiniteQuery(
+    ['obituariesInfinite', { query: '' }],
+    () => getObituaries(db, { limit: DEFAULT_LIST_LIMIT })
   )
+
+  // Refactor after RQ bump: https://github.com/TanStack/query/discussions/4854
+  const initialDehydratedState = dehydrate(queryClient)
+  const dehydratedState = {
+    ...initialDehydratedState,
+    queries: initialDehydratedState.queries.map((query) => ({
+      ...query,
+      state: {
+        ...query.state,
+        data: {
+          ...(query.state.data as Record<string, unknown>),
+          // @ts-expect-error
+          pageParams: query.state.data.pageParams.map((pp) =>
+            pp === undefined ? null : pp
+          ),
+        },
+      },
+    })),
+  }
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       story: res.data.story as PageStory,
-      dehydratedState: dehydrate(queryClient),
+      dehydratedState,
     },
     revalidate: REVALIDATE_TIME_SECONDS,
   }
