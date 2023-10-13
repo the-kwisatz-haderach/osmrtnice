@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import React, { ReactElement, useState } from 'react'
@@ -88,19 +89,38 @@ export const getStaticProps: GetStaticProps = async ({
   try {
     const queryClient = new QueryClient()
     const { db } = await connectToDb()
-    await queryClient.prefetchQuery(['obituariesInfinite', { category }], () =>
-      getObituaries(db, { category: category as string })
+    await queryClient.prefetchInfiniteQuery(
+      ['obituariesInfinite', { category, query: '' }],
+      () => getObituaries(db, { category: category as string })
     )
     const story = await Storyblok.getStory(category as string, {
       version: STORYBLOK_VERSION,
       language: locale,
     })
+    // Refactor after RQ bump: https://github.com/TanStack/query/discussions/4854
+    const initialDehydratedState = dehydrate(queryClient)
+    const dehydratedState = {
+      ...initialDehydratedState,
+      queries: initialDehydratedState.queries.map((query) => ({
+        ...query,
+        state: {
+          ...query.state,
+          data: {
+            ...(query.state.data as Record<string, unknown>),
+            // @ts-expect-error
+            pageParams: query.state.data.pageParams.map((pp) =>
+              pp === undefined ? null : pp
+            ),
+          },
+        },
+      })),
+    }
     return {
       props: {
         ...(await serverSideTranslations(locale, ['common'])),
         story: story?.data?.story,
         category,
-        dehydratedState: dehydrate(queryClient),
+        dehydratedState,
       },
       revalidate: REVALIDATE_TIME_SECONDS,
     }
