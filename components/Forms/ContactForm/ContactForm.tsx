@@ -287,7 +287,7 @@ export default function ContactForm(): ReactElement {
                       </Text>
                     </Flex>
                   </MenuButton>
-                  <MenuList textTransform="capitalize">
+                  <MenuList>
                     <MenuItem
                       onClick={() => onChange('without_symbol')}
                       textTransform="capitalize"
@@ -302,7 +302,7 @@ export default function ContactForm(): ReactElement {
                           onClick={() => onChange(type)}
                           textTransform="capitalize"
                           display="flex"
-                          alignItems="flex-end"
+                          alignItems="center"
                           gap={4}
                         >
                           <Image src={imgSrc} width={30} height={30} />

@@ -32,7 +32,7 @@ export default function PageHeaderBlok({
         >
           <Box
             width="100%"
-            maxWidth={['100%', '100%', '100%', '80%']}
+            maxWidth={{ base: '100%', md: '800px' }}
             textAlign={align}
           >
             <Heading mb="1rem" as="h1" fontSize={['4xl', '6xl', '6xl', '8xl']}>
