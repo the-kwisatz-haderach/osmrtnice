@@ -21,6 +21,7 @@ export type ObituarySymbol =
   | 'orthodox_cross'
   | 'olive_branch'
   | 'rose'
+  | 'red_star'
 
 export type ObituaryType =
   | 'in-memoriam'

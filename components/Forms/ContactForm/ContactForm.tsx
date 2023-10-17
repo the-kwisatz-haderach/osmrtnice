@@ -269,7 +269,6 @@ export default function ContactForm(): ReactElement {
                 <Menu>
                   <MenuButton
                     variant="outline"
-                    textTransform="capitalize"
                     as={Button}
                     rightIcon={<FontAwesomeIcon icon={menuIcon} />}
                   >
@@ -282,7 +281,15 @@ export default function ContactForm(): ReactElement {
                       {selectedImage && (
                         <Image src={selectedImage} width={20} height={20} />
                       )}
-                      <Text fontWeight="normal" mt={1}>
+                      <Text
+                        fontWeight="normal"
+                        mt={1}
+                        sx={{
+                          '&:first-letter': {
+                            textTransform: 'capitalize',
+                          },
+                        }}
+                      >
                         {t(value)}
                       </Text>
                     </Flex>
@@ -290,7 +297,11 @@ export default function ContactForm(): ReactElement {
                   <MenuList>
                     <MenuItem
                       onClick={() => onChange('without_symbol')}
-                      textTransform="capitalize"
+                      sx={{
+                        '&:first-letter': {
+                          textTransform: 'capitalize',
+                        },
+                      }}
                     >
                       {t('without_symbol')}
                     </MenuItem>
@@ -300,7 +311,11 @@ export default function ContactForm(): ReactElement {
                         <MenuItem
                           key={type}
                           onClick={() => onChange(type)}
-                          textTransform="capitalize"
+                          sx={{
+                            '& > span:first-letter': {
+                              textTransform: 'capitalize',
+                            },
+                          }}
                           display="flex"
                           alignItems="center"
                           gap={4}
