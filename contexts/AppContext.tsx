@@ -9,6 +9,7 @@ export interface IAppContext {
   email: string
   showInfoBlock: boolean
   infoBlockText: string
+  imageUploadText: string
 }
 
 const defaultAppContext: IAppContext = {
@@ -18,6 +19,7 @@ const defaultAppContext: IAppContext = {
   email: '',
   showInfoBlock: false,
   infoBlockText: '',
+  imageUploadText: '',
 }
 
 const AppContext = createContext(defaultAppContext)

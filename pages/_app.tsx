@@ -90,6 +90,7 @@ MyApp.getInitialProps = async (
     const { content } = (globalResponse?.data
       ?.story as Story<IGlobalSettings>) || {
       content: {
+        imageUploadText: '',
         showInfoBlock: true,
         phone: '',
         logo: {
@@ -125,6 +126,7 @@ MyApp.getInitialProps = async (
       ingress: '',
       phone: '',
       showInfoBlock: false,
+      imageUploadText: '',
     }
   }
 }

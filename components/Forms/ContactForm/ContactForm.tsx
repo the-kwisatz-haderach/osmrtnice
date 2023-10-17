@@ -26,6 +26,7 @@ import { obituarySymbols, obituaryTypes } from '../../../lib/domain'
 import { useTranslation } from 'next-i18next'
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
+import useAppContext from 'contexts/AppContext'
 
 export interface IContactFormInput {
   firstname: string
@@ -39,6 +40,7 @@ export interface IContactFormInput {
 }
 
 export default function ContactForm(): ReactElement {
+  const { imageUploadText } = useAppContext()
   const { t } = useTranslation()
   const toast = useToast({ isClosable: true, position: 'top' })
   const {
@@ -48,6 +50,7 @@ export default function ContactForm(): ReactElement {
     reset,
     formState: { errors, isDirty },
   } = useForm<IContactFormInput>({
+    shouldFocusError: true,
     defaultValues: {
       firstname: '',
       lastname: '',
@@ -393,6 +396,9 @@ export default function ContactForm(): ReactElement {
           {t('submit')}
         </Button>
       </Flex>
+      <Text w="100%" fontSize="xs">
+        {imageUploadText}
+      </Text>
       <HStack width="100%" wrap="wrap" gap={2} spacing={0}>
         {Array.from(getValues('photo')).map((file) => (
           <Tag size="sm" key={file.name} borderRadius="full" variant="subtle">

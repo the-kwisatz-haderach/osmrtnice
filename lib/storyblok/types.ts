@@ -70,6 +70,7 @@ export interface IGlobalSettings {
   email: string
   showInfoBlock: boolean
   infoBlockText: string
+  imageUploadText: string
 }
 
 export interface IGrid {
