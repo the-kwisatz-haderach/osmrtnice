@@ -77,12 +77,7 @@ export default function Footer({
             </Heading>
             <InfoList
               items={menuItems.map((menuItem) => ({
-                content:
-                  menuItem.href === '/thank-you'
-                    ? t('thank-you-plural')
-                    : menuItem.href === '/last-greetings'
-                    ? t('last-greetings-plural')
-                    : menuItem.label,
+                content: menuItem.label,
                 href: menuItem.href,
               }))}
             />

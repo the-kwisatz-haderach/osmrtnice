@@ -255,7 +255,7 @@ export default function ContactForm(): ReactElement {
           />
         </FormField>
         <Flex flexDir="column" flex={1}>
-          <FormLabel fontWeight="bold" className="capitalize" htmlFor="symbol">
+          <FormLabel fontWeight="bold" htmlFor="symbol">
             {t('symbol')}
           </FormLabel>
           <Controller
@@ -298,12 +298,12 @@ export default function ContactForm(): ReactElement {
                     <MenuItem
                       onClick={() => onChange('without_symbol')}
                       sx={{
-                        '&:first-letter': {
+                        '& > span:first-letter': {
                           textTransform: 'capitalize',
                         },
                       }}
                     >
-                      {t('without_symbol')}
+                      <span>{t('without_symbol')}</span>
                     </MenuItem>
                     {obituarySymbols.map(({ type, imgSrc }) => {
                       const label = t(type)

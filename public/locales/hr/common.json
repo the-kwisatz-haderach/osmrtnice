@@ -1,6 +1,8 @@
 {
   "obituary": "osmrtnica",
-  "in-memoriam": "sjećanja",
+  "obituary-plural": "osmrtnice",
+  "in-memoriam": "sjećanje",
+  "in-memoriam-plural": "sjećanja",
   "gratitude-display": "zbogom",
   "last-greetings": "posljednji pozdrav",
   "last-greetings-plural": "Posljednji pozdravi",
