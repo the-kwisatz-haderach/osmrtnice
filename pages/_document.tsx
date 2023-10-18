@@ -23,6 +23,7 @@ class MyDocument extends Document {
               {/* <!-- End Google Tag Manager --> */}
             </>
           )}
+          <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>
           {process.env.NODE_ENV === 'production' && (
