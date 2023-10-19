@@ -3,6 +3,12 @@ import { sendEmail } from '../../../lib/email'
 import formidable from 'formidable'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import translations from '../../../public/locales/hr/common.json'
+import { obituarySymbols, obituaryTypes } from 'lib/domain'
+import { ObituaryType } from 'lib/domain/types'
+
+type TranslationsKey = keyof typeof translations
+
 interface Input {
   firstname: string
   lastname: string
@@ -20,26 +26,13 @@ export const config = {
   },
 }
 
-const translations: Record<keyof Input, string> = {
-  firstname: 'Ime',
-  mail: 'Email',
-  lastname: 'Prezime',
-  phone: 'Telefon',
-  message: 'Poruka',
-  type: 'Tip',
-  symbol: 'Simbol',
-  photo: 'Fotografija',
-}
-
 const formatMessage = (fields: Input): string => {
-  return Object.entries(fields).reduce<string>(
-    (acc, [key, value]) =>
-      acc +
-      `<b>${translations[key as keyof typeof translations] || ''}:</b> ${
-        value as string
-      }<br />`,
-    ''
-  )
+  return Object.entries(fields).reduce<string>((acc, [key, value]) => {
+    const keyTranslation = translations[key as TranslationsKey] || ''
+    const valueTranslation =
+      translations[value as TranslationsKey] || (value as string)
+    return acc + `<b>${keyTranslation}:</b> ${valueTranslation}<br />`
+  }, '')
 }
 
 const parseFiles = (
@@ -52,6 +45,8 @@ const parseFiles = (
     const form = formidable({
       multiples: true,
       maxFiles: 5,
+      allowEmptyFiles: false,
+      maxTotalFileSize: 250 * 1024 * 1024,
     })
     form.parse(req, (err, fields, files) => {
       if (err) {
@@ -60,6 +55,30 @@ const parseFiles = (
       return resolve({ fields, files })
     })
   })
+
+const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/
+
+const validateFields = (
+  input: Input
+): Array<{ field: keyof Input; error: string }> => {
+  const errors: Array<{ field: keyof Input; error: string }> = []
+  if (
+    input.symbol !== 'without_symbol' &&
+    !obituarySymbols.some((symbol) => symbol.type === input.symbol)
+  ) {
+    errors.push({ field: 'symbol', error: 'invalid_symbol' })
+  }
+  if (
+    input.symbol !== '' &&
+    !obituaryTypes.includes(input.type as ObituaryType)
+  ) {
+    errors.push({ field: 'type', error: 'invalid_type' })
+  }
+  if (!emailRegex.test(input.mail)) {
+    errors.push({ field: 'mail', error: 'invalid_mail' })
+  }
+  return errors
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -74,16 +93,33 @@ export default async function handler(
           : [parsed.files.files]
         ).filter(Boolean)
 
-        await sendEmail({
-          subject: 'Primljena poruka od preminuli.ba',
-          html: formatMessage(JSON.parse(parsed.fields.input[0])),
-          attachments: files.map((file) => ({
-            filename: file.originalFilename || file.newFilename,
-            path: file.filepath,
-          })),
-        })
+        const parsedFields: Input = JSON.parse(parsed.fields.input[0])
 
-        return res.status(200).send('Success!')
+        const validatedFields = validateFields(parsedFields)
+        if (validateFields.length > 0) {
+          return res.status(400).json({
+            message: 'form submission failed',
+            errors: validatedFields,
+          })
+        }
+
+        await Promise.all([
+          sendEmail({
+            subject: translations.email_subject_contact_form_admin,
+            html: formatMessage(parsedFields),
+            attachments: files.map((file) => ({
+              filename: file.originalFilename || file.newFilename,
+              path: file.filepath,
+            })),
+          }),
+          sendEmail({
+            to: parsedFields.mail,
+            subject: translations.email_subject_contact_form_confirmation,
+            text: 'Confirmation', // TODO!
+          }),
+        ])
+
+        return res.status(200).json({ message: 'form successfully submitted' })
       } catch (err) {
         console.error(err)
         let message = ''

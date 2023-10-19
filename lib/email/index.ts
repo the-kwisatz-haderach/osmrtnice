@@ -10,9 +10,10 @@ const transporter = createTransport({
   secure: true,
 })
 
-export async function sendEmail(
-  options: Omit<SendMailOptions, 'from' | 'to'>
-): Promise<{
+export async function sendEmail({
+  to,
+  ...options
+}: Omit<SendMailOptions, 'from'>): Promise<{
   messageId: string
 }> {
   return await new Promise((resolve, reject) => {
@@ -20,7 +21,7 @@ export async function sendEmail(
       {
         ...options,
         from: process.env.EMAIL_USER,
-        to: process.env.EMAIL_CREATE_OBITUARY_RECIPIENT,
+        to: to || process.env.EMAIL_CREATE_OBITUARY_RECIPIENT,
       },
       (err, info) => {
         if (err) {

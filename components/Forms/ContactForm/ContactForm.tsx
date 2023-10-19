@@ -95,19 +95,21 @@ export default function ContactForm(): ReactElement {
       },
       onError: (err) => {
         let description = ''
-        if (err instanceof Error) {
+        if (axios.isAxiosError(err)) {
+          const firstError = err.response.data.errors.at(0)
+          description = firstError.error
+        } else if (err instanceof Error) {
           description = err.message
         }
         toast({
           title: t('toast-contact-form-error-title'),
-          description,
+          description: t(description),
           position: 'top',
           status: 'error',
         })
       },
     }
   )
-
   const onSubmit = handleSubmit((data) => {
     if (!isLoading) {
       mutate(data)

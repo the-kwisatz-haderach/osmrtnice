@@ -54,5 +54,10 @@
   "404-body": "Stranica koju tražite nije pronađena.",
   "toast-contact-form-success-title": "Hvala na upitu!",
   "toast-contact-form-success-description": "Javit ćemo se uskoro.",
-  "toast-contact-form-error-title": "Greška!"
+  "toast-contact-form-error-title": "Greška!",
+  "email_subject_contact_form_admin": "Primljena poruka od preminuli.ba",
+  "email_subject_contact_form_confirmation": "Primljena poruka od preminuli.ba",
+  "invalid_symbol": "Nevažeći simbol!",
+  "invalid_type": "Nevažeći tip!",
+  "invalid_mail": "Nevažeći email!"
 }
