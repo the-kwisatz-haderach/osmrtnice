@@ -80,7 +80,7 @@ export default function SearchInput({
         isLoading={isTyping || isLoading}
         type="submit"
         aria-label="submit"
-        colorScheme="orange"
+        colorScheme="brand"
         onClick={() => {}}
         height="100%"
         minH={[12, 16]}

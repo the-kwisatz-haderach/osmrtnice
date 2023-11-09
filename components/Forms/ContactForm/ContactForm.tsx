@@ -411,7 +411,7 @@ export default function ContactForm(): ReactElement {
           disabled={!isDirty || Object.keys(errors).length !== 0}
           onClick={onSubmit}
           type="submit"
-          colorScheme="orange"
+          colorScheme="brand"
         >
           {t('submit')}
         </Button>

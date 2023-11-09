@@ -58,7 +58,7 @@ export default function ObituaryGrid({
         <Flex justifyContent="center" mt={10}>
           <Button
             isLoading={isLoadingNext}
-            colorScheme="orange"
+            colorScheme="brand"
             disabled={!hasMore}
             onClick={onLoadMore}
             title={t('search-results-more')}

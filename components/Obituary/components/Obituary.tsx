@@ -64,7 +64,7 @@ export const Obituary: ObituaryRenderer = (props) => {
       props,
       rootModalProps: {
         size: 'xl',
-        colorScheme: 'orange',
+        colorScheme: 'brand',
       },
     })
   }, [open, props])
@@ -73,7 +73,7 @@ export const Obituary: ObituaryRenderer = (props) => {
     <Box
       height="100%"
       transition="box-shadow 0.3s ease-in-out"
-      borderColor={isClicked ? 'orange.200' : 'gray.200'}
+      borderColor={isClicked ? 'brand.200' : 'gray.200'}
       borderWidth={1}
       borderStyle="solid"
       borderRadius="sm"

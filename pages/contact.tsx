@@ -50,7 +50,7 @@ export default function Contact({ story }: Props): ReactElement {
                 textAlign="center"
                 p={8}
                 color="white"
-                backgroundColor="orange.400"
+                backgroundColor="brand.400"
               >
                 <FontAwesomeIcon icon={infoIcon} size="3x" />
                 <Text mt={4}>{infoBlockText}</Text>

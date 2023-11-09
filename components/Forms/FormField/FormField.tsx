@@ -13,10 +13,10 @@ export const FormField: React.FC<
     <Flex
       sx={{
         '& > :nth-of-type(1):hover + *': {
-          color: 'orange.300',
+          color: 'brand.300',
         },
         '& > :nth-of-type(1):focus + *': {
-          color: 'orange.400',
+          color: 'brand.400',
         },
       }}
       flexDir="column-reverse"

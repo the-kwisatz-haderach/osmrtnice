@@ -36,7 +36,7 @@ export default function TopScroll({
       >
         <IconButton
           pointerEvents="all"
-          colorScheme="orange"
+          colorScheme="brand"
           onClick={onClick}
           aria-label="Scroll to top"
           isRound

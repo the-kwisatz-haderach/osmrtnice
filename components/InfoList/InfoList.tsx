@@ -28,7 +28,7 @@ export default function InfoList({ items }: Props): ReactElement {
               <Link href={item.href}>{item.content}</Link>
             ) : (
               <ChakraLink
-                color="orange.400"
+                color="brand.400"
                 isExternal
                 rel="noopener noreferrer"
                 href={item.href}

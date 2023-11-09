@@ -25,7 +25,7 @@ export default function FullWidthCTABlok({
   }
 
   return (
-    <Box backgroundColor="orange.400">
+    <Box backgroundColor="brand.400">
       <Container
         maxW="container.xl"
         color="white"
@@ -49,7 +49,7 @@ export default function FullWidthCTABlok({
             <Box mb={[4, 4, 0]}>
               <RichText>{body}</RichText>
             </Box>
-            <Button colorScheme="orange" onClick={onClickCTA}>
+            <Button colorScheme="brand" onClick={onClickCTA}>
               {ctaLabel}
             </Button>
           </HStack>

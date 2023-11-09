@@ -81,7 +81,7 @@ export default function MainNavigation({
               <TranslatedLink key={menuItem.href} passHref href={menuItem.href}>
                 <Button
                   variant={menuItem.href === '/contact' ? 'solid' : 'link'}
-                  colorScheme="orange"
+                  colorScheme="brand"
                 >
                   {menuItem.label}
                 </Button>
@@ -89,7 +89,7 @@ export default function MainNavigation({
             ))}
           </HStack>
           <IconButton
-            colorScheme="orange"
+            colorScheme="brand"
             icon={<FontAwesomeIcon size="lg" icon={faBars} />}
             display={{ md: 'none' }}
             onClick={onOpen}
@@ -111,7 +111,7 @@ export default function MainNavigation({
                       isFullWidth
                       py={2}
                       variant={menuItem.href === '/contact' ? 'solid' : 'link'}
-                      colorScheme="orange"
+                      colorScheme="brand"
                     >
                       {menuItem.label}
                     </Button>
@@ -121,7 +121,7 @@ export default function MainNavigation({
             </VStack>
           </DrawerBody>
           <DrawerFooter>
-            <Button colorScheme="orange" variant="outline" onClick={onClose}>
+            <Button colorScheme="brand" variant="outline" onClick={onClose}>
               {t('close')}
             </Button>
           </DrawerFooter>
