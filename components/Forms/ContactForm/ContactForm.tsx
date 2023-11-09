@@ -290,14 +290,16 @@ export default function ContactForm(): ReactElement {
                   <MenuButton
                     variant="outline"
                     as={Button}
-                    rightIcon={<FontAwesomeIcon icon={menuIcon} />}
+                    rightIcon={
+                      <FontAwesomeIcon
+                        style={{
+                          transform: 'scale(0.7)',
+                        }}
+                        icon={menuIcon}
+                      />
+                    }
                   >
-                    <Flex
-                      alignItems="center"
-                      gap={2}
-                      width="100%"
-                      justifyContent="center"
-                    >
+                    <Flex alignItems="center" gap={2} width="100%">
                       {selectedImage && (
                         <Image src={selectedImage} width={20} height={20} />
                       )}
