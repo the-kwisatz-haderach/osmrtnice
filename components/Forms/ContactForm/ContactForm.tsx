@@ -18,7 +18,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import axios from 'axios'
-import { Controller, useForm } from 'react-hook-form'
+import { Control, Controller, useForm, useWatch } from 'react-hook-form'
 import { FormField } from '../FormField/FormField'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown as menuIcon } from '@fortawesome/free-solid-svg-icons'
@@ -27,6 +27,19 @@ import { useTranslation } from 'next-i18next'
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import useAppContext from 'contexts/AppContext'
+
+const FilesList = ({ control }: { control: Control<IContactFormInput> }) => {
+  const photos = useWatch({ control, name: 'photo' })
+  return (
+    <HStack width="100%" wrap="wrap" gap={2} spacing={0}>
+      {Array.from(photos).map((file) => (
+        <Tag size="sm" key={file.name} borderRadius="full" variant="subtle">
+          <TagLabel>{file.name}</TagLabel>
+        </Tag>
+      ))}
+    </HStack>
+  )
+}
 
 export interface IContactFormInput {
   firstname: string
@@ -45,7 +58,6 @@ export default function ContactForm(): ReactElement {
   const toast = useToast({ isClosable: true, position: 'top' })
   const {
     control,
-    getValues,
     handleSubmit,
     reset,
     formState: { errors, isDirty },
@@ -236,6 +248,9 @@ export default function ContactForm(): ReactElement {
         <FormField flex={1} errors={errors} htmlFor="type" label={t('type')}>
           <Controller
             name="type"
+            rules={{
+              required: (t('required') as unknown) as string,
+            }}
             control={control}
             render={({ field: { value, onChange } }) => (
               <Select
@@ -383,6 +398,7 @@ export default function ContactForm(): ReactElement {
                   onChange={(event) => {
                     onChange(event.target.files)
                   }}
+                  accept=".jpg,.jpeg,.png,.pdf,.webp"
                 />
               </Button>
             )
@@ -401,13 +417,7 @@ export default function ContactForm(): ReactElement {
       <Text w="100%" fontSize="xs">
         {imageUploadText}
       </Text>
-      <HStack width="100%" wrap="wrap" gap={2} spacing={0}>
-        {Array.from(getValues('photo')).map((file) => (
-          <Tag size="sm" key={file.name} borderRadius="full" variant="subtle">
-            <TagLabel>{file.name}</TagLabel>
-          </Tag>
-        ))}
-      </HStack>
+      <FilesList control={control} />
     </VStack>
   )
 }
