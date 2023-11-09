@@ -47,6 +47,7 @@ const parseFiles = (
       maxFiles: 5,
       allowEmptyFiles: false,
       maxTotalFileSize: 250 * 1024 * 1024,
+      filter: ({ mimetype }) => /image|pdf/.test(mimetype),
     })
     form.parse(req, (err, fields, files) => {
       if (err) {
@@ -95,18 +96,20 @@ export default async function handler(
 
         const parsedFields: Input = JSON.parse(parsed.fields.input[0])
 
-        const validatedFields = validateFields(parsedFields)
-        if (validateFields.length > 0) {
+        const errors = validateFields(parsedFields)
+        if (errors.length > 0) {
           return res.status(400).json({
             message: 'form submission failed',
-            errors: validatedFields,
+            errors,
           })
         }
+
+        const formattedFields = formatMessage(parsedFields)
 
         await Promise.all([
           sendEmail({
             subject: translations.email_subject_contact_form_admin,
-            html: formatMessage(parsedFields),
+            html: formattedFields,
             attachments: files.map((file) => ({
               filename: file.originalFilename || file.newFilename,
               path: file.filepath,
@@ -114,8 +117,19 @@ export default async function handler(
           }),
           sendEmail({
             to: parsedFields.mail,
-            subject: translations.email_subject_contact_form_confirmation,
-            text: 'Confirmation', // TODO!
+            subject:
+              translations.email_subject_contact_form_confirmation +
+              ' ' +
+              translations[parsedFields.type as TranslationsKey],
+            html: `
+              <h2>Hvala što koristite Preminuli.ba!</h2>
+              <p>Ovaj e-mail je potvrda o primitku ispunjenog kontakt formulara.</p>
+              <p>Informacije koje ste poslali:</p>
+              ${formattedFields}
+              <p>Ukoliko imate dodatnih pitanja, kontaktirajte nas direktno putem telefona ili e-maila. Dostupni smo na Viberu i WhatsAppu.</p>
+              <p>Broj telefona: <a href="tel:+38763156448">+387 63 156 448</a></p>
+              <p>E-mail: preminuli.ba@gmail.com</p>
+            `,
           }),
         ])
 
