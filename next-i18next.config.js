@@ -4,8 +4,6 @@ module.exports = {
   i18n: {
     defaultLocale: 'hr',
     locales: ['hr'],
-    ...(typeof window === 'undefined'
-      ? { localePath: path.resolve('./public/locales') }
-      : {}),
+    localePath: path.resolve('./public/static/locales'),
   },
 }

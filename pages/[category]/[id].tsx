@@ -105,7 +105,7 @@ const parseStory = (story: any): Omit<IObituary, '_id'> => ({
 export const getStaticProps: GetStaticProps<
   Omit<IObituary, '_id'>,
   { id: string; category: string }
-> = async ({ params, locale }) => {
+> = async ({ params, locale = 'hr' }) => {
   try {
     let obituary: Omit<IObituary, '_id'>
 
@@ -149,26 +149,27 @@ export const getStaticProps: GetStaticProps<
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { db } = await connectToDb()
-  const paths = await Promise.all(
-    obituaryTypes.flatMap(async (type) =>
-      JSON.parse(
-        JSON.stringify(
-          await db
-            .collection<IObituary>('obituaries')
-            .find({
-              type,
-            })
-            .limit(50)
-            .toArray()
-        )
-      ).flatMap((entry: IObituary) => ({
-        params: { id: entry._id, category: type },
-      }))
-    )
-  )
+  // const { db } = await connectToDb()
+  // const paths = await Promise.all(
+  //   obituaryTypes.flatMap(async (type) =>
+  //     JSON.parse(
+  //       JSON.stringify(
+  //         await db
+  //           .collection<IObituary>('obituaries')
+  //           .find({
+  //             type,
+  //           })
+  //           .limit(0)
+  //           .toArray()
+  //       )
+  //     ).flatMap((entry: IObituary) => ({
+  //       params: { id: entry._id, category: type },
+  //     }))
+  //   )
+  // )
   return {
-    paths: paths.flat(),
+    // paths: paths.flat(),
+    paths: [],
     fallback: 'blocking',
   }
 }

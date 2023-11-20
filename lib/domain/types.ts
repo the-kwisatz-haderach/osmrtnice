@@ -73,4 +73,4 @@ export interface ContactFormInput {
   photo: File[]
 }
 
-export type TranslationsKey = keyof typeof import('../../public/locales/hr/common.json')
+export type TranslationsKey = keyof typeof import('../../public/static/locales/hr/common.json')

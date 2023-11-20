@@ -2,7 +2,7 @@ import { sendEmail, parseFiles, validateFields } from '../../../lib/email'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import translations from '../../../public/locales/hr/common.json'
+import translations from '../../../public/static/locales/hr/common.json'
 import { ContactFormInput, TranslationsKey } from 'lib/domain/types'
 
 export const config = {
