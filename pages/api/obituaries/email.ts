@@ -127,7 +127,7 @@ export default async function handler(
               <p>Informacije koje ste poslali:</p>
               ${formattedFields}
               <p>Ukoliko imate dodatnih pitanja, kontaktirajte nas direktno putem telefona ili e-maila. Dostupni smo na Viberu i WhatsAppu.</p>
-              <p>Broj telefona: <a href="tel:+38763156448">+387 63 156 448</a></p>
+              <p>Broj telefona: <a href="tel:+38763028457">+387 63 028 457</a></p>
               <p>E-mail: preminuli.ba@gmail.com</p>
             `,
           }),
