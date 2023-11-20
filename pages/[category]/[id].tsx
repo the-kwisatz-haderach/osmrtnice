@@ -15,7 +15,7 @@ import { IObituary } from '../../lib/domain/types'
 
 const capitalize = (str = '') => str?.[0]?.toLocaleUpperCase() + str.slice(1)
 
-type Props = {
+interface Props {
   obituary: IObituary
 }
 
