@@ -1,16 +1,23 @@
 import { Flex } from '@chakra-ui/react'
-import React, { PropsWithChildren, ReactElement, useEffect } from 'react'
+import React, {
+  PropsWithChildren,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react'
 import { Footer } from '../../components/Footer'
 import { MainNavigation } from '../../components/MainNavigation'
 import useAppContext from '../../contexts/AppContext'
 
-let shouldRender = process.env.NODE_ENV !== 'production'
 const correct_pass = process.env.NEXT_PUBLIC_PROD_PASS
 
 export default function MainLayout({
   children,
 }: PropsWithChildren<any>): ReactElement {
   const { menuItems, logo, ...contactDetails } = useAppContext()
+  const [shouldRender, setShouldRender] = useState(
+    process.env.NODE_ENV !== 'production'
+  )
 
   useEffect(() => {
     const checkPassword = () => {
@@ -18,7 +25,7 @@ export default function MainLayout({
         window.sessionStorage.getItem('pass') || window.prompt('Password')
       if (password === correct_pass) {
         window.sessionStorage.setItem('pass', correct_pass)
-        shouldRender = true
+        setShouldRender(true)
       } else {
         checkPassword()
       }

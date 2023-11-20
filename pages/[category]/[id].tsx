@@ -31,7 +31,6 @@ export default function Obituary({ obituary }: Props): ReactElement {
     type,
   } = obituary
   const fullname = [firstname, surname, name_misc].join(' ')
-
   return (
     <div>
       <Head>
