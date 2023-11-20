@@ -18,7 +18,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import axios from 'axios'
-import { Control, Controller, useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { FormField } from '../FormField/FormField'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown as menuIcon } from '@fortawesome/free-solid-svg-icons'
@@ -27,30 +27,8 @@ import { useTranslation } from 'next-i18next'
 import { useMutation } from '@tanstack/react-query'
 import Image from 'next/image'
 import useAppContext from 'contexts/AppContext'
-
-const FilesList = ({ control }: { control: Control<IContactFormInput> }) => {
-  const photos = useWatch({ control, name: 'photo' })
-  return (
-    <HStack width="100%" wrap="wrap" gap={2} spacing={0}>
-      {Array.from(photos).map((file) => (
-        <Tag size="sm" key={file.name} borderRadius="full" variant="subtle">
-          <TagLabel>{file.name}</TagLabel>
-        </Tag>
-      ))}
-    </HStack>
-  )
-}
-
-export interface IContactFormInput {
-  firstname: string
-  lastname: string
-  phone: string
-  mail: string
-  message: string
-  type: string
-  symbol: string
-  photo: FileList
-}
+import { ContactFormInput } from 'lib/domain/types'
+import { FilesList } from './FileList'
 
 export default function ContactForm(): ReactElement {
   const { imageUploadText } = useAppContext()
@@ -61,7 +39,7 @@ export default function ContactForm(): ReactElement {
     handleSubmit,
     reset,
     formState: { errors, isDirty },
-  } = useForm<IContactFormInput>({
+  } = useForm<ContactFormInput>({
     shouldFocusError: true,
     defaultValues: {
       firstname: '',
@@ -75,7 +53,7 @@ export default function ContactForm(): ReactElement {
     },
   })
   const { mutate, isLoading } = useMutation(
-    async ({ photo, ...input }: IContactFormInput) => {
+    async ({ photo, ...input }: ContactFormInput) => {
       const honey = document.getElementById('name') as HTMLInputElement
       if (honey.value !== '') {
         return

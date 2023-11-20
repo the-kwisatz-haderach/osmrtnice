@@ -1,24 +1,9 @@
-import { sendEmail } from '../../../lib/email'
+import { sendEmail, parseFiles, validateFields } from '../../../lib/email'
 
-import formidable from 'formidable'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import translations from '../../../public/locales/hr/common.json'
-import { obituarySymbols, obituaryTypes } from 'lib/domain'
-import { ObituaryType } from 'lib/domain/types'
-
-type TranslationsKey = keyof typeof translations
-
-interface Input {
-  firstname: string
-  lastname: string
-  phone: string
-  mail: string
-  message: string
-  type: string
-  symbol: string
-  photo: File
-}
+import { ContactFormInput, TranslationsKey } from 'lib/domain/types'
 
 export const config = {
   api: {
@@ -26,59 +11,13 @@ export const config = {
   },
 }
 
-const formatMessage = (fields: Input): string => {
+const formatMessage = (fields: ContactFormInput): string => {
   return Object.entries(fields).reduce<string>((acc, [key, value]) => {
     const keyTranslation = translations[key as TranslationsKey] || ''
     const valueTranslation =
       translations[value as TranslationsKey] || (value as string)
     return acc + `<b>${keyTranslation}:</b> ${valueTranslation}<br />`
   }, '')
-}
-
-const parseFiles = (
-  req: NextApiRequest
-): Promise<{
-  fields: formidable.Fields
-  files: formidable.Files
-}> =>
-  new Promise((resolve, reject) => {
-    const form = formidable({
-      multiples: true,
-      maxFiles: 5,
-      allowEmptyFiles: false,
-      maxTotalFileSize: 250 * 1024 * 1024,
-      filter: ({ mimetype }) => /image|pdf/.test(mimetype),
-    })
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        return reject(err)
-      }
-      return resolve({ fields, files })
-    })
-  })
-
-const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/
-
-const validateFields = (
-  input: Input
-): Array<{ field: keyof Input; error: string }> => {
-  const errors: Array<{ field: keyof Input; error: string }> = []
-  if (
-    input.symbol !== 'without_symbol' &&
-    !obituarySymbols.some((symbol) => symbol.type === input.symbol)
-  ) {
-    errors.push({ field: 'symbol', error: 'invalid_symbol' })
-  }
-  if (
-    input.symbol !== '' &&
-    !obituaryTypes.includes(input.type as ObituaryType)
-  ) {
-    errors.push({ field: 'type', error: 'invalid_type' })
-  }
-  if (!emailRegex.test(input.mail)) {
-    errors.push({ field: 'mail', error: 'invalid_mail' })
-  }
-  return errors
 }
 
 export default async function handler(
@@ -94,7 +33,9 @@ export default async function handler(
           : [parsed.files.files]
         ).filter(Boolean)
 
-        const parsedFields: Input = JSON.parse(parsed.fields.input[0])
+        const parsedFields: ContactFormInput = JSON.parse(
+          parsed.fields.input[0]
+        )
 
         const errors = validateFields(parsedFields)
         if (errors.length > 0) {

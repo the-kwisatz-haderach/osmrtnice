@@ -61,3 +61,16 @@ export interface IObituary {
   appreciations: number
   symbol_image?: StoryblokAsset
 }
+
+export interface ContactFormInput {
+  firstname: string
+  lastname: string
+  phone: string
+  mail: string
+  message: string
+  type: string
+  symbol: string
+  photo: File[]
+}
+
+export type TranslationsKey = keyof typeof import('../../public/locales/hr/common.json')
