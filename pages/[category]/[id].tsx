@@ -1,6 +1,7 @@
 import { Box, Container } from '@chakra-ui/react'
 import { ObituaryContainer } from 'components/Obituary'
 import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
+import Storyblok from 'lib/storyblok/client'
 import { ObjectID } from 'mongodb'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useTranslation } from 'next-i18next'
@@ -13,7 +14,7 @@ import { connectToDb } from '../../db'
 import { createMetaTitle, obituaryTypes } from '../../lib/domain'
 import { IObituary } from '../../lib/domain/types'
 
-const capitalize = (str = '') => str[0].toLocaleUpperCase() + str.slice(1)
+const capitalize = (str = '') => str?.[0]?.toLocaleUpperCase() + str.slice(1)
 
 export default function Obituary(props: IObituary): ReactElement {
   const { isFallback } = useRouter()
@@ -69,21 +70,68 @@ export default function Obituary(props: IObituary): ReactElement {
   )
 }
 
+const parseStory = (story: any): Omit<IObituary, '_id'> => ({
+  storyId: story.id,
+  firstname: story.content.firstname,
+  surname: story.content.surname,
+  name_misc: story.content.name_misc,
+  prefix: story.content.prefix,
+  preamble: story.content.preamble,
+  additional_information: story.content.additional_information,
+  long_text: story.content.long_text,
+  city: story.content.city,
+  date_created: story.first_published_at,
+  date_updated: story.published_at,
+  date_of_birth: story.content.date_of_birth,
+  date_of_death: story.content.date_of_death,
+  faith: story.content.faith,
+  is_crawled: false,
+  relative: story.content.relative,
+  size: story.content.size,
+  type: story.content.type,
+  image: story.content.image,
+  image_second: story.content.image_second,
+  firstname_second: story.content.firstname_second,
+  surname_second: story.content.surname_second,
+  date_of_birth_second: story.content.date_of_birth_second,
+  date_of_death_second: story.content.date_of_death_second,
+  appreciations: 0,
+  symbol_image: {
+    filename: story.content.symbol_image.filename,
+    alt: story.content.symbol_image.alt,
+  },
+})
+
 export const getStaticProps: GetStaticProps<
-  IObituary,
+  Omit<IObituary, '_id'>,
   { id: string; category: string }
 > = async ({ params, locale }) => {
   try {
-    const { db } = await connectToDb()
-    const obituary: IObituary = JSON.parse(
-      JSON.stringify(
-        await db.collection<Omit<IObituary, '_id'>>('obituaries').findOne({
-          _id: ObjectID.isValid(params.id)
-            ? ObjectID.createFromHexString(params.id)
-            : new ObjectID(params.id),
-        })
+    let obituary: Omit<IObituary, '_id'>
+
+    // For previewing obituaries
+    if (/(\d|[_-])+/.test(params.id)) {
+      const story = await Storyblok.get(
+        `cdn/stories/${params.category}/${params.id}`,
+        {
+          version: 'draft',
+          language: locale,
+        }
       )
-    )
+      obituary = parseStory(story.data.story)
+    } else {
+      const { db } = await connectToDb()
+      obituary = JSON.parse(
+        JSON.stringify(
+          await db.collection<Omit<IObituary, '_id'>>('obituaries').findOne({
+            _id: ObjectID.isValid(params.id)
+              ? ObjectID.createFromHexString(params.id)
+              : new ObjectID(params.id),
+          })
+        )
+      )
+    }
+
     return {
       props: {
         ...(await serverSideTranslations(locale, ['common'])),
@@ -123,3 +171,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   }
 }
+
+// 4831065&_storyblok_c=obituary&_storyblok_version=&_storyblok_lang=default&_storyblok_release=0&_storyblok_rl=1700499551824&_storyblok_tk[space_id]=108099&_storyblok_tk[timestamp]=1700499551&_storyblok_tk[token]=f2a2d855ee981ba5db8eb8aaeeb6f1d61d3751c1
