@@ -116,6 +116,7 @@ export const getStaticProps: GetStaticProps<
         {
           version: 'draft',
           language: locale,
+          token: process.env.STORYBLOK_TOKEN,
         }
       )
       obituary = parseStory(story.data.story)
@@ -171,5 +172,3 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
   }
 }
-
-// 4831065&_storyblok_c=obituary&_storyblok_version=&_storyblok_lang=default&_storyblok_release=0&_storyblok_rl=1700499551824&_storyblok_tk[space_id]=108099&_storyblok_tk[timestamp]=1700499551&_storyblok_tk[token]=f2a2d855ee981ba5db8eb8aaeeb6f1d61d3751c1
