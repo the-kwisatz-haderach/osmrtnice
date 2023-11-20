@@ -15,7 +15,11 @@ import { IObituary } from '../../lib/domain/types'
 
 const capitalize = (str = '') => str?.[0]?.toLocaleUpperCase() + str.slice(1)
 
-export default function Obituary(props: IObituary): ReactElement {
+type Props = {
+  obituary: IObituary
+}
+
+export default function Obituary({ obituary }: Props): ReactElement {
   const { t } = useTranslation()
   const {
     firstname,
@@ -25,7 +29,7 @@ export default function Obituary(props: IObituary): ReactElement {
     image,
     long_text,
     type,
-  } = props
+  } = obituary
   const fullname = [firstname, surname, name_misc].join(' ')
 
   return (
@@ -58,7 +62,7 @@ export default function Obituary(props: IObituary): ReactElement {
           px={[4, 6, 10]}
           py={[6, 8, 14]}
         >
-          <ObituaryContainer {...props} Renderer={ObituaryLarge} />
+          <ObituaryContainer {...obituary} Renderer={ObituaryLarge} />
         </Container>
       </Box>
     </div>
@@ -66,7 +70,7 @@ export default function Obituary(props: IObituary): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps<
-  Omit<IObituary, '_id'>,
+  Props,
   { id: string; category: string }
 > = async ({ params, locale = 'hr' }) => {
   try {
@@ -83,7 +87,7 @@ export const getServerSideProps: GetServerSideProps<
       return {
         props: {
           ...(await serverSideTranslations(locale, ['common'])),
-          ...parseObituaryStory(story.data.story),
+          obituary: parseObituaryStory(story.data.story),
         },
       }
     }
@@ -101,7 +105,7 @@ export const getServerSideProps: GetServerSideProps<
     return {
       props: {
         ...(await serverSideTranslations(locale, ['common'])),
-        ...obituary,
+        obituary,
       },
     }
   } catch (err) {
