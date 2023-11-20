@@ -1,6 +1,5 @@
 import { Box, Container } from '@chakra-ui/react'
 import { ObituaryContainer } from 'components/Obituary'
-import { REVALIDATE_TIME_SECONDS } from 'lib/constants'
 import { parseObituaryStory } from 'lib/domain/parseObituaryStory'
 import Storyblok from 'lib/storyblok/client'
 import { ObjectID } from 'mongodb'
@@ -8,7 +7,6 @@ import { GetServerSideProps } from 'next'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import React, { ReactElement } from 'react'
 import { ObituaryLarge } from '../../components/Obituary/components/ObituaryLarge'
 import { connectToDb } from '../../db'
@@ -18,11 +16,7 @@ import { IObituary } from '../../lib/domain/types'
 const capitalize = (str = '') => str?.[0]?.toLocaleUpperCase() + str.slice(1)
 
 export default function Obituary(props: IObituary): ReactElement {
-  const { isFallback } = useRouter()
   const { t } = useTranslation()
-  if (!props || isFallback) {
-    return <></>
-  }
   const {
     firstname,
     name_misc,
