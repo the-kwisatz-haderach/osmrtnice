@@ -1,5 +1,5 @@
 import React, { memo, ReactElement } from 'react'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import { Box, Button, Text } from '@chakra-ui/react'
 import { FaithType } from '../../lib/domain/types'
 import christian from './images/candle.png'
