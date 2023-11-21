@@ -3,33 +3,7 @@ import { DEFAULT_LIST_LIMIT } from 'lib/constants'
 import { Db, ObjectID } from 'mongodb'
 import { IObituary, IObituaryQuery, ObituaryType } from './types'
 
-const withCache = (fn: typeof getObituaries): typeof getObituaries => {
-  return async (
-    db,
-    { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT }
-  ) => {
-    if (process.env.DISABLE_CACHE === 'true') {
-      return await fn(db, { next, search, category, limit })
-    }
-    const kvKey = [next, search, category, limit].join('&')
-    const cached = await kv.get<ReturnType<typeof getObituaries>>(kvKey)
-    if (cached !== null) {
-      return cached
-    }
-
-    const res = await fn(db, { next, search, category, limit })
-    try {
-      await kv.set(kvKey, JSON.stringify(res), {
-        px: 60 * 5 * 1000,
-      })
-    } catch (err) {
-      console.error(err)
-    }
-    return res
-  }
-}
-
-async function getObituaries(
+type IGetObituaries = (
   db: Db,
   {
     next = '',
@@ -37,7 +11,39 @@ async function getObituaries(
     category = '',
     limit = DEFAULT_LIST_LIMIT,
   }: IObituaryQuery
-) {
+) => Promise<{
+  data: IObituary[]
+  next: string
+}>
+
+const withCache = (fn: IGetObituaries): IGetObituaries => async (
+  db,
+  { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT }
+) => {
+  if (process.env.DISABLE_CACHE === 'true') {
+    return await fn(db, { next, search, category, limit })
+  }
+  const kvKey = [next, search, category, limit].join('&')
+  const cached = await kv.get<ReturnType<IGetObituaries>>(kvKey)
+  if (cached !== null) {
+    return cached
+  }
+
+  const res = await fn(db, { next, search, category, limit })
+  try {
+    await kv.set(kvKey, JSON.stringify(res), {
+      px: 60 * 5 * 1000,
+    })
+  } catch (err) {
+    console.error(err)
+  }
+  return res
+}
+
+const getObituaries: IGetObituaries = async (
+  db,
+  { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT }
+) => {
   const $regex = new RegExp(search.split(/\s+/).join('|'), 'i')
   const obituaries: IObituary[] = JSON.parse(
     JSON.stringify(
