@@ -6,6 +6,7 @@ import { IObituary } from 'lib/domain/types'
 import { isStoryblokEvent, IStoryblokEvent, Story } from 'lib/storyblok/types'
 import { STORYBLOK_TOKEN, STORYBLOK_WEBHOOK_SECRET } from 'lib/constants'
 import { parseObituaryStory } from 'lib/domain/parseObituaryStory'
+import { obituaryTypes } from 'lib/domain'
 
 const isValidSignature = (
   signature: unknown,
@@ -29,6 +30,8 @@ const isValidSignature = (
     return false
   }
 }
+
+const revalidationPaths = ['/', ...obituaryTypes.map((type) => `/${type}/`)]
 
 export default attachMiddleware().post(
   async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
@@ -63,6 +66,11 @@ export default attachMiddleware().post(
                 )
 
               if (result.ok === 1) {
+                await Promise.all(
+                  ['/', `/${story.content.type}/`].map((path) =>
+                    res.revalidate(path)
+                  )
+                )
                 return res.status(200).end()
               }
             }
@@ -73,6 +81,9 @@ export default attachMiddleware().post(
               .collection('obituaries')
               .deleteOne({ storyId: event.story_id })
             if (result.ok === 1) {
+              await Promise.all(
+                revalidationPaths.map((path) => res.revalidate(path))
+              )
               return res.status(200).end()
             }
             break
@@ -82,6 +93,9 @@ export default attachMiddleware().post(
               .collection('obituaries')
               .deleteOne({ storyId: event.story_id })
             if (result.ok === 1) {
+              await Promise.all(
+                revalidationPaths.map((path) => res.revalidate(path))
+              )
               return res.status(200).end()
             }
             break
