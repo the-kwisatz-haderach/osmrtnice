@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ params, locale = 'hr' }) => {
   try {
     // For previewing obituaries
-    if (/(\d|[_-])+/.test(params.id)) {
+    if (!/\d/.test(params.id)) {
       const story = await Storyblok.get(
         `cdn/stories/${params.category}/${params.id}`,
         {
