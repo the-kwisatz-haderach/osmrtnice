@@ -12,7 +12,7 @@ const withCache = (fn: typeof getObituaries): typeof getObituaries => {
       return await fn(db, { next, search, category, limit })
     }
     const kvKey = [next, search, category, limit].join('&')
-    const cached = (await kv.get(kvKey)) as any
+    const cached = await kv.get<ReturnType<typeof getObituaries>>(kvKey)
     if (cached !== null) {
       return cached
     }
@@ -92,7 +92,7 @@ async function getObituaries(
 
   return {
     data,
-    next: obituaries.length > limit ? data[data.length - 1]?._id : null,
+    next: obituaries.length > limit ? data.at(-1)?._id : null,
   }
 }
 
