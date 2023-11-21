@@ -50,29 +50,28 @@ export default attachMiddleware().post(
               const {
                 story,
               }: { story: Story<IObituary> } = await storyRes.json()
-              if (story.content.component !== 'obituary') {
-                return res.status(200).end()
-              }
+              if (story.content.component === 'obituary') {
+                const obituary = parseObituaryStory(story)
+                const { result } = await req.db
+                  .collection('obituaries')
+                  .updateOne(
+                    { storyId: event.story_id },
+                    { $set: obituary },
+                    {
+                      upsert: true,
+                    }
+                  )
 
-              const obituary = parseObituaryStory(story)
-              const { result } = await req.db
-                .collection('obituaries')
-                .updateOne(
-                  { storyId: event.story_id },
-                  { $set: obituary },
-                  {
-                    upsert: true,
-                  }
-                )
-
-              if (result.ok === 1) {
+                if (result.ok !== 1) {
+                  break
+                }
                 await Promise.all(
                   ['/', `/${story.content.type}/`].map((path) =>
                     res.revalidate(path)
                   )
                 )
-                return res.status(200).end()
               }
+              return res.status(200).end()
             }
             break
           }
