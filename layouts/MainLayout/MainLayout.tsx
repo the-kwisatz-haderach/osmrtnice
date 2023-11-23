@@ -1,10 +1,5 @@
 import { Flex } from '@chakra-ui/react'
-import React, {
-  PropsWithChildren,
-  ReactElement,
-  useEffect,
-  useState,
-} from 'react'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
 import { Footer } from '../../components/Footer'
 import { MainNavigation } from '../../components/MainNavigation'
 import useAppContext from '../../contexts/AppContext'
@@ -13,7 +8,9 @@ const correct_pass = process.env.NEXT_PUBLIC_PROD_PASS
 
 export default function MainLayout({
   children,
-}: PropsWithChildren<any>): ReactElement {
+}: {
+  children: ReactNode
+}): ReactElement {
   const { menuItems, logo, ...contactDetails } = useAppContext()
   const [shouldRender, setShouldRender] = useState(
     process.env.NODE_ENV !== 'production'

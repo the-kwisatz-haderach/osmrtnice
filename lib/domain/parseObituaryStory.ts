@@ -2,7 +2,7 @@ import { Story } from 'lib/storyblok/types'
 import { IObituary } from './types'
 
 export const parseObituaryStory = (
-  story: Story<any>
+  story: Story<IObituary>
 ): Omit<IObituary, '_id'> => ({
   storyId: story.id,
   firstname: story.content.firstname,

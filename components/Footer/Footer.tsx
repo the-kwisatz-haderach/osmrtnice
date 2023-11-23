@@ -1,5 +1,4 @@
 import React, { ReactElement, DetailedHTMLProps } from 'react'
-import Image from 'next/image'
 import { InfoList } from '../InfoList'
 import { FooterBottom } from './components/FooterBottom'
 import { IMenuItem } from '../../lib/storyblok/types'
