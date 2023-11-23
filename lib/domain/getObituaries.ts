@@ -20,7 +20,7 @@ const withCache = (fn: IGetObituaries): IGetObituaries => async (
   db,
   { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT }
 ) => {
-  if (process.env.DISABLE_CACHE === 'true') {
+  if (search === '' || process.env.DISABLE_CACHE === 'true') {
     return await fn(db, { next, search, category, limit })
   }
   const kvKey = [next, search, category, limit].join('&')
