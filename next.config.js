@@ -1,4 +1,3 @@
-const { PHASE_PRODUCTION_BUILD } = require('next/constants')
 const { i18n } = require('./next-i18next.config')
 const { pathTranslations } = require('./pathTranslations')
 
@@ -11,12 +10,6 @@ module.exports = (phase, { defaultConfig }) => {
   const config = {
     ...defaultConfig,
     i18n,
-    ...(phase === PHASE_PRODUCTION_BUILD && {
-      experimental: {
-        workerThreads: true,
-        cpus: 1,
-      },
-    }),
     async headers() {
       return [
         {
