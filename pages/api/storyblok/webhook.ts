@@ -71,7 +71,7 @@ export default attachMiddleware().post(
                   )
                 )
               }
-              return res.status(200).end()
+              return res.status(200).json({ revalidated: true })
             }
             break
           }
@@ -83,7 +83,7 @@ export default attachMiddleware().post(
               await Promise.all(
                 revalidationPaths.map((path) => res.revalidate(path))
               )
-              return res.status(200).end()
+              return res.status(200).json({ revalidated: true })
             }
             break
           }
@@ -95,7 +95,7 @@ export default attachMiddleware().post(
               await Promise.all(
                 revalidationPaths.map((path) => res.revalidate(path))
               )
-              return res.status(200).end()
+              return res.status(200).json({ revalidated: true })
             }
             break
           }
