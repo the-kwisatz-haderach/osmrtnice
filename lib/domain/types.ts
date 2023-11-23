@@ -1,4 +1,4 @@
-import { Richtext } from 'storyblok-js-client'
+import type { Richtext } from 'storyblok-js-client'
 
 export interface StoryblokAsset {
   alt?: string

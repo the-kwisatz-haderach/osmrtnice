@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Richtext } from 'storyblok-js-client'
+import type { Richtext } from 'storyblok-js-client'
 import { RichText } from '../../RichText'
 
 export default function RichTextBlok({

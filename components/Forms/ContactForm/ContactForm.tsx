@@ -14,7 +14,6 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react'
-import axios from 'axios'
 import { Controller, useForm } from 'react-hook-form'
 import { FormField } from '../FormField/FormField'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -60,7 +59,14 @@ export default function ContactForm(): ReactElement {
         formData.append('files', file)
       })
       formData.set('input', JSON.stringify(input))
-      return await axios.post('/api/obituaries/email', formData)
+      const res = await fetch('/api/obituaries/email', {
+        method: 'POST',
+        body: formData,
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        throw new Error(json.errors.at(0).error)
+      }
     },
     {
       onSuccess: () => {
@@ -82,10 +88,7 @@ export default function ContactForm(): ReactElement {
       },
       onError: (err) => {
         let description = ''
-        if (axios.isAxiosError(err)) {
-          const firstError = err.response.data.errors.at(0)
-          description = firstError.error
-        } else if (err instanceof Error) {
+        if (err instanceof Error) {
           description = err.message
         }
         toast({

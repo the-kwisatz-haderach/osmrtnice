@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Richtext } from 'storyblok-js-client'
+import type { Richtext } from 'storyblok-js-client'
 import { useRouter } from 'next/router'
 import { RichText } from '../../RichText'
 import { LinkField } from '../../../lib/storyblok/common/types'

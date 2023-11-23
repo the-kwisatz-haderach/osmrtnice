@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {
   useInfiniteQuery,
   UseInfiniteQueryOptions,
@@ -18,8 +17,20 @@ export const useObituary = (id: string, options?: UseQueryOptions<IObituary>) =>
     ...options,
     queryKey: ['obituaries', id],
     queryFn: async () => {
-      const res = await axios.get<IObituary>('/api/obituaries/' + id)
-      return res.data
+      const res = await fetch('/api/obituaries/' + id)
+      if (res.ok) {
+        return await res.json()
+      }
+      return {
+        _id: '',
+        appreciations: 0,
+        date_created: '',
+        date_of_birth: '',
+        date_of_death: '',
+        firstname: '',
+        is_crawled: false,
+        surname: '',
+      }
     },
   })
 
@@ -49,8 +60,13 @@ export const useObituaries = (
       if (params.limit) {
         query.append('limit', params.limit.toString())
       }
-      const res = await axios.get('/api/obituaries?' + query.toString())
-      return res.data
+      const res = await fetch('/api/obituaries?' + query.toString())
+      if (res.ok) {
+        return await res.json()
+      }
+      return {
+        data: [],
+      }
     },
     {
       ...options,

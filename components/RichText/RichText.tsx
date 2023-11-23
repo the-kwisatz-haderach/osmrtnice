@@ -1,6 +1,6 @@
 import { Box, BoxProps } from '@chakra-ui/react'
 import React, { ReactElement, PropsWithChildren } from 'react'
-import { Richtext } from 'storyblok-js-client'
+import type { Richtext } from 'storyblok-js-client'
 import Storyblok from '../../lib/storyblok/client'
 
 export type Props = PropsWithChildren<{ children: Richtext | string }> &

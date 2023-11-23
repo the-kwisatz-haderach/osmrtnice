@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {
   InfiniteData,
   useMutation,
@@ -16,14 +15,20 @@ export const useIncrementAppreciation = () => {
   >(
     ['incrementAppreciation'],
     async ({ id, increment }) => {
-      const res = await axios.post<{ appreciations: number }>(
-        '/api/appreciations',
-        {
+      const res = await fetch('/api/appreciations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           id,
           increment,
-        }
-      )
-      return res.data
+        }),
+      })
+      if (res.ok) {
+        return res.json()
+      }
+      return { appreciations: 0 }
     },
     {
       onSuccess: (data, { id }) => {
