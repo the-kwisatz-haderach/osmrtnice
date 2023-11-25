@@ -65,6 +65,7 @@ export default function MainNavigation({
                 src={logoSrc}
                 alt="logo"
                 style={{
+                  cursor: 'pointer',
                   width: 100,
                   height: 30,
                 }}
@@ -112,7 +113,7 @@ export default function MainNavigation({
                   <TranslatedLink passHref href={menuItem.href}>
                     <Button
                       onClick={onClose}
-                      isFullWidth
+                      // isFullWidth
                       py={2}
                       variant={menuItem.href === '/contact' ? 'solid' : 'link'}
                       colorScheme="brand"

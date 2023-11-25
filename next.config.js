@@ -43,7 +43,6 @@ module.exports = (phase, { defaultConfig }) => {
           hostname: 'a.storyblok.com',
         },
       ],
-      domains: ['picsum.photos', 'a.storyblok.com', 'www.osmrtnica.ba'],
     },
   }
   return withBundleAnalyzer(config)
