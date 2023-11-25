@@ -44,7 +44,7 @@ function AppreciationIndicator({
           },
         }}
       >
-        <Image src={src} layout="fill" />
+        <Image alt="" src={src} fill sizes="100vw" />
       </Button>
       <Text
         hidden={appreciations < 1}

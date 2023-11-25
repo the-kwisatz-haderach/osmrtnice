@@ -59,15 +59,19 @@ export default function MainNavigation({
           px={4}
         >
           <TranslatedLink href={homeLink.href} passHref>
-            <Box
-              title={homeLink.label}
-              as="a"
-              position="relative"
-              width="100px"
-              height="30px"
-            >
-              {logoSrc && <Image src={logoSrc} alt="logo" layout="fill" />}
-            </Box>
+            {logoSrc && (
+              <Image
+                title={homeLink.label}
+                src={logoSrc}
+                alt="logo"
+                style={{
+                  width: 100,
+                  height: 30,
+                }}
+                width={100}
+                height={30}
+              />
+            )}
           </TranslatedLink>
           <HStack
             alignItems="center"

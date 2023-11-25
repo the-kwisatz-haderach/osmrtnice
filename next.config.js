@@ -32,6 +32,17 @@ module.exports = (phase, { defaultConfig }) => {
       )
     },
     images: {
+      remotePatterns: [
+        {
+          hostname: 'picsum.photos',
+        },
+        {
+          hostname: 'www.osmrtnica.ba',
+        },
+        {
+          hostname: 'a.storyblok.com',
+        },
+      ],
       domains: ['picsum.photos', 'a.storyblok.com', 'www.osmrtnica.ba'],
     },
   }

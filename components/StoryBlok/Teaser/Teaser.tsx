@@ -17,7 +17,7 @@ export default function Teaser({
             alt={image.alt}
             title={image.title}
             src={image.filename}
-            layout="fill"
+            fill
           />
         </div>
       )}

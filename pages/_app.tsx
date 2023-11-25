@@ -19,7 +19,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { STORYBLOK_TOKEN, STORYBLOK_VERSION } from 'lib/constants'
+import { STORYBLOK_VERSION } from 'lib/constants'
 import { apiPlugin, getStoryblokApi, storyblokInit } from '@storyblok/react'
 import { components } from 'components/StoryBlok'
 

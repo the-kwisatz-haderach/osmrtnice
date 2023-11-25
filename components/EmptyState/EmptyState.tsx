@@ -27,7 +27,7 @@ const getIcon = (icon: Props['icon']) => {
             opacity: 0.2,
           }}
         >
-          <Image src="/images/no-results.png" width={200} height={200} />
+          <Image alt="" src="/images/no-results.png" width={200} height={200} />
         </div>
       )
     default:

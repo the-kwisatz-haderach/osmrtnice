@@ -3,13 +3,18 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
 import { PageStory } from '../lib/storyblok/types'
 import { REVALIDATE_TIME_SECONDS, STORYBLOK_VERSION } from 'lib/constants'
-import { getStoryblokApi, StoryblokComponent } from '@storyblok/react'
+import {
+  getStoryblokApi,
+  StoryblokComponent,
+  useStoryblokState,
+} from '@storyblok/react'
 
 interface Props {
   story: PageStory
 }
 
-export default function Services({ story }: Props): ReactElement {
+export default function Services({ story: initialStory }: Props): ReactElement {
+  const story = useStoryblokState(initialStory)
   return <StoryblokComponent blok={story.content} />
 }
 

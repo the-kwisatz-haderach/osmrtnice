@@ -71,8 +71,18 @@ export const ObituaryLarge: ObituaryRenderer = ({
           >
             {t(type)}
           </Text>
-          <Flex gap={16} width="100%" justifyContent="center">
-            <VStack alignItems="center" justifyContent="center" spacing={3}>
+          <Flex
+            gap={16}
+            width="100%"
+            justifyContent="center"
+            alignItems="flex-start"
+          >
+            <VStack
+              alignItems="center"
+              justifyContent="center"
+              spacing={3}
+              flex={1}
+            >
               <Box
                 flexShrink={0}
                 position="relative"
@@ -123,7 +133,12 @@ export const ObituaryLarge: ObituaryRenderer = ({
               </HStack>
             </VStack>
             {isMultiObituary(props) && (
-              <VStack alignItems="center" justifyContent="center" spacing={3}>
+              <VStack
+                alignItems="center"
+                justifyContent="center"
+                spacing={3}
+                flex={1}
+              >
                 <Box
                   flexShrink={0}
                   position="relative"
@@ -193,12 +208,15 @@ export const ObituaryLarge: ObituaryRenderer = ({
             </Text>
           )}
           {symbol_image.filename && (
-            <Box width="80px" height="100px" pos="relative" mt="1rem">
+            <Box width="100px" height="100px" pos="relative" mt="1rem">
               <Image
                 alt={symbol_image?.alt || ''}
                 src={symbol_image.filename}
-                layout="fill"
-                objectFit="cover"
+                sizes="100vw"
+                fill
+                style={{
+                  objectFit: 'cover',
+                }}
               />
             </Box>
           )}

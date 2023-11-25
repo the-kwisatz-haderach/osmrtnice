@@ -20,7 +20,7 @@ export const TranslatedLink: React.FC<LinkProps> = ({
   // Set `as` prop to change displayed URL in browser
   const as = translatedPath ? `${localePath}${translatedPath}` : undefined
   return (
-    <Link {...linkProps} href={as || href} as={as} passHref>
+    <Link {...linkProps} href={as || href} as={as} passHref legacyBehavior>
       {children}
     </Link>
   )

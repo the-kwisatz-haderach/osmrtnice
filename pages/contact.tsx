@@ -14,13 +14,18 @@ import {
 import useAppContext from 'contexts/AppContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { REVALIDATE_TIME_SECONDS, STORYBLOK_VERSION } from 'lib/constants'
-import { getStoryblokApi, StoryblokComponent } from '@storyblok/react'
+import {
+  getStoryblokApi,
+  StoryblokComponent,
+  useStoryblokState,
+} from '@storyblok/react'
 
 interface Props {
   story: PageStory
 }
 
-export default function Contact({ story }: Props): ReactElement {
+export default function Contact({ story: initialStory }: Props): ReactElement {
+  const story = useStoryblokState(initialStory)
   const { t } = useTranslation()
   const {
     ingress,

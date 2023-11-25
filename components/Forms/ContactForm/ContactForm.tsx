@@ -279,7 +279,16 @@ export default function ContactForm(): ReactElement {
                   >
                     <Flex alignItems="center" gap={2} width="100%">
                       {selectedImage && (
-                        <Image src={selectedImage} width={20} height={20} />
+                        <Image
+                          alt=""
+                          src={selectedImage}
+                          style={{
+                            width: 20,
+                            height: 20,
+                          }}
+                          width={20}
+                          height={20}
+                        />
                       )}
                       <Text
                         fontWeight="normal"
@@ -320,7 +329,16 @@ export default function ContactForm(): ReactElement {
                           alignItems="center"
                           gap={4}
                         >
-                          <Image src={imgSrc} width={30} height={30} />
+                          <Image
+                            alt=""
+                            src={imgSrc}
+                            width={30}
+                            height={30}
+                            style={{
+                              width: 30,
+                              height: 30,
+                            }}
+                          />
                           <span>{label}</span>
                         </MenuItem>
                       )

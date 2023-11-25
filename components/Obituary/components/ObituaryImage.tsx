@@ -21,12 +21,15 @@ export const ObituaryImage = ({ img }: Props) => {
   return (
     <NextImage
       src={src}
-      alt={typeof img === 'string' ? undefined : img?.alt}
-      objectFit="cover"
-      layout="fill"
+      alt={typeof img === 'string' ? '' : img?.alt}
+      style={{
+        objectFit: 'cover',
+      }}
+      fill
       placeholder="blur"
       blurDataURL="/images/placeholder-person.png"
       onError={() => setSrc('/images/placeholder-obit-image.jpeg')}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
     />
   )
 }

@@ -1,7 +1,8 @@
 import { Box, Container } from '@chakra-ui/react'
-import { getStoryblokApi } from '@storyblok/react'
+import { getStoryblokApi, useStoryblokState } from '@storyblok/react'
 import { ObituaryContainer } from 'components/Obituary'
 import { parseObituaryStory } from 'lib/domain/parseObituaryStory'
+import { Story } from 'lib/storyblok/types'
 import { ObjectID } from 'mongodb'
 import { GetServerSideProps } from 'next'
 import { useTranslation } from 'next-i18next'
@@ -16,11 +17,17 @@ import { IObituary } from '../../lib/domain/types'
 const capitalize = (str = '') => str?.[0]?.toLocaleUpperCase() + str.slice(1)
 
 interface Props {
-  obituary: IObituary
+  story?: Story<IObituary>
+  obituary?: IObituary
 }
 
-export default function Obituary({ obituary }: Props): ReactElement {
+export default function Obituary({
+  story: initialStory,
+  obituary: initialObituary,
+}: Props): ReactElement {
+  const story = useStoryblokState(initialStory)
   const { t } = useTranslation()
+  const obituary = initialObituary || parseObituaryStory(story)
   const {
     firstname,
     name_misc,
@@ -61,7 +68,11 @@ export default function Obituary({ obituary }: Props): ReactElement {
           px={[4, 6, 10]}
           py={[6, 8, 14]}
         >
-          <ObituaryContainer {...obituary} Renderer={ObituaryLarge} />
+          <ObituaryContainer
+            _id={initialObituary?._id}
+            {...obituary}
+            Renderer={ObituaryLarge}
+          />
         </Container>
       </Box>
     </div>
@@ -87,7 +98,7 @@ export const getServerSideProps: GetServerSideProps<
       return {
         props: {
           ...(await serverSideTranslations(locale, ['common'])),
-          obituary: parseObituaryStory(story.data.story),
+          story: story?.data?.story,
         },
       }
     }

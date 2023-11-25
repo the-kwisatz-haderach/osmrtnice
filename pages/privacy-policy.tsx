@@ -1,4 +1,8 @@
-import { getStoryblokApi, StoryblokComponent } from '@storyblok/react'
+import {
+  getStoryblokApi,
+  StoryblokComponent,
+  useStoryblokState,
+} from '@storyblok/react'
 import { STORYBLOK_VERSION } from 'lib/constants'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -9,7 +13,10 @@ interface Props {
   story: PageStory
 }
 
-export default function PrivacyPolicy({ story }: Props): ReactElement {
+export default function PrivacyPolicy({
+  story: initialStory,
+}: Props): ReactElement {
+  const story = useStoryblokState(initialStory)
   return <StoryblokComponent blok={story.content} />
 }
 

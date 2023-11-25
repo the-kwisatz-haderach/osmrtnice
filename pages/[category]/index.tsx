@@ -17,14 +17,22 @@ import { useScrollToTop } from 'hooks/useScrollToTop'
 import { REVALIDATE_TIME_SECONDS, STORYBLOK_VERSION } from 'lib/constants'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { connectToDb } from 'db'
-import { getStoryblokApi, StoryblokComponent } from '@storyblok/react'
+import {
+  getStoryblokApi,
+  StoryblokComponent,
+  useStoryblokState,
+} from '@storyblok/react'
 
 interface Props {
   story: PageStory
   category: string
 }
 
-export default function Obituaries({ story, category }: Props): ReactElement {
+export default function Obituaries({
+  story: initialStory,
+  category,
+}: Props): ReactElement {
+  const story = useStoryblokState(initialStory)
   const { t } = useTranslation()
   const router = useRouter()
   const [ref, scrollToTop] = useScrollToTop<HTMLDivElement>()

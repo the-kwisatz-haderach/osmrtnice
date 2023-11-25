@@ -37,3 +37,4 @@ yarn-error.log*
 /crawl-results
 
 tsconfig.tsbuildinfo
+certificates
