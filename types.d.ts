@@ -14,6 +14,7 @@ declare global {
   }
 
   interface Window {
+    storyblok
     IntersectionObserver: typeof IntersectionObserver
     FB: {
       ui: (options: { display: string; method: string; href: string }) => void

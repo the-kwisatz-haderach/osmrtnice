@@ -1,20 +1,33 @@
-import { Richtext, StoryblokComponent, StoryData } from 'storyblok-js-client'
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { ImageField, LinkField } from './common/types'
+import { StoryblokComponentType } from 'components/StoryBlok'
+import {
+  SbBlokData,
+  ISbRichtext as Richtext,
+  ISbStoryData as StoryData,
+} from '@storyblok/react'
 
-export type StoryBlokComponentType = string | 'grid' | 'rich_text'
+interface ISbComponentType<T extends string> {
+  _uid?: string
+  component?: T
+  _editable?: string
+}
 
 export type StoryContent<
-  Type extends StoryBlokComponentType,
+  Type extends StoryblokComponentType,
   Fields
-> = StoryblokComponent<Type> & Fields
+> = ISbComponentType<Type> & Fields
+
+export type BlokType<T = Record<string, unknown>> = SbBlokData &
+  ISbComponentType<StoryblokComponentType> &
+  T
 
 export type StoryBlokComponent =
   | StoryContent<'rich_text', IRichTextBlok>
   | StoryContent<'grid', IGrid>
 
 export type Story<Fields> = StoryData<
-  StoryContent<StoryBlokComponentType, Fields>
+  StoryContent<StoryblokComponentType, Fields>
 > & {
   default_full_slug?: string
   name: string

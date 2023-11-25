@@ -5,8 +5,6 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ReactElement } from 'react'
 import { ContactForm } from '../components/Forms/ContactForm'
-import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import Storyblok from '../lib/storyblok/client'
 import { PageStory } from '../lib/storyblok/types'
 import {
   faPhone as phoneIcon,
@@ -16,6 +14,7 @@ import {
 import useAppContext from 'contexts/AppContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { REVALIDATE_TIME_SECONDS, STORYBLOK_VERSION } from 'lib/constants'
+import { getStoryblokApi, StoryblokComponent } from '@storyblok/react'
 
 interface Props {
   story: PageStory
@@ -32,7 +31,7 @@ export default function Contact({ story }: Props): ReactElement {
   } = useAppContext()
   return (
     <div>
-      <Page story={story} />
+      <StoryblokComponent blok={story.content} />
       <Container my={10} maxW="container.xl">
         <Stack
           direction={['column', 'column', 'row']}
@@ -97,7 +96,8 @@ export default function Contact({ story }: Props): ReactElement {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
-  const story = await Storyblok.getStory('contact', {
+  const storyblokApi = getStoryblokApi()
+  const story = await storyblokApi.getStory('contact', {
     version: STORYBLOK_VERSION,
     language: locale,
   })

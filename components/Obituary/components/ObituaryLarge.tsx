@@ -9,9 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { useCallback } from 'react'
-import { RichText } from '../../RichText'
 import { formatDate } from '../../../utils/formatDate'
-// import { AppreciationIndicator } from '../../AppreciationIndicator'
 import { useTranslation } from 'next-i18next'
 import { ObituaryImage } from './ObituaryImage'
 import { ObituaryRenderer } from '../ObituaryContainer'
@@ -19,6 +17,7 @@ import { formatName } from '../helpers/formatName'
 import { useObituary } from 'hooks/reactQuery/queries'
 import Image from 'next/image'
 import { isMultiObituary } from 'lib/domain/isMultiObituary'
+import { RichText } from 'components/RichText'
 
 export const ObituaryLarge: ObituaryRenderer = ({
   onShowAppreciation,
@@ -50,8 +49,6 @@ export const ObituaryLarge: ObituaryRenderer = ({
     date_of_death_second,
   } = data
   const { t } = useTranslation()
-  // const isClicked =
-  //   typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
 
   const shareToFacebook = useCallback(() => {
     window?.FB?.ui({
@@ -224,20 +221,6 @@ export const ObituaryLarge: ObituaryRenderer = ({
               {relative}
             </Text>
           )}
-
-          {/* <TextBlock
-            flex={1}
-            backgroundColor="gray.100"
-            label={t('pay_respects')}
-          >
-            <AppreciationIndicator
-              size="large"
-              appreciations={appreciations}
-              onClick={onShowAppreciation}
-              isClicked={isClicked}
-              faithType={faith}
-            />
-          </TextBlock> */}
         </VStack>
       </Box>
       {additional_information && (

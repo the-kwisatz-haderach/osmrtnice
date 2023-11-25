@@ -10,7 +10,6 @@ import {
 import { IntersectionObserverProvider } from '../hooks/useIntersectionObserver'
 import { MainLayout } from '../layouts/MainLayout'
 import { makeAppLinks } from '../lib/storyblok/makeAppLinks'
-import Storyblok from '../lib/storyblok/client'
 import { StoryBlokLink } from '../lib/storyblok/common/types'
 import { IGlobalSettings, Story } from '../lib/storyblok/types'
 import '../styles/global.css'
@@ -20,9 +19,17 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { STORYBLOK_VERSION } from 'lib/constants'
+import { STORYBLOK_TOKEN, STORYBLOK_VERSION } from 'lib/constants'
+import { apiPlugin, getStoryblokApi, storyblokInit } from '@storyblok/react'
+import { components } from 'components/StoryBlok'
 
 const observerOptions = { threshold: 0.8 }
+
+storyblokInit({
+  accessToken: process.env.NEXT_PUBLIC_STORYBLOK_TOKEN,
+  use: [apiPlugin],
+  components,
+})
 
 function MyApp({
   Component,
@@ -66,12 +73,13 @@ MyApp.getInitialProps = async (
 ): Promise<IAppContext> => {
   const initialProps = await App.getInitialProps(appContext)
   try {
+    const storyblokApi = getStoryblokApi()
     const [globalResponse, linksResponse] = await Promise.all([
-      Storyblok.getStory('global', {
+      storyblokApi.getStory('global', {
         version: STORYBLOK_VERSION,
         language: appContext.ctx.locale,
       }),
-      Storyblok.get('cdn/links', {
+      storyblokApi.get('cdn/links', {
         version: STORYBLOK_VERSION,
         language: appContext.ctx.locale,
       }),

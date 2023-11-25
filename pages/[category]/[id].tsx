@@ -1,7 +1,7 @@
 import { Box, Container } from '@chakra-ui/react'
+import { getStoryblokApi } from '@storyblok/react'
 import { ObituaryContainer } from 'components/Obituary'
 import { parseObituaryStory } from 'lib/domain/parseObituaryStory'
-import Storyblok from 'lib/storyblok/client'
 import { ObjectID } from 'mongodb'
 import { GetServerSideProps } from 'next'
 import { useTranslation } from 'next-i18next'
@@ -75,7 +75,8 @@ export const getServerSideProps: GetServerSideProps<
   try {
     // For previewing obituaries
     if (!/\d/.test(params.id)) {
-      const story = await Storyblok.get(
+      const storyblokApi = getStoryblokApi()
+      const story = await storyblokApi.get(
         `cdn/stories/${params.category}/${params.id}`,
         {
           version: 'draft',

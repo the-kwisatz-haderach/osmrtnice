@@ -1,11 +1,13 @@
+import { ISbRichtext, storyblokEditable } from '@storyblok/react'
+import { BlokType } from 'lib/storyblok/types'
 import React, { ReactElement } from 'react'
-import type { Richtext } from 'storyblok-js-client'
 import { RichText } from '../../RichText'
 
 export default function RichTextBlok({
-  text,
+  blok,
 }: {
-  text: Richtext
+  blok: BlokType<ISbRichtext>
 }): ReactElement {
-  return <RichText>{text}</RichText>
+  const { text } = blok
+  return <RichText {...storyblokEditable(blok)}>{text}</RichText>
 }

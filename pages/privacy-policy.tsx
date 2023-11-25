@@ -1,9 +1,8 @@
+import { getStoryblokApi, StoryblokComponent } from '@storyblok/react'
 import { STORYBLOK_VERSION } from 'lib/constants'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ReactElement } from 'react'
-import Page from '../components/StoryBlok/PageBlok/PageBlok'
-import Storyblok from '../lib/storyblok/client'
 import { PageStory } from '../lib/storyblok/types'
 
 interface Props {
@@ -11,11 +10,12 @@ interface Props {
 }
 
 export default function PrivacyPolicy({ story }: Props): ReactElement {
-  return <Page story={story} />
+  return <StoryblokComponent blok={story.content} />
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
-  const res = await Storyblok.getStory('privacy-policy', {
+  const storyblokApi = getStoryblokApi()
+  const res = await storyblokApi.getStory('privacy-policy', {
     version: STORYBLOK_VERSION,
     language: locale,
   })

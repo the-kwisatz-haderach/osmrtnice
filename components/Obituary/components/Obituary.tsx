@@ -15,11 +15,11 @@ import { Link } from '../../Link'
 import { useTranslation } from 'next-i18next'
 // import { useIncrementAppreciation } from '../../../hooks/reactQuery/mutations'
 import useModal from '../../../contexts/ModalContext'
-import Storyblok from '../../../lib/storyblok/client'
 import { ObituaryImage } from './ObituaryImage'
 import { formatName } from '../helpers/formatName'
 import { ObituaryRenderer } from '../ObituaryContainer'
 import { isMultiObituary } from 'lib/domain/isMultiObituary'
+import { RichText } from 'components/RichText'
 
 const htmlTagsRegexp = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
 
@@ -227,21 +227,15 @@ export const Obituary: ObituaryRenderer = (props) => {
               overflow: 'hidden',
             }}
           >
-            {typeof long_text === 'string'
-              ? long_text.replace(htmlTagsRegexp, '')
-              : Storyblok.richTextResolver
-                  .render(long_text)
-                  .replace(htmlTagsRegexp, '')}
+            <RichText>
+              {typeof long_text === 'string'
+                ? long_text.replace(htmlTagsRegexp, '')
+                : long_text}
+            </RichText>
           </Text>
         )}
         <Divider flex={1} alignSelf="flex-end" />
         <Flex alignItems="flex-end" justifyContent="flex-end" width="100%">
-          {/* <AppreciationIndicator
-            appreciations={appreciations}
-            faithType={faith}
-            isClicked={isClicked}
-            onClick={onClickAppreciation}
-          /> */}
           <Link
             onClick={openModal}
             href={`/${formattedType}/${_id}`}

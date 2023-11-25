@@ -1,23 +1,22 @@
 import React, { ReactElement } from 'react'
-import type { Richtext } from 'storyblok-js-client'
 import { useRouter } from 'next/router'
 import { RichText } from '../../RichText'
 import { LinkField } from '../../../lib/storyblok/common/types'
 import { Box, Button, Container, HStack, Text } from '@chakra-ui/react'
+import { ISbRichtext, storyblokEditable } from '@storyblok/react'
+import { BlokType } from 'lib/storyblok/types'
 
 interface Props {
-  title: string
-  body: Richtext
-  ctaLabel: string
-  ctaHref: LinkField
+  blok: BlokType<{
+    title: string
+    body: ISbRichtext
+    ctaLabel: string
+    ctaHref: LinkField
+  }>
 }
 
-export default function FullWidthCTABlok({
-  title,
-  body,
-  ctaLabel,
-  ctaHref,
-}: Props): ReactElement {
+export default function FullWidthCTABlok({ blok }: Props): ReactElement {
+  const { title, body, ctaLabel, ctaHref } = blok
   const router = useRouter()
 
   const onClickCTA = async (): Promise<void> => {
@@ -25,7 +24,7 @@ export default function FullWidthCTABlok({
   }
 
   return (
-    <Box backgroundColor="brand.400">
+    <Box {...storyblokEditable(blok)} backgroundColor="brand.400">
       <Container
         maxW="container.xl"
         color="white"

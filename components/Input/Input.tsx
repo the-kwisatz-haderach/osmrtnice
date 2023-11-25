@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react'
 import debounce from 'lodash/debounce'
-import cn from 'classnames'
+import cx from 'clsx'
 
 interface Props
   extends Omit<
@@ -43,7 +43,7 @@ export default function Input({
     <input
       {...props}
       autoFocus={autoFocus}
-      className={cn(className, 'p-2 rounded-sm md:w-5/12 text-2xl')}
+      className={cx(className, 'p-2 rounded-sm md:w-5/12 text-2xl')}
       type={type}
       value={value}
       placeholder={placeholder}

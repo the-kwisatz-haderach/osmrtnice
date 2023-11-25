@@ -6,8 +6,6 @@ import { Box, Flex } from '@chakra-ui/react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { SearchInput } from 'components/SearchInput'
-import Page from 'components/StoryBlok/PageBlok/PageBlok'
-import Storyblok from 'lib/storyblok/client'
 import { PageStory } from 'lib/storyblok/types'
 import { ObituaryGrid } from 'components/ObituaryGrid'
 import { TopScroll } from 'components/TopScroll'
@@ -22,12 +20,18 @@ import {
   STORYBLOK_VERSION,
 } from 'lib/constants'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
+import {
+  getStoryblokApi,
+  StoryblokComponent,
+  useStoryblokState,
+} from '@storyblok/react'
 
 interface Props {
   story: PageStory
 }
 
-export default function Home({ story }: Props): ReactElement {
+export default function Home({ story: initialStory }: Props): ReactElement {
+  const story = useStoryblokState(initialStory)
   const { t } = useTranslation()
   const router = useRouter()
   const [ref, scrollToTop] = useScrollToTop<HTMLDivElement>()
@@ -43,7 +47,7 @@ export default function Home({ story }: Props): ReactElement {
 
   return (
     <div>
-      <Page story={story} />
+      <StoryblokComponent blok={story.content} />
       <Flex
         ref={ref}
         backgroundColor="gray.300"
@@ -82,7 +86,8 @@ export default function Home({ story }: Props): ReactElement {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
-  const res = await Storyblok.getStory('home', {
+  const storyblokApi = getStoryblokApi()
+  const res = await storyblokApi.getStory('home', {
     version: STORYBLOK_VERSION,
     language: locale,
   })

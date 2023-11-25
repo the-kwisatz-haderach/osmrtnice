@@ -1,4 +1,4 @@
-import type { Richtext } from 'storyblok-js-client'
+import { ISbRichtext } from '@storyblok/react'
 
 export interface StoryblokAsset {
   alt?: string
@@ -48,7 +48,7 @@ export interface IObituary {
   date_of_birth_second?: string
   date_of_death_second?: string
   type: ObituaryType
-  long_text?: Richtext | string
+  long_text?: ISbRichtext | string
   relative?: string
   city?: string
   size?: 'regular' | 'large'

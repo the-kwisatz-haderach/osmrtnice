@@ -1,24 +1,17 @@
+import parse from 'html-react-parser'
+import { render } from 'storyblok-rich-text-react-renderer'
 import { Box, BoxProps } from '@chakra-ui/react'
+import { ISbRichtext } from '@storyblok/react'
 import React, { ReactElement, PropsWithChildren } from 'react'
-import type { Richtext } from 'storyblok-js-client'
-import Storyblok from '../../lib/storyblok/client'
 
-export type Props = PropsWithChildren<{ children: Richtext | string }> &
+export type Props = PropsWithChildren<{ children: ISbRichtext | string }> &
   BoxProps
 
-const RichText: React.FC<Props> = ({ children, ...props }): ReactElement => {
-  const richText =
-    typeof children === 'string'
-      ? children
-      : Storyblok.richTextResolver.render(children)
-  return (
-    <Box
-      {...props}
-      dangerouslySetInnerHTML={{
-        __html: richText,
-      }}
-    />
+const RichText = ({ children, ...props }: Props): ReactElement =>
+  typeof children === 'string' ? (
+    <>{parse(children)}</>
+  ) : (
+    <Box {...props}>{render(children)}</Box>
   )
-}
 
 export default RichText

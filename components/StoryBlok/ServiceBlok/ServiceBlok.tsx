@@ -1,15 +1,21 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
 import { Box, Flex, Heading, Text } from '@chakra-ui/react'
-import { IService } from '../../../lib/storyblok/types'
+import { BlokType, IService } from '../../../lib/storyblok/types'
+import { storyblokEditable } from '@storyblok/react'
 
 export default function ServiceBlok({
-  title,
-  description,
-  image,
-}: IService): ReactElement {
+  blok,
+}: {
+  blok: BlokType<IService>
+}): ReactElement {
+  const { title, description, image } = blok
   return (
-    <Flex flexDir={['column', 'column', 'row-reverse']} alignItems={['center']}>
+    <Flex
+      {...storyblokEditable(blok)}
+      flexDir={['column', 'column', 'row-reverse']}
+      alignItems={['center']}
+    >
       {image.filename && (
         <Box
           ml={{ md: 10 }}

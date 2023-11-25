@@ -3,8 +3,6 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import React, { ReactElement, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
-import Page from '../../components/StoryBlok/PageBlok/PageBlok'
-import Storyblok from '../../lib/storyblok/client'
 import { PageStory } from '../../lib/storyblok/types'
 import { SearchInput } from '../../components/SearchInput'
 import { ObituaryGrid } from '../../components/ObituaryGrid'
@@ -19,6 +17,7 @@ import { useScrollToTop } from 'hooks/useScrollToTop'
 import { REVALIDATE_TIME_SECONDS, STORYBLOK_VERSION } from 'lib/constants'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { connectToDb } from 'db'
+import { getStoryblokApi, StoryblokComponent } from '@storyblok/react'
 
 interface Props {
   story: PageStory
@@ -44,7 +43,7 @@ export default function Obituaries({ story, category }: Props): ReactElement {
 
   return (
     <div>
-      <Page story={story} />
+      <StoryblokComponent blok={story.content} />
       <Flex
         ref={ref}
         backgroundColor="gray.300"
@@ -87,13 +86,14 @@ export const getStaticProps: GetStaticProps = async ({
   locale,
 }) => {
   try {
+    const storyblokApi = getStoryblokApi()
     const queryClient = new QueryClient()
     const { db } = await connectToDb()
     await queryClient.prefetchInfiniteQuery(
       ['obituariesInfinite', { category, query: '' }],
       () => getObituaries(db, { category: category as string })
     )
-    const story = await Storyblok.getStory(category as string, {
+    const story = await storyblokApi.getStory(category as string, {
       version: STORYBLOK_VERSION,
       language: locale,
     })

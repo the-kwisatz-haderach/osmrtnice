@@ -1,17 +1,17 @@
 import React, { ReactElement } from 'react'
 import { Box, Button, Container, Flex, Heading, Text } from '@chakra-ui/react'
-import { IPageHeader } from '../../../lib/storyblok/types'
+import { BlokType, IPageHeader } from '../../../lib/storyblok/types'
+import { storyblokEditable } from '@storyblok/react'
 
 export default function PageHeaderBlok({
-  title,
-  subtitle,
-  align = 'left',
-  image,
-  height,
-  action_label,
-}: IPageHeader): ReactElement {
+  blok,
+}: {
+  blok: BlokType<IPageHeader>
+}): ReactElement {
+  const { title, subtitle, align = 'left', image, height, action_label } = blok
   return (
     <Box
+      {...storyblokEditable(blok)}
       color="white"
       height={height === 'large' ? '65vh' : '40vh'}
       backgroundAttachment="fixed"
