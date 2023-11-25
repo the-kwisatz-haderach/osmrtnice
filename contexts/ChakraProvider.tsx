@@ -1,6 +1,7 @@
 import { ChakraProvider as CProvider, extendTheme } from '@chakra-ui/react'
 import '@fontsource/dancing-script/700.css'
 import '@fontsource/nunito'
+import { ReactNode } from 'react'
 
 const theme = extendTheme({
   fonts: {
@@ -23,6 +24,6 @@ const theme = extendTheme({
   },
 })
 
-export const ChakraProvider: React.FC = ({ children }) => (
+export const ChakraProvider = ({ children }: { children: ReactNode }) => (
   <CProvider theme={theme}>{children}</CProvider>
 )

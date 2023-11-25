@@ -52,17 +52,15 @@ export default attachMiddleware().post(
               }: { story: Story<IObituary> } = await storyRes.json()
               if (story.content.component === 'obituary') {
                 const obituary = parseObituaryStory(story)
-                const { result } = await req.db
-                  .collection('obituaries')
-                  .updateOne(
-                    { storyId: event.story_id },
-                    { $set: obituary },
-                    {
-                      upsert: true,
-                    }
-                  )
+                const result = await req.db.collection('obituaries').updateOne(
+                  { storyId: event.story_id },
+                  { $set: obituary },
+                  {
+                    upsert: true,
+                  }
+                )
 
-                if (result.ok !== 1) {
+                if (result.modifiedCount + result.upsertedCount > 0) {
                   break
                 }
                 await Promise.all(
@@ -76,10 +74,10 @@ export default attachMiddleware().post(
             break
           }
           case 'unpublished': {
-            const { result } = await req.db
+            const result = await req.db
               .collection('obituaries')
               .deleteOne({ storyId: event.story_id })
-            if (result.ok === 1) {
+            if (result.deletedCount > 0) {
               await Promise.all(
                 revalidationPaths.map((path) => res.revalidate(path))
               )
@@ -88,10 +86,11 @@ export default attachMiddleware().post(
             break
           }
           case 'deleted': {
-            const { result } = await req.db
+            const result = await req.db
               .collection('obituaries')
               .deleteOne({ storyId: event.story_id })
-            if (result.ok === 1) {
+
+            if (result.deletedCount > 0) {
               await Promise.all(
                 revalidationPaths.map((path) => res.revalidate(path))
               )

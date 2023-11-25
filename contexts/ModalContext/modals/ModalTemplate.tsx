@@ -5,10 +5,12 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@chakra-ui/react'
+import { ReactNode } from 'react'
 
 interface Props {
   title?: string
   footer?: string
+  children: ReactNode
 }
 
 export const ModalTemplate: React.FC<Props> = ({ title, footer, children }) => (

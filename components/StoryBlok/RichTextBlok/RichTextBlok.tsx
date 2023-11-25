@@ -9,5 +9,5 @@ export default function RichTextBlok({
   blok: BlokType<ISbRichtext>
 }): ReactElement {
   const { text } = blok
-  return <RichText {...storyblokEditable(blok)}>{text}</RichText>
+  return <RichText {...storyblokEditable(blok)} richText={text} />
 }

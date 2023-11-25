@@ -46,7 +46,7 @@ export default function FullWidthCTABlok({ blok }: Props): ReactElement {
           </Text>
           <HStack spacing={{ md: 8 }} wrap="wrap">
             <Box mb={[4, 4, 0]}>
-              <RichText>{body}</RichText>
+              <RichText richText={body} />
             </Box>
             <Button colorScheme="brand" onClick={onClickCTA}>
               {ctaLabel}

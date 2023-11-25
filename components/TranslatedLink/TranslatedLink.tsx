@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router'
 import Link, { LinkProps } from 'next/link'
 import { pathTranslations } from '../../pathTranslations'
+import { PropsWithChildren } from 'react'
 
 type PathTranslationKey = keyof typeof pathTranslations
 
-export const TranslatedLink: React.FC<LinkProps> = ({
+export const TranslatedLink: React.FC<PropsWithChildren<LinkProps>> = ({
   href,
   children,
   ...linkProps

@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import { createContext, PropsWithChildren, useContext } from 'react'
 import { ImageField } from '../lib/storyblok/common/types'
 import { IMenuItem } from '../lib/storyblok/types'
 export interface IAppContext {
@@ -24,7 +24,10 @@ const defaultAppContext: IAppContext = {
 
 const AppContext = createContext(defaultAppContext)
 
-export const AppProvider: React.FC<IAppContext> = ({ children, ...value }) => {
+export const AppProvider: React.FC<PropsWithChildren<IAppContext>> = ({
+  children,
+  ...value
+}) => {
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 

@@ -23,8 +23,6 @@ import { STORYBLOK_VERSION } from 'lib/constants'
 import { apiPlugin, getStoryblokApi, storyblokInit } from '@storyblok/react'
 import { components } from 'components/StoryBlok'
 
-const observerOptions = { threshold: 0.8 }
-
 storyblokInit({
   accessToken: process.env.NEXT_PUBLIC_STORYBLOK_TOKEN,
   use: [apiPlugin],
@@ -53,13 +51,11 @@ function MyApp({
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <AppProvider {...appContext}>
-            <IntersectionObserverProvider options={observerOptions}>
-              <MainLayout>
-                <ModalProvider>
-                  <Component {...pageProps} />
-                </ModalProvider>
-              </MainLayout>
-            </IntersectionObserverProvider>
+            <MainLayout>
+              <ModalProvider>
+                <Component {...pageProps} />
+              </ModalProvider>
+            </MainLayout>
           </AppProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </Hydrate>

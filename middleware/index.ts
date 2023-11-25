@@ -1,7 +1,11 @@
-import nc from 'next-connect'
 import { dbConnection } from './dbConnection'
 
-const attachMiddleware = () => nc().use(dbConnection)
+import { createEdgeRouter } from 'next-connect'
+import { NextApiResponse } from 'next'
+import { EnhancedNextApiRequest } from './types'
+
+const attachMiddleware = () =>
+  createEdgeRouter<EnhancedNextApiRequest, NextApiResponse>().use(dbConnection)
 
 export * from './types'
 export default attachMiddleware

@@ -3,7 +3,7 @@ import { getStoryblokApi, useStoryblokState } from '@storyblok/react'
 import { ObituaryContainer } from 'components/Obituary'
 import { parseObituaryStory } from 'lib/domain/parseObituaryStory'
 import { Story } from 'lib/storyblok/types'
-import { ObjectID } from 'mongodb'
+import { ObjectId } from 'mongodb'
 import { GetServerSideProps } from 'next'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -106,9 +106,9 @@ export const getServerSideProps: GetServerSideProps<
     const obituary = JSON.parse(
       JSON.stringify(
         await db.collection<Omit<IObituary, '_id'>>('obituaries').findOne({
-          _id: ObjectID.isValid(params.id)
-            ? ObjectID.createFromHexString(params.id)
-            : new ObjectID(params.id),
+          _id: ObjectId.isValid(params.id)
+            ? ObjectId.createFromHexString(params.id)
+            : new ObjectId(params.id),
         })
       )
     )

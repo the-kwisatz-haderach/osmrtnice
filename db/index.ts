@@ -1,5 +1,5 @@
 import { MONGODB_DB, MONGODB_URI } from 'lib/constants'
-import { Db, MongoClient } from 'mongodb'
+import { Db, MongoClient, MongoClientOptions } from 'mongodb'
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -21,9 +21,9 @@ export async function connectToDb(): Promise<{
   }
   // eslint-disable-next-line
   if (!cached.promise) {
-    const opts = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    const opts: MongoClientOptions = {
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
     }
 
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => ({

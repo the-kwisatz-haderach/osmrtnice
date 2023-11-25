@@ -230,7 +230,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
               mx="auto"
               alignItems="start"
             >
-              <RichText>{long_text}</RichText>
+              <RichText richText={long_text} />
             </Box>
           )}
           {relative && (

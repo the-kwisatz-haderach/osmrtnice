@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next'
 import { IObituary } from 'lib/domain/types'
 import attachMiddleware, { EnhancedNextApiRequest } from 'middleware'
-import { ObjectID } from 'mongodb'
+import { ObjectId } from 'mongodb'
 
 export default attachMiddleware()
   .put(
@@ -13,7 +13,7 @@ export default attachMiddleware()
         const id = req.query.id as string
         const obituaries = req.db.collection<IObituary>('obituaries')
         if (!req.body) {
-          return res.status(400).end()
+          res.status(400).end()
         }
         const obituary = await obituaries.findOneAndUpdate(
           { _id: id },
@@ -24,7 +24,7 @@ export default attachMiddleware()
         return res.status(200).json(obituary)
       } catch (err) {
         console.error(err)
-        return res.status(500).end()
+        res.status(500).end()
       }
     }
   )
@@ -38,12 +38,14 @@ export default attachMiddleware()
         const obituary = await req.db
           .collection<Omit<IObituary, '_id'>>('obituaries')
           .findOne({
-            _id: ObjectID.isValid(id) ? ObjectID.createFromHexString(id) : id,
+            _id: ObjectId.isValid(id)
+              ? ObjectId.createFromHexString(id)
+              : new ObjectId(id),
           })
         return res.status(200).json(obituary)
       } catch (err) {
         console.error(err)
-        return res.status(500).end()
+        res.status(500).end()
       }
     }
   )

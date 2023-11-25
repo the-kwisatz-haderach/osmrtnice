@@ -1,4 +1,3 @@
-// import throttle from 'lodash/throttle'
 import React, { useCallback } from 'react'
 import {
   Box,
@@ -10,10 +9,8 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { formatDate } from '../../../utils/formatDate'
-// import { AppreciationIndicator } from '../../AppreciationIndicator'
 import { Link } from '../../Link'
 import { useTranslation } from 'next-i18next'
-// import { useIncrementAppreciation } from '../../../hooks/reactQuery/mutations'
 import useModal from '../../../contexts/ModalContext'
 import { ObituaryImage } from './ObituaryImage'
 import { formatName } from '../helpers/formatName'
@@ -47,16 +44,6 @@ export const Obituary: ObituaryRenderer = (props) => {
     typeof window !== 'undefined' && window.localStorage.getItem(_id) !== null
 
   const formattedType = t(type.toLowerCase().replace('_', '-'))
-  // const { mutate } = useIncrementAppreciation()
-  // const throttledMutate = useMemo(() => throttle(mutate, 2000), [mutate])
-  // const onClickAppreciation = useCallback(
-  //   () =>
-  //     throttledMutate({
-  //       id: _id,
-  //       increment: isClicked ? -1 : 1,
-  //     }),
-  //   [throttledMutate, _id, isClicked]
-  // )
 
   const { open } = useModal()
   const openModal = useCallback(() => {
@@ -227,11 +214,13 @@ export const Obituary: ObituaryRenderer = (props) => {
               overflow: 'hidden',
             }}
           >
-            <RichText>
-              {typeof long_text === 'string'
-                ? long_text.replace(htmlTagsRegexp, '')
-                : long_text}
-            </RichText>
+            <RichText
+              richText={
+                typeof long_text === 'string'
+                  ? long_text.replace(htmlTagsRegexp, '')
+                  : long_text
+              }
+            />
           </Text>
         )}
         <Divider flex={1} alignSelf="flex-end" />

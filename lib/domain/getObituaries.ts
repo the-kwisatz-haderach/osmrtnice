@@ -1,16 +1,11 @@
 import { kv } from '@vercel/kv'
 import { DEFAULT_LIST_LIMIT } from 'lib/constants'
-import { Db, ObjectID } from 'mongodb'
+import { Db, ObjectId } from 'mongodb'
 import { IObituary, IObituaryQuery, ObituaryType } from './types'
 
 type IGetObituaries = (
   db: Db,
-  {
-    next = '',
-    search = '',
-    category = '',
-    limit = DEFAULT_LIST_LIMIT,
-  }: IObituaryQuery
+  query: IObituaryQuery
 ) => Promise<{
   data: IObituary[]
   next: string
@@ -79,9 +74,9 @@ const getObituaries: IGetObituaries = async (
             }),
             ...(next && {
               _id: {
-                $lt: ObjectID.isValid(next)
-                  ? ObjectID.createFromHexString(next)
-                  : next,
+                $lt: ObjectId.isValid(next)
+                  ? ObjectId.createFromHexString(next)
+                  : new ObjectId(next),
               },
             }),
           },

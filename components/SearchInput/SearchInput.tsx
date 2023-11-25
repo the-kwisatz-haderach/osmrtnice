@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import debounce from 'lodash/debounce'
+import debounce from 'lodash.debounce'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Flex, IconButton, Input } from '@chakra-ui/react'

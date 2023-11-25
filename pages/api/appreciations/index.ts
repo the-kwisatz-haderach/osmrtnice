@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next'
-import { ObjectID } from 'mongodb'
+import { ObjectId } from 'mongodb'
 import attachMiddleware from '../../../middleware'
 import { EnhancedNextApiRequest } from '../../../middleware/types'
 import { IObituary } from 'lib/domain/types'
@@ -13,7 +13,9 @@ export default attachMiddleware().post(
           .collection<Omit<IObituary, '_id'>>('obituaries')
           .findOneAndUpdate(
             {
-              _id: ObjectID.isValid(id) ? ObjectID.createFromHexString(id) : id,
+              _id: ObjectId.isValid(id)
+                ? ObjectId.createFromHexString(id)
+                : new ObjectId(id),
             },
             {
               $inc: {
@@ -24,9 +26,8 @@ export default attachMiddleware().post(
               returnDocument: 'after',
             }
           )
-        return res
-          .status(200)
-          .json({ appreciations: result.value.appreciations })
+
+        return res.status(200).json({ appreciations: result.appreciations })
       }
       return res.status(400).end()
     } catch (error) {
