@@ -1,24 +1,33 @@
-import { NextApiResponse } from 'next'
 import getObituaries from '../../../lib/domain/getObituaries'
 import { parseObituaryQuery } from '../../../lib/domain/parseObituaryQuery'
 import attachMiddleware from '../../../middleware'
-import { EnhancedNextApiRequest } from '../../../middleware/types'
 
-export default attachMiddleware().get(
-  async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
-    try {
-      const { data, next } = await getObituaries(
-        req.db,
-        parseObituaryQuery(req.query)
-      )
-      res.setHeader('Cache-Control', 's-maxage=3600, max-age=3600')
-      res.status(200).json({
-        data,
-        next,
-      })
-    } catch (err) {
-      console.error(err)
-      res.status(500).end()
-    }
+const router = attachMiddleware()
+
+router.get(async (req, res) => {
+  try {
+    const { data, next } = await getObituaries(
+      req.db,
+      parseObituaryQuery(req.query)
+    )
+    res.setHeader('Cache-Control', 's-maxage=3600, max-age=3600')
+    res.status(200).json({
+      data,
+      next,
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).end()
   }
-)
+})
+
+export default router.handler({
+  onError: (err, req, res) => {
+    let message = 'unknown error'
+    if (err instanceof Error) {
+      console.error(err.stack)
+      message = err.message
+    }
+    res.status(500).end(message)
+  },
+})

@@ -3,7 +3,9 @@ import { IObituary } from 'lib/domain/types'
 import attachMiddleware, { EnhancedNextApiRequest } from 'middleware'
 import { ObjectId } from 'mongodb'
 
-export default attachMiddleware()
+const router = attachMiddleware()
+
+router
   .put(
     async (
       req: EnhancedNextApiRequest,
@@ -49,3 +51,14 @@ export default attachMiddleware()
       }
     }
   )
+
+export default router.handler({
+  onError: (err, req, res) => {
+    let message = 'unknown error'
+    if (err instanceof Error) {
+      console.error(err.stack)
+      message = err.message
+    }
+    res.status(500).end(message)
+  },
+})

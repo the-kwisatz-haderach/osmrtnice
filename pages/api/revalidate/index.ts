@@ -1,7 +1,9 @@
 import { STORYBLOK_WEBHOOK_SECRET } from 'lib/constants'
 import attachMiddleware from 'middleware'
 
-export default attachMiddleware().get(async (req, res) => {
+const router = attachMiddleware()
+
+router.get(async (req, res) => {
   // Check for secret to confirm this is a valid request
   if (req.query.secret !== STORYBLOK_WEBHOOK_SECRET) {
     return res.status(401).json({ message: 'Invalid token' })
@@ -19,4 +21,15 @@ export default attachMiddleware().get(async (req, res) => {
     // to show the last successfully generated page
     return res.status(500).send('Error revalidating')
   }
+})
+
+export default router.handler({
+  onError: (err, req, res) => {
+    let message = 'unknown error'
+    if (err instanceof Error) {
+      console.error(err.stack)
+      message = err.message
+    }
+    res.status(500).end(message)
+  },
 })

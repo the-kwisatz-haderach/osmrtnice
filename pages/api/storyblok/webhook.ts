@@ -33,80 +33,86 @@ const isValidSignature = (
 
 const revalidationPaths = ['/', ...obituaryTypes.map((type) => `/${type}/`)]
 
-export default attachMiddleware().post(
-  async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
-    try {
-      const webhookSignature = req.headers['webhook-signature']
-      const { body: event } = req
-      if (
-        isStoryblokEvent(event) &&
-        isValidSignature(webhookSignature, event)
-      ) {
-        switch (event.action.toLowerCase()) {
-          case 'published': {
-            const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${STORYBLOK_TOKEN}`
-            const storyRes = await fetch(url)
-            if (storyRes.ok) {
-              const {
-                story,
-              }: { story: Story<IObituary> } = await storyRes.json()
-              if (story.content.component === 'obituary') {
-                const obituary = parseObituaryStory(story)
-                const result = await req.db.collection('obituaries').updateOne(
-                  { storyId: event.story_id },
-                  { $set: obituary },
-                  {
-                    upsert: true,
-                  }
-                )
+const router = attachMiddleware()
 
-                if (result.modifiedCount + result.upsertedCount > 0) {
-                  break
+router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
+  try {
+    const webhookSignature = req.headers['webhook-signature']
+    const { body: event } = req
+    if (isStoryblokEvent(event) && isValidSignature(webhookSignature, event)) {
+      switch (event.action.toLowerCase()) {
+        case 'published': {
+          const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${STORYBLOK_TOKEN}`
+          const storyRes = await fetch(url)
+          if (storyRes.ok) {
+            const { story }: { story: Story<IObituary> } = await storyRes.json()
+            if (story.content.component === 'obituary') {
+              const obituary = parseObituaryStory(story)
+              const result = await req.db.collection('obituaries').updateOne(
+                { storyId: event.story_id },
+                { $set: obituary },
+                {
+                  upsert: true,
                 }
-                await Promise.all(
-                  ['/', `/${story.content.type}/`].map((path) =>
-                    res.revalidate(path)
-                  )
-                )
-              }
-              return res.status(200).json({ revalidated: true })
-            }
-            break
-          }
-          case 'unpublished': {
-            const result = await req.db
-              .collection('obituaries')
-              .deleteOne({ storyId: event.story_id })
-            if (result.deletedCount > 0) {
-              await Promise.all(
-                revalidationPaths.map((path) => res.revalidate(path))
               )
-              return res.status(200).json({ revalidated: true })
-            }
-            break
-          }
-          case 'deleted': {
-            const result = await req.db
-              .collection('obituaries')
-              .deleteOne({ storyId: event.story_id })
 
-            if (result.deletedCount > 0) {
+              if (result.modifiedCount + result.upsertedCount > 0) {
+                break
+              }
               await Promise.all(
-                revalidationPaths.map((path) => res.revalidate(path))
+                ['/', `/${story.content.type}/`].map((path) =>
+                  res.revalidate(path)
+                )
               )
-              return res.status(200).json({ revalidated: true })
             }
-            break
+            return res.status(200).json({ revalidated: true })
           }
-          default: {
-            return res.status(404).end()
+          break
+        }
+        case 'unpublished': {
+          const result = await req.db
+            .collection('obituaries')
+            .deleteOne({ storyId: event.story_id })
+          if (result.deletedCount > 0) {
+            await Promise.all(
+              revalidationPaths.map((path) => res.revalidate(path))
+            )
+            return res.status(200).json({ revalidated: true })
           }
+          break
+        }
+        case 'deleted': {
+          const result = await req.db
+            .collection('obituaries')
+            .deleteOne({ storyId: event.story_id })
+
+          if (result.deletedCount > 0) {
+            await Promise.all(
+              revalidationPaths.map((path) => res.revalidate(path))
+            )
+            return res.status(200).json({ revalidated: true })
+          }
+          break
+        }
+        default: {
+          return res.status(404).end()
         }
       }
-      return res.status(400).end()
-    } catch (err) {
-      console.error(err)
-      res.status(500).end()
     }
+    return res.status(400).end()
+  } catch (err) {
+    console.error(err)
+    res.status(500).end()
   }
-)
+})
+
+export default router.handler({
+  onError: (err, req, res) => {
+    let message = 'unknown error'
+    if (err instanceof Error) {
+      console.error(err.stack)
+      message = err.message
+    }
+    res.status(500).end(message)
+  },
+})
