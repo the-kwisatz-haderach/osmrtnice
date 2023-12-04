@@ -48,22 +48,27 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
             const { story }: { story: Story<IObituary> } = await storyRes.json()
             if (story.content.component === 'obituary') {
               const obituary = parseObituaryStory(story)
-              const result = await req.db.collection('obituaries').updateOne(
+              await req.db.collection('obituaries').updateOne(
                 { storyId: event.story_id },
                 { $set: obituary },
                 {
                   upsert: true,
                 }
               )
-
-              if (result.modifiedCount + result.upsertedCount > 0) {
-                break
-              }
-              await Promise.all(
-                ['/', `/${story.content.type}/`].map((path) =>
-                  res.revalidate(path)
+              try {
+                await Promise.all(
+                  ['/', `/${story.content.type}/`].map((path) =>
+                    res.revalidate(path)
+                  )
                 )
-              )
+              } catch (err) {
+                return res.status(400).json({
+                  event,
+                  err,
+                  revalidated: false,
+                  message: 'revalidation failed',
+                })
+              }
             }
             return res.status(200).json({ revalidated: true })
           }
@@ -74,9 +79,18 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
             .collection('obituaries')
             .deleteOne({ storyId: event.story_id })
           if (result.deletedCount > 0) {
-            await Promise.all(
-              revalidationPaths.map((path) => res.revalidate(path))
-            )
+            try {
+              await Promise.all(
+                revalidationPaths.map((path) => res.revalidate(path))
+              )
+            } catch (err) {
+              return res.status(400).json({
+                event,
+                err,
+                revalidated: false,
+                message: 'revalidation failed',
+              })
+            }
             return res.status(200).json({ revalidated: true })
           }
           break
@@ -87,19 +101,30 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
             .deleteOne({ storyId: event.story_id })
 
           if (result.deletedCount > 0) {
-            await Promise.all(
-              revalidationPaths.map((path) => res.revalidate(path))
-            )
+            try {
+              await Promise.all(
+                revalidationPaths.map((path) => res.revalidate(path))
+              )
+            } catch (err) {
+              return res.status(400).json({
+                event,
+                err,
+                revalidated: false,
+                message: 'revalidation failed',
+              })
+            }
             return res.status(200).json({ revalidated: true })
           }
           break
         }
         default: {
-          return res.status(404).end()
+          return res.status(404).json({ message: 'invalid message type' })
         }
       }
     }
-    return res.status(400).end()
+    return res
+      .status(400)
+      .json({ message: 'invalid event or signature', event })
   } catch (err) {
     console.error(err)
     res.status(500).end()
