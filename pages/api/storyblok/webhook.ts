@@ -38,7 +38,7 @@ const router = attachMiddleware()
 
 router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
   try {
-    const webhookSignature = req.headers.get('webhook-signature')
+    const webhookSignature = req.headers['webhook-signature']
     const { body: event } = req
     if (isStoryblokEvent(event) && isValidSignature(webhookSignature, event)) {
       switch (event.action.toLowerCase()) {
