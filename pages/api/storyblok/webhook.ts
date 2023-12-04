@@ -12,6 +12,7 @@ const isValidSignature = (
   signature: unknown,
   event: IStoryblokEvent
 ): boolean => {
+  console.log({ signature })
   if (typeof signature !== 'string') return false
   try {
     const secret = STORYBLOK_WEBHOOK_SECRET
@@ -37,7 +38,7 @@ const router = attachMiddleware()
 
 router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
   try {
-    const webhookSignature = req.headers['webhook-signature']
+    const webhookSignature = req.headers.get('webhook-signature')
     const { body: event } = req
     if (isStoryblokEvent(event) && isValidSignature(webhookSignature, event)) {
       switch (event.action.toLowerCase()) {
@@ -127,7 +128,7 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
       .json({ message: 'invalid event or signature', event })
   } catch (err) {
     console.error(err)
-    res.status(500).end()
+    return res.status(500).send('unknown error in webhook')
   }
 })
 
