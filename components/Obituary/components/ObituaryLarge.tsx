@@ -224,7 +224,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
         <VStack spacing={5}>
           {long_text && (
             <Box
-              textAlign={{ md: is_crawled ? 'center' : 'unset' }}
+              textAlign={{ md: 'center' }}
               width="100%"
               maxW={800}
               mx="auto"
