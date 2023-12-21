@@ -18,6 +18,7 @@ import { useObituary } from 'hooks/reactQuery/queries'
 import Image from 'next/image'
 import { isMultiObituary } from 'lib/domain/isMultiObituary'
 import { RichText } from 'components/RichText'
+import { getImgSrc } from 'lib/domain/getImgSrc'
 
 export const ObituaryLarge: ObituaryRenderer = ({
   onShowAppreciation,
@@ -41,7 +42,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
     additional_information,
     is_crawled,
     prefix,
-    symbol_image = {},
+    symbol_image,
     image_second,
     firstname_second,
     surname_second,
@@ -207,11 +208,11 @@ export const ObituaryLarge: ObituaryRenderer = ({
               {preamble}
             </Text>
           )}
-          {symbol_image.filename && (
+          {symbol_image && (
             <Box width="100px" height="100px" pos="relative" mt="1rem">
               <Image
-                alt={symbol_image?.alt || ''}
-                src={symbol_image.filename}
+                alt={typeof symbol_image === 'string' ? '' : symbol_image?.alt}
+                src={getImgSrc(symbol_image)}
                 sizes="100vw"
                 fill
                 style={{

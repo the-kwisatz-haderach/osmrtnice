@@ -1,3 +1,4 @@
+import { getImgSrc } from 'lib/domain/getImgSrc'
 import { IObituary } from 'lib/domain/types'
 import NextImage from 'next/image'
 import { useState } from 'react'
@@ -5,9 +6,6 @@ import { useState } from 'react'
 interface Props {
   img: IObituary['image']
 }
-
-const getImgSrc = (img: Props['img']): string =>
-  typeof img === 'string' ? img : img?.filename
 
 export const ObituaryImage = ({ img }: Props) => {
   const [src, setSrc] = useState(() => {

@@ -59,7 +59,7 @@ export interface IObituary {
   faith?: FaithType
   is_crawled: boolean
   appreciations: number
-  symbol_image?: StoryblokAsset
+  symbol_image?: string | StoryblokAsset
 }
 
 export interface ContactFormInput {
