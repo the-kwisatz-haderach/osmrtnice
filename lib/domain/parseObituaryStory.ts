@@ -29,8 +29,5 @@ export const parseObituaryStory = (
   date_of_birth_second: story.content.date_of_birth_second,
   date_of_death_second: story.content.date_of_death_second,
   appreciations: 0,
-  symbol_image: {
-    filename: story.content.symbol_image.filename,
-    alt: story.content.symbol_image.alt,
-  },
+  symbol_image: story.content.symbol_image,
 })
