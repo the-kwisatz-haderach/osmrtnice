@@ -7,7 +7,6 @@ import {
   ChakraProvider,
   ModalProvider,
 } from '../contexts'
-import { IntersectionObserverProvider } from '../hooks/useIntersectionObserver'
 import { MainLayout } from '../layouts/MainLayout'
 import { makeAppLinks } from '../lib/storyblok/makeAppLinks'
 import { StoryBlokLink } from '../lib/storyblok/common/types'
