@@ -13,7 +13,7 @@ export interface Props {
 
 export default function Page({ blok }: Props): ReactElement {
   return (
-    <div {...storyblokEditable(blok)}>
+    <>
       <Head>
         <title>{blok.title}</title>
         {blok.description && (
@@ -24,11 +24,13 @@ export default function Page({ blok }: Props): ReactElement {
           <meta property="og:description" content={blok.description} />
         )}
       </Head>
-      {blok.body
-        ? blok.body.map((nestedBlok) => (
-            <StoryblokComponent key={nestedBlok._uid} blok={nestedBlok} />
-          ))
-        : null}
-    </div>
+      <div {...storyblokEditable(blok)}>
+        {blok.body
+          ? blok.body.map((nestedBlok) => (
+              <StoryblokComponent key={nestedBlok._uid} blok={nestedBlok} />
+            ))
+          : null}
+      </div>
+    </>
   )
 }
