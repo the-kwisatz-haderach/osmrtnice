@@ -12,7 +12,6 @@ export interface Props {
 }
 
 export default function Page({ blok }: Props): ReactElement {
-  console.log({ blok })
   return (
     <>
       <Head>
