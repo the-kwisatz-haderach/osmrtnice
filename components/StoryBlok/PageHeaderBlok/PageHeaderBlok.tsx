@@ -13,8 +13,9 @@ export default function PageHeaderBlok({
     <Box
       {...storyblokEditable(blok)}
       color="white"
-      height={height === 'large' ? '65vh' : '40vh'}
+      height={height === 'large' ? '60vh' : '40vh'}
       backgroundAttachment="fixed"
+      backgroundSize="contain"
       bgImage={
         image?.filename
           ? `linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%), url(${image.filename})`
