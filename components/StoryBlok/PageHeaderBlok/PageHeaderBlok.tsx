@@ -15,7 +15,6 @@ export default function PageHeaderBlok({
       color="white"
       height={height === 'large' ? '60vh' : '40vh'}
       backgroundAttachment="fixed"
-      backgroundPosition="bottom"
       backgroundSize="cover"
       bgImage={
         image?.filename
