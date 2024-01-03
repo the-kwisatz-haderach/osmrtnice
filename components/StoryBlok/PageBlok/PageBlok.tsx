@@ -12,16 +12,27 @@ export interface Props {
 }
 
 export default function Page({ blok }: Props): ReactElement {
+  console.log({ blok })
   return (
     <>
       <Head>
-        <title>{blok.title}</title>
+        <title key="title">{blok.title}</title>
         {blok.description && (
-          <meta name="description" content={blok.description} />
+          <meta
+            key="description"
+            name="description"
+            content={blok.description}
+          />
         )}
-        {blok.title && <meta property="og:title" content={blok.title} />}
+        {blok.title && (
+          <meta key="og-title" property="og:title" content={blok.title} />
+        )}
         {blok.description && (
-          <meta property="og:description" content={blok.description} />
+          <meta
+            key="og-description"
+            property="og:description"
+            content={blok.description}
+          />
         )}
       </Head>
       <div {...storyblokEditable(blok)}>
