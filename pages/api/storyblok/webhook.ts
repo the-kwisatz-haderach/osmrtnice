@@ -44,7 +44,8 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
       switch (event.action.toLowerCase()) {
         case 'published': {
           if (event.full_slug) {
-            const path = '/' + event.full_slug
+            const path =
+              event.full_slug === 'home' ? '/' : '/' + event.full_slug
             await res.revalidate(path)
             return res.status(200).json({ revalidated: true })
           }
@@ -83,7 +84,8 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
         case 'deleted':
         case 'unpublished': {
           if (event.full_slug) {
-            const path = '/' + event.full_slug
+            const path =
+              event.full_slug === 'home' ? '/' : '/' + event.full_slug
             await res.revalidate(path)
             return res.status(200).json({ revalidated: true })
           }
