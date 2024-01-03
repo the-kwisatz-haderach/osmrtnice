@@ -43,6 +43,11 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
     if (isStoryblokEvent(event) && isValidSignature(webhookSignature, event)) {
       switch (event.action.toLowerCase()) {
         case 'published': {
+          if (event.full_slug) {
+            const path = '/' + event.full_slug
+            await res.revalidate(path)
+            return res.status(200).json({ revalidated: true })
+          }
           const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${STORYBLOK_TOKEN}`
           const storyRes = await fetch(url)
           if (storyRes.ok) {
@@ -75,28 +80,13 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
           }
           break
         }
+        case 'deleted':
         case 'unpublished': {
-          const result = await req.db
-            .collection('obituaries')
-            .deleteOne({ storyId: event.story_id })
-          if (result.deletedCount > 0) {
-            try {
-              await Promise.all(
-                revalidationPaths.map((path) => res.revalidate(path))
-              )
-            } catch (err) {
-              return res.status(400).json({
-                event,
-                err,
-                revalidated: false,
-                message: 'revalidation failed',
-              })
-            }
+          if (event.full_slug) {
+            const path = '/' + event.full_slug
+            await res.revalidate(path)
             return res.status(200).json({ revalidated: true })
           }
-          break
-        }
-        case 'deleted': {
           const result = await req.db
             .collection('obituaries')
             .deleteOne({ storyId: event.story_id })

@@ -130,6 +130,7 @@ export interface IStoryblokEvent {
   text: string
   story_id: number
   space_id: number
+  full_slug?: string
 }
 
 export const isStoryblokEvent = (e: unknown): e is IStoryblokEvent => {
