@@ -16,6 +16,7 @@ export default function PageHeaderBlok({
       height={height === 'large' ? '60vh' : '40vh'}
       backgroundAttachment="fixed"
       backgroundSize="cover"
+      backgroundPosition="top"
       bgImage={
         image?.filename
           ? `linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%), url(${image.filename})`
