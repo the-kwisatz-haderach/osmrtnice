@@ -13,7 +13,7 @@ export default function PageHeaderBlok({
     <Box
       {...storyblokEditable(blok)}
       color="white"
-      height={height === 'large' ? '60vh' : '40vh'}
+      minHeight={height === 'large' ? '60vh' : '40vh'}
       backgroundAttachment="fixed"
       backgroundSize={{ base: 'unset', md: 'cover' }}
       bgImage={
