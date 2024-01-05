@@ -13,7 +13,11 @@ export default function PageHeaderBlok({
     <Box
       {...storyblokEditable(blok)}
       color="white"
-      height={height === 'large' ? '60vh' : '40vh'}
+      height={height === 'large' ? '60%' : '40%'}
+      minH="400px"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
       backgroundAttachment="fixed"
       backgroundSize={{ base: 'unset', md: 'cover' }}
       bgImage={
@@ -22,31 +26,30 @@ export default function PageHeaderBlok({
           : undefined
       }
     >
-      <Container maxW="container.xl" height="100%">
-        <Flex
-          flexDir="column"
-          alignItems="center"
-          justifyContent="center"
-          height="100%"
-          py={10}
+      <Flex
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+        height="100%"
+        py={10}
+        px={[4, 8]}
+      >
+        <Box
+          width="100%"
+          maxWidth={{ base: '100%', md: '600px', lg: '800px' }}
+          textAlign={align}
         >
-          <Box
-            width="100%"
-            maxWidth={{ base: '100%', md: '800px' }}
-            textAlign={align}
-          >
-            <Heading mb="1rem" as="h1" fontSize={['4xl', '6xl', '6xl', '8xl']}>
-              {title}
-            </Heading>
-            {subtitle && (
-              <Text mt={4} fontSize={['lg', 'xl', 'xl', '2xl']}>
-                {subtitle}
-              </Text>
-            )}
-          </Box>
-          {action_label && <Button mt={10}>{action_label}</Button>}
-        </Flex>
-      </Container>
+          <Heading mb="1rem" as="h1" fontSize={['4xl', '6xl', '6xl', '8xl']}>
+            {title}
+          </Heading>
+          {subtitle && (
+            <Text mt={4} fontSize={['lg', 'xl', 'xl', '2xl']}>
+              {subtitle}
+            </Text>
+          )}
+        </Box>
+        {action_label && <Button mt={10}>{action_label}</Button>}
+      </Flex>
     </Box>
   )
 }

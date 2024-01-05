@@ -79,7 +79,7 @@ export default function MainNavigation({
             pos="relative"
             top="2px"
             h="100%"
-            spacing={10}
+            spacing={{ base: 6, lg: 10 }}
             display={{ base: 'none', md: 'flex' }}
           >
             {links.map((menuItem) => (
