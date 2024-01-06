@@ -1,16 +1,11 @@
 import { Box, Container, Heading, Stack, Text } from '@chakra-ui/react'
-import { InfoList } from 'components/InfoList'
 import { GetStaticProps } from 'next'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { ReactElement } from 'react'
 import { ContactForm } from '../components/Forms/ContactForm'
 import { PageStory } from '../lib/storyblok/types'
-import {
-  faPhone as phoneIcon,
-  faMailBulk as mailIcon,
-  faInfoCircle as infoIcon,
-} from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons'
 import useAppContext from 'contexts/AppContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { REVALIDATE_TIME_SECONDS, STORYBLOK_VERSION } from 'lib/constants'
@@ -19,6 +14,7 @@ import {
   StoryblokComponent,
   useStoryblokState,
 } from '@storyblok/react'
+import ContactInfo from 'components/ContactInfo/ContactInfo'
 
 interface Props {
   story: PageStory
@@ -73,24 +69,7 @@ export default function Contact({ story: initialStory }: Props): ReactElement {
                 {t('contact-details')}
               </Heading>
               <Text mb="2">{ingress}</Text>
-              <InfoList
-                items={[
-                  {
-                    label: t('phone'),
-                    content: phone,
-                    icon: phoneIcon,
-                    href: `tel:${phone.replace(/\s+/g, '')}`,
-                    isMailto: true,
-                  },
-                  {
-                    label: t('mail'),
-                    content: email,
-                    href: `mailto:${email}`,
-                    icon: mailIcon,
-                    isMailto: true,
-                  },
-                ]}
-              />
+              <ContactInfo email={email} phoneNumbers={phone.split(/,\s+/)} />
             </Box>
           </Stack>
           <ContactForm />

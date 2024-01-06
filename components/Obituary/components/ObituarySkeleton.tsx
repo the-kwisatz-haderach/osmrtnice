@@ -14,27 +14,27 @@ export const ObituarySkeleton = (): ReactElement => {
       <VStack p={6} flexDir="column" spacing={3} h="100%">
         <SkeletonText
           startColor="brand.200"
-          endColor="brand.400"
+          endColor="brand.500"
           noOfLines={1}
           width="50%"
         />
         <Skeleton
           startColor="brand.200"
-          endColor="brand.400"
+          endColor="brand.500"
           width={140}
           height={140}
           style={{ marginTop: 16, marginBottom: 16 }}
         />
         <SkeletonText
           startColor="brand.200"
-          endColor="brand.400"
+          endColor="brand.500"
           noOfLines={1}
           width="30%"
           style={{ marginBottom: 16 }}
         />
         <SkeletonText
           startColor="brand.200"
-          endColor="brand.400"
+          endColor="brand.500"
           noOfLines={6}
           spacing={3}
           width="100%"

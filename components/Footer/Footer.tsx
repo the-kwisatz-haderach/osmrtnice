@@ -1,14 +1,10 @@
 import React, { ReactElement, DetailedHTMLProps } from 'react'
-import { InfoList } from '../InfoList'
 import { FooterBottom } from './components/FooterBottom'
 import { IMenuItem } from '../../lib/storyblok/types'
-import { Box, Container, Flex, Heading, Text } from '@chakra-ui/react'
+import { Box, Container, Flex, Heading, Text, VStack } from '@chakra-ui/react'
 import { useTranslation } from 'next-i18next'
-import {
-  faPhone as phoneIcon,
-  faMailBulk as mailIcon,
-  // faLocationArrow as locationIcon,
-} from '@fortawesome/free-solid-svg-icons'
+import ContactInfo from 'components/ContactInfo/ContactInfo'
+import { Link } from 'components/Link'
 
 interface Props
   extends DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
@@ -51,35 +47,19 @@ export default function Footer({
               {t('contact-details')}
             </Heading>
             <Text mb="2">{ingress}</Text>
-            <InfoList
-              items={[
-                {
-                  label: t('phone'),
-                  content: phone,
-                  icon: phoneIcon,
-                  href: `tel:${phone.replace(/\s+/g, '')}`,
-                  isMailto: true,
-                },
-                {
-                  label: t('mail'),
-                  content: email,
-                  href: `mailto:${email}`,
-                  icon: mailIcon,
-                  isMailto: true,
-                },
-              ]}
-            />
+            <ContactInfo email={email} phoneNumbers={phone.split(/,\s+/)} />
           </Box>
           <Box>
             <Heading as="h3" size="xl" mb={4}>
               {t('pages')}
             </Heading>
-            <InfoList
-              items={menuItems.map((menuItem) => ({
-                content: menuItem.label,
-                href: menuItem.href,
-              }))}
-            />
+            <VStack alignItems="flex-start">
+              {menuItems.map(({ label, href }) => (
+                <Link key={label} href={href}>
+                  {label}
+                </Link>
+              ))}
+            </VStack>
           </Box>
         </Flex>
         {/* <Flex

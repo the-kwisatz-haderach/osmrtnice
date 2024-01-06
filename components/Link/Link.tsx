@@ -16,8 +16,7 @@ export default function Link({
   return (
     <TranslatedLink {...props} href={href} passHref>
       <ChakraLink
-        color="brand.400"
-        fontWeight="bold"
+        color="brand.500"
         onClick={
           onClick
             ? (e) => {
