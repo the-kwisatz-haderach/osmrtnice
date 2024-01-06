@@ -68,11 +68,11 @@ export default async function handler(
               <p>Informacije koje ste poslali:</p>
               ${formattedFields}
               <p>Ukoliko imate dodatnih pitanja, kontaktirajte nas direktno putem telefona ili e-maila. Dostupni smo na Viberu i WhatsAppu.</p>
-              <p><b>Broj telefona</b></p>
-              <p><a href="tel:+38763028457">+387 63 028 457</a></p>
-              <p><a href="tel:+38762604705">+387 62 604 705</a></p>
-              <p><b>E-mail</b></p>
-              <p>preminuli.ba@gmail.com</p>
+              <p><b>Broj telefona</b></br>
+              <a href="tel:+38763028457">+387 63 028 457</a></br>
+              <a href="tel:+38762604705">+387 62 604 705</a></p>
+              <p><b>E-mail</b></br>
+              <a href="mailto:preminuli.ba@gmail.com">preminuli.ba@gmail.com</a></p>
             `,
           }),
         ])
