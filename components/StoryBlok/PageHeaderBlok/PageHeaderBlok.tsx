@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Box, Button, Container, Flex, Heading, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react'
 import { BlokType, IPageHeader } from '../../../lib/storyblok/types'
 import { storyblokEditable } from '@storyblok/react'
 
@@ -14,15 +14,16 @@ export default function PageHeaderBlok({
       {...storyblokEditable(blok)}
       color="white"
       height={height === 'large' ? '60%' : '40%'}
-      minH="400px"
+      minH={{ base: 'unset', md: '400px' }}
       display="flex"
       alignItems="center"
       justifyContent="center"
+      backgroundPosition="center"
       backgroundAttachment="fixed"
       backgroundSize={{ base: 'unset', md: 'cover' }}
       bgImage={
         image?.filename
-          ? `linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.7) 95%), url(${image.filename})`
+          ? `linear-gradient(to top, rgba(0, 0, 0, 0.4) 90%, transparent), url(${image.filename})`
           : undefined
       }
     >
