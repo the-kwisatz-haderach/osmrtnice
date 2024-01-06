@@ -46,7 +46,7 @@ export default function Footer({
             <Heading as="h3" size="xl" mb={4}>
               {t('contact-details')}
             </Heading>
-            <Text mb="2">{ingress}</Text>
+            <Text mb={4}>{ingress}</Text>
             <ContactInfo email={email} phoneNumbers={phone.split(/,\s+/)} />
           </Box>
           <Box>
