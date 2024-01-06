@@ -14,7 +14,7 @@ export default function PageHeaderBlok({
       {...storyblokEditable(blok)}
       color="white"
       height={height === 'large' ? '60%' : '40%'}
-      minH={{ base: 'unset', md: '400px' }}
+      minH={{ base: '200px', md: '400px' }}
       display="flex"
       alignItems="center"
       justifyContent="center"
