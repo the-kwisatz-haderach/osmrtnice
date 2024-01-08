@@ -42,7 +42,7 @@ export default function PageHeaderBlok({
             {title}
           </Heading>
           {subtitle && (
-            <Text mt={2} fontSize={['md', 'lg', 'xl', '2xl', '3xl']}>
+            <Text mt={2} fontSize={['lg', 'lg', 'xl', '2xl', '3xl']}>
               {subtitle}
             </Text>
           )}
