@@ -30,7 +30,7 @@ export default function ContactInfo({
 }: Props): ReactElement {
   const { t } = useTranslation()
   return (
-    <VStack spacing={2} alignItems="flex-start">
+    <VStack spacing={3} alignItems="flex-start">
       <Box>
         <Text fontWeight="bold" mb={1}>
           <FontAwesomeIcon style={{ marginRight: 4 }} icon={phoneIcon} />{' '}
