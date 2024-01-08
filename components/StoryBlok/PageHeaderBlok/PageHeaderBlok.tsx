@@ -23,6 +23,7 @@ export default function PageHeaderBlok({
     <Box
       {...storyblokEditable(blok)}
       color="white"
+      height="100%"
       minH={
         height === 'large'
           ? { base: '400px', md: '600px' }
@@ -31,9 +32,9 @@ export default function PageHeaderBlok({
       display="flex"
       alignItems={align === 'center' ? 'center' : 'flex-end'}
       justifyContent={align}
-      backgroundPosition="center"
       backgroundAttachment="fixed"
-      backgroundSize={{ base: 'unset', md: 'cover' }}
+      backgroundPosition="center"
+      backgroundSize="cover"
       bgImage={
         image?.filename
           ? `linear-gradient(to top, rgba(0, 0, 0, 0.4) 90%, transparent), url(${image.filename})`
