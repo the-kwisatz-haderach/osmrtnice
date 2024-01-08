@@ -55,11 +55,11 @@ export default function PageHeaderBlok({
             <>
               <Text
                 borderBottomStyle="solid"
-                borderBottomWidth={{ base: 1, md: 2 }}
+                borderBottomWidth={1}
                 borderBottomColor="rgba(255,255,255,0.7)"
                 width="fit-content"
                 fontWeight="600"
-                mb={[1, 2]}
+                mb={[3, 4]}
                 pl={align === 'center' ? 3 : 0}
                 pr={3}
                 pb={1}
