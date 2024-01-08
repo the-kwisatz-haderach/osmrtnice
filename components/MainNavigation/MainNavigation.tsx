@@ -48,9 +48,10 @@ export default function MainNavigation({
         borderBottomStyle="solid"
         borderBottomWidth={2}
         borderBottomColor="gray.100"
-        height="70px"
+        height={{ base: '55px', md: '70px' }}
       >
         <Contained
+          py={0}
           display="flex"
           justifyContent="space-between"
           alignItems="center"

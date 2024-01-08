@@ -34,7 +34,7 @@ export default function PageHeaderBlok({
       justifyContent={align}
       backgroundAttachment="fixed"
       backgroundPosition="center"
-      backgroundSize="cover"
+      backgroundSize={{ base: 'unset', md: 'cover' }}
       bgImage={
         image?.filename
           ? `linear-gradient(to top, rgba(0, 0, 0, 0.4) 90%, transparent), url(${image.filename})`
