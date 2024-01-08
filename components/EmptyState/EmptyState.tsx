@@ -22,13 +22,9 @@ const getIcon = (icon: Props['icon']) => {
       )
     case 'no-results':
       return (
-        <div
-          style={{
-            opacity: 0.2,
-          }}
-        >
-          <Image alt="" src="/images/no-results.png" width={200} height={200} />
-        </div>
+        <Box opacity={0.15} width={[150, 180, 200]} height={[150, 180, 200]}>
+          <Image alt="" src="/images/no-results.png" fill />
+        </Box>
       )
     default:
       return undefined
@@ -42,14 +38,16 @@ export default function EmptyState({
   ...stackProps
 }: Props): ReactElement {
   return (
-    <VStack {...stackProps} spacing={0} color="blackAlpha.900">
+    <VStack {...stackProps} spacing={0} py={8} color="blackAlpha.500">
       {icon && (
-        <Box mb={4} position="relative">
+        <Box mb={5} position="relative">
           {getIcon(icon)}
         </Box>
       )}
-      <Text fontSize="4xl">{title}</Text>
-      <Text fontSize="lg">{description}</Text>
+      <Text fontWeight="500" fontSize={['lg', 'xl', '4xl']}>
+        {title}
+      </Text>
+      <Text fontSize={['md', 'md', 'lg']}>{description}</Text>
     </VStack>
   )
 }

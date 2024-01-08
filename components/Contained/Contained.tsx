@@ -1,13 +1,14 @@
-import { Container, ContainerProps } from '@chakra-ui/react'
+import { Container, ContainerProps, forwardRef } from '@chakra-ui/react'
 import React, { ReactNode } from 'react'
 
 type Props = {
   children: ReactNode
 } & Omit<ContainerProps, 'px' | 'maxW' | 'maxWidth' | 'p'>
 
-export function Contained({ children, ...props }: Props) {
+export const Contained = forwardRef(({ children, ...props }: Props, ref) => {
   return (
     <Container
+      ref={ref}
       py={2}
       {...props}
       maxW="container.xl"
@@ -17,4 +18,4 @@ export function Contained({ children, ...props }: Props) {
       {children}
     </Container>
   )
-}
+})

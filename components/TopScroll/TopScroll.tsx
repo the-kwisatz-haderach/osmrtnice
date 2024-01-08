@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
-import { Box, BoxProps, IconButton, Fade } from '@chakra-ui/react'
+import { Box, BoxProps, IconButton } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUp as scrollTopIcon } from '@fortawesome/free-solid-svg-icons'
+import styles from './TopScroll.module.css'
 
 interface Props extends BoxProps {
   onClick: () => void
@@ -13,36 +14,25 @@ export default function TopScroll({
   show,
   ...boxProps
 }: Props): ReactElement {
-  return (
+  return show ? (
     <Box
       {...boxProps}
       textAlign="right"
       position="sticky"
       bottom={0}
       pointerEvents="none"
+      className={styles.wrapper}
+      px={3}
+      py={[3, 3, 5]}
     >
-      <Fade
-        in={show}
-        transition={{
-          enter: {
-            delay: 1,
-            duration: 1,
-          },
-          exit: {
-            delay: 1,
-            duration: 1,
-          },
-        }}
-      >
-        <IconButton
-          pointerEvents="all"
-          colorScheme="brand"
-          onClick={onClick}
-          aria-label="Scroll to top"
-          isRound
-          icon={<FontAwesomeIcon icon={scrollTopIcon} />}
-        />
-      </Fade>
+      <IconButton
+        pointerEvents="all"
+        colorScheme="brand"
+        onClick={onClick}
+        aria-label="Scroll to top"
+        isRound
+        icon={<FontAwesomeIcon icon={scrollTopIcon} />}
+      />
     </Box>
-  )
+  ) : null
 }

@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react'
-import { Button, Container, Flex, GridItem, SimpleGrid } from '@chakra-ui/react'
+import { Button, Flex, GridItem, SimpleGrid } from '@chakra-ui/react'
 import { IObituary } from '../../lib/domain/types'
 import { Obituary, ObituarySkeleton, ObituaryContainer } from '../Obituary'
 import { EmptyState } from '../EmptyState'
 import { useTranslation } from 'next-i18next'
 import { ResultsDescription } from './ResultsDescription'
 import { isMultiObituary } from 'lib/domain/isMultiObituary'
+import { Contained } from 'components/Contained/Contained'
 
 interface Props {
   obituaries: IObituary[]
@@ -24,7 +25,7 @@ export default function ObituaryGrid({
 }: Props): ReactElement {
   const { t } = useTranslation()
   return (
-    <Container maxW="container.xl" my={8}>
+    <Contained my={{ base: 0, lg: 8 }}>
       <ResultsDescription resultsCount={obituaries.length} hasMore={hasMore} />
       {isLoading || obituaries.length > 0 ? (
         <SimpleGrid spacing={4} columns={[1, 2, 3, 4]}>
@@ -48,14 +49,13 @@ export default function ObituaryGrid({
         </SimpleGrid>
       ) : (
         <EmptyState
-          mt={24}
           title={t('search-results-empty-title')}
           description={t('search-results-empty-description')}
           icon="no-results"
         />
       )}
       {hasMore && (
-        <Flex justifyContent="center" mt={10}>
+        <Flex justifyContent="center" mt={[4, 6, 8, 10]}>
           <Button
             isLoading={isLoadingNext}
             colorScheme="brand"
@@ -67,6 +67,6 @@ export default function ObituaryGrid({
           </Button>
         </Flex>
       )}
-    </Container>
+    </Contained>
   )
 }

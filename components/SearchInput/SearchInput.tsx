@@ -51,8 +51,7 @@ export default function SearchInput({
     <Flex
       as="form"
       width="100%"
-      maxW={500}
-      px={[4, 0]}
+      maxW={{ base: 'unset', md: 500 }}
       flexDir={['column', 'row']}
     >
       <Input

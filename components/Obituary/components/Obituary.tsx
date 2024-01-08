@@ -229,6 +229,7 @@ export const Obituary: ObituaryRenderer = (props) => {
             onClick={openModal}
             href={`/${formattedType}/${_id}`}
             prefetch={false}
+            bold
           >
             {t('search-results-view_full')}
           </Link>
