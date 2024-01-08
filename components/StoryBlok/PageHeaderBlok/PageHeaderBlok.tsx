@@ -32,12 +32,12 @@ export default function PageHeaderBlok({
       display="flex"
       alignItems={align === 'center' ? 'center' : 'flex-end'}
       justifyContent={align}
-      backgroundAttachment="fixed"
+      backgroundAttachment={{ base: 'unset', md: 'fixed' }}
       backgroundPosition="center"
       backgroundSize={{ base: 'unset', md: 'cover' }}
       bgImage={
         image?.filename
-          ? `linear-gradient(to top, rgba(0, 0, 0, 0.4) 90%, transparent), url(${image.filename})`
+          ? `linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent), url(${image.filename})`
           : undefined
       }
     >
