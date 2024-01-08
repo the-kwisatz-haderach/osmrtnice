@@ -22,6 +22,7 @@ import {
   StoryblokComponent,
   useStoryblokState,
 } from '@storyblok/react'
+import { Contained } from 'components/Contained/Contained'
 
 interface Props {
   story: PageStory
@@ -52,22 +53,24 @@ export default function Obituaries({
   return (
     <div>
       <StoryblokComponent blok={story.content} />
-      <Flex
-        ref={ref}
-        backgroundColor="gray.300"
-        justifyContent="center"
-        height={32}
-        alignItems="center"
-      >
-        <SearchInput
-          title={t('search')}
-          value={query}
-          onChange={setQuery}
-          placeholder={t('search-placeholder')}
-        />
+      <Flex ref={ref} backgroundColor="gray.300">
+        <Contained
+          display="flex"
+          justifyContent="center"
+          height={32}
+          py={[2, 4, 6]}
+          alignItems="center"
+        >
+          <SearchInput
+            title={t('search')}
+            value={query}
+            onChange={setQuery}
+            placeholder={t('search-placeholder')}
+          />
+        </Contained>
       </Flex>
-      <ProgressBar show={isFetching} />
-      <Box my={14}>
+      <ProgressBar show={isLoading || isFetching} />
+      <Box>
         <ObituaryGrid
           isLoading={isLoading}
           isLoadingNext={isFetchingNextPage}
@@ -80,8 +83,6 @@ export default function Obituaries({
           margin="auto"
           maxW="container.xl"
           width="100%"
-          px={3}
-          py={[3, 3, 5]}
           onClick={scrollToTop}
         />
       </Box>
