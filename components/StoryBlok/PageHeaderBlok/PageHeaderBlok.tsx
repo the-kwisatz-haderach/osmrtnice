@@ -68,11 +68,18 @@ export default function PageHeaderBlok({
               </Text>
             </>
           )}
-          <Heading as="h1" fontSize={['5xl', '6xl', '7xl', '8xl', '9xl']}>
+          <Heading
+            as="h1"
+            lineHeight={1}
+            fontSize={['5xl', '6xl', '7xl', '8xl', '9xl']}
+          >
             {title}
           </Heading>
           {subtitle && (
-            <Text mt={[0, 1]} fontSize={['md', 'lg', 'xl', '2xl', '3xl']}>
+            <Text
+              mt={align === 'center' ? [4, 6, 8] : 2}
+              fontSize={['md', 'lg', 'xl', '2xl', '3xl']}
+            >
               {subtitle}
             </Text>
           )}
