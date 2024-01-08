@@ -43,6 +43,8 @@ export default function MainNavigation({
         boxShadow="lg"
         position="sticky"
         top={-1}
+        mt={-1}
+        pt={1}
         width="100%"
         backgroundColor="white"
         borderBottomStyle="solid"
