@@ -19,6 +19,7 @@ import Image from 'next/image'
 import { isMultiObituary } from 'lib/domain/isMultiObituary'
 import { RichText } from 'components/RichText'
 import { getImgSrc } from 'lib/domain/getImgSrc'
+import { Timestamp } from 'components/Timestamp'
 
 export const ObituaryLarge: ObituaryRenderer = ({
   onShowAppreciation,
@@ -107,31 +108,12 @@ export const ObituaryLarge: ObituaryRenderer = ({
               >
                 {formatName({ prefix, firstname, surname, name_misc })}
               </Heading>
-              <HStack
-                hidden={!date_of_birth && !date_of_death}
-                fontSize="lg"
-                fontWeight="bold"
-              >
-                <Text hidden={!date_of_birth}>
-                  {formatDate(date_of_birth, {
-                    year: 'numeric',
-                    ...(type === 'in-memoriam' && {
-                      month: 'numeric',
-                      day: 'numeric',
-                    }),
-                  })}
-                </Text>
-                <Text hidden={!(date_of_birth && date_of_death)}>-</Text>
-                <Text hidden={!date_of_death}>
-                  {formatDate(date_of_death, {
-                    year: 'numeric',
-                    ...(type === 'in-memoriam' && {
-                      month: 'numeric',
-                      day: 'numeric',
-                    }),
-                  })}
-                </Text>
-              </HStack>
+              <Timestamp
+                size="large"
+                type={type}
+                from={date_of_birth}
+                to={date_of_death}
+              />
             </VStack>
             {isMultiObituary(props) && (
               <VStack
@@ -166,35 +148,12 @@ export const ObituaryLarge: ObituaryRenderer = ({
                     surname: surname_second,
                   })}
                 </Heading>
-                <HStack
-                  hidden={!date_of_birth_second && !date_of_death_second}
-                  fontSize="lg"
-                  fontWeight="bold"
-                >
-                  <Text hidden={!date_of_birth_second}>
-                    {formatDate(date_of_birth_second, {
-                      year: 'numeric',
-                      ...(type === 'in-memoriam' && {
-                        month: 'numeric',
-                        day: 'numeric',
-                      }),
-                    })}
-                  </Text>
-                  <Text
-                    hidden={!(date_of_birth_second && date_of_death_second)}
-                  >
-                    -
-                  </Text>
-                  <Text hidden={!date_of_death_second}>
-                    {formatDate(date_of_death_second, {
-                      year: 'numeric',
-                      ...(type === 'in-memoriam' && {
-                        month: 'numeric',
-                        day: 'numeric',
-                      }),
-                    })}
-                  </Text>
-                </HStack>
+                <Timestamp
+                  size="large"
+                  type={type}
+                  from={date_of_birth_second}
+                  to={date_of_death_second}
+                />
               </VStack>
             )}
           </Flex>

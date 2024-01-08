@@ -1,14 +1,5 @@
 import React, { useCallback } from 'react'
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  HStack,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
-import { formatDate } from '../../../utils/formatDate'
+import { Box, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react'
 import { Link } from '../../Link'
 import { useTranslation } from 'next-i18next'
 import useModal from '../../../contexts/ModalContext'
@@ -17,6 +8,7 @@ import { formatName } from '../helpers/formatName'
 import { ObituaryRenderer } from '../ObituaryContainer'
 import { isMultiObituary } from 'lib/domain/isMultiObituary'
 import { RichText } from 'components/RichText'
+import { Timestamp } from '../../Timestamp'
 
 const htmlTagsRegexp = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
 
@@ -105,34 +97,7 @@ export const Obituary: ObituaryRenderer = (props) => {
               >
                 {formatName({ prefix, firstname, surname, name_misc })}
               </Heading>
-              <HStack
-                hidden={!date_of_birth && !date_of_death}
-                spacing={1}
-                justify="center"
-                fontWeight="bold"
-              >
-                <Text fontSize="sm" hidden={!date_of_birth}>
-                  {formatDate(date_of_birth, {
-                    year: 'numeric',
-                    ...(type === 'in-memoriam' && {
-                      month: 'numeric',
-                      day: 'numeric',
-                    }),
-                  })}
-                </Text>
-                <Text hidden={!date_of_birth || !date_of_death} fontSize="sm">
-                  -
-                </Text>
-                <Text fontSize="sm" hidden={!date_of_death}>
-                  {formatDate(date_of_death, {
-                    year: 'numeric',
-                    ...(type === 'in-memoriam' && {
-                      month: 'numeric',
-                      day: 'numeric',
-                    }),
-                  })}
-                </Text>
-              </HStack>
+              <Timestamp type={type} from={date_of_birth} to={date_of_death} />
             </Box>
           </VStack>
           {isMultiObituary(props) && (
@@ -162,37 +127,11 @@ export const Obituary: ObituaryRenderer = (props) => {
                     surname: surname_second,
                   })}
                 </Heading>
-                <HStack
-                  hidden={!date_of_birth_second && !date_of_death_second}
-                  spacing={1}
-                  justify="center"
-                  fontWeight="bold"
-                >
-                  <Text fontSize="sm" hidden={!date_of_birth_second}>
-                    {formatDate(date_of_birth_second, {
-                      year: 'numeric',
-                      ...(type === 'in-memoriam' && {
-                        month: 'numeric',
-                        day: 'numeric',
-                      }),
-                    })}
-                  </Text>
-                  <Text
-                    hidden={!date_of_birth_second || !date_of_death_second}
-                    fontSize="sm"
-                  >
-                    -
-                  </Text>
-                  <Text fontSize="sm" hidden={!date_of_death_second}>
-                    {formatDate(date_of_death_second, {
-                      year: 'numeric',
-                      ...(type === 'in-memoriam' && {
-                        month: 'numeric',
-                        day: 'numeric',
-                      }),
-                    })}
-                  </Text>
-                </HStack>
+                <Timestamp
+                  type={type}
+                  from={date_of_birth_second}
+                  to={date_of_death_second}
+                />
               </Box>
             </VStack>
           )}
