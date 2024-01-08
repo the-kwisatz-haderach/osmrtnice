@@ -13,8 +13,11 @@ export default function PageHeaderBlok({
     <Box
       {...storyblokEditable(blok)}
       color="white"
-      height={height === 'large' ? '60%' : '40%'}
-      minH={{ base: '200px', md: '400px' }}
+      minH={
+        height === 'large'
+          ? { base: '400px', md: '600px' }
+          : { base: '200px', md: '400px' }
+      }
       display="flex"
       alignItems="center"
       justifyContent="center"
