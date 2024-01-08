@@ -14,7 +14,7 @@ import {
   StoryblokComponent,
   useStoryblokState,
 } from '@storyblok/react'
-import ContactInfo from 'components/ContactInfo/ContactInfo'
+import { ContactInfo } from 'components/ContactInfo'
 
 interface Props {
   story: PageStory

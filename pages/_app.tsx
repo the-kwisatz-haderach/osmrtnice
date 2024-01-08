@@ -7,7 +7,7 @@ import {
   ChakraProvider,
   ModalProvider,
 } from '../contexts'
-import { MainLayout } from '../layouts/MainLayout'
+import MainLayout from '../layouts/MainLayout'
 import { makeAppLinks } from '../lib/storyblok/makeAppLinks'
 import { StoryBlokLink } from '../lib/storyblok/common/types'
 import { IGlobalSettings, Story } from '../lib/storyblok/types'
