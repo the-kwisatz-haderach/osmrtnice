@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react'
+import { Box, Button, Container, Heading, Text } from '@chakra-ui/react'
 import { BlokType, IPageHeader } from '../../../lib/storyblok/types'
 import { storyblokEditable } from '@storyblok/react'
 
@@ -8,7 +8,7 @@ export default function PageHeaderBlok({
 }: {
   blok: BlokType<IPageHeader>
 }): ReactElement {
-  const { title, subtitle, align = 'left', image, height, action_label } = blok
+  const { title, align = 'left', subtitle, image, height, action_label } = blok
   return (
     <Box
       {...storyblokEditable(blok)}
@@ -16,11 +16,11 @@ export default function PageHeaderBlok({
       minH={
         height === 'large'
           ? { base: '400px', md: '600px' }
-          : { base: '200px', md: '400px' }
+          : { base: '300px', md: '400px' }
       }
       display="flex"
-      alignItems="center"
-      justifyContent="center"
+      alignItems={align === 'center' ? 'center' : 'flex-end'}
+      justifyContent={align}
       backgroundPosition="center"
       backgroundAttachment="fixed"
       backgroundSize={{ base: 'unset', md: 'cover' }}
@@ -30,30 +30,29 @@ export default function PageHeaderBlok({
           : undefined
       }
     >
-      <Flex
-        flexDir="column"
-        alignItems="center"
-        justifyContent="center"
+      <Container
+        maxW="container.xl"
         height="100%"
-        py={10}
-        px={[4, 8]}
+        px={[4, 6, 8, 10, 0]}
+        py={[8, 10, 12, 14]}
       >
         <Box
-          width="100%"
-          maxWidth={{ base: '100%', md: '600px', lg: '800px' }}
           textAlign={align}
+          width="100%"
+          margin={align === 'center' ? 'auto' : 'unset'}
+          maxWidth={{ base: '600px', lg: '800px', xl: '1000px' }}
         >
-          <Heading mb="1rem" as="h1" fontSize={['4xl', '6xl', '6xl', '8xl']}>
+          <Heading as="h1" fontSize={['4xl', '6xl', '7xl', '8xl', '9xl']}>
             {title}
           </Heading>
           {subtitle && (
-            <Text mt={4} fontSize={['lg', 'xl', 'xl', '2xl']}>
+            <Text mt={2} fontSize={['md', 'lg', 'xl', '2xl', '3xl']}>
               {subtitle}
             </Text>
           )}
+          {action_label && <Button mt={10}>{action_label}</Button>}
         </Box>
-        {action_label && <Button mt={10}>{action_label}</Button>}
-      </Flex>
+      </Container>
     </Box>
   )
 }
