@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react'
-import { Box, Button, Container, Heading, Text } from '@chakra-ui/react'
+import { Box, Button, Heading, Text } from '@chakra-ui/react'
 import { BlokType, IPageHeader } from '../../../lib/storyblok/types'
 import { storyblokEditable } from '@storyblok/react'
+import { Contained } from 'components/Contained/Contained'
 
 export default function PageHeaderBlok({
   blok,
@@ -30,12 +31,7 @@ export default function PageHeaderBlok({
           : undefined
       }
     >
-      <Container
-        maxW="container.xl"
-        height="100%"
-        px={[4, 6, 8, 10, 0]}
-        py={[8, 10, 12, 14]}
-      >
+      <Contained py={[8, 10, 12, 14]}>
         <Box
           textAlign={align}
           width="100%"
@@ -52,7 +48,7 @@ export default function PageHeaderBlok({
           )}
           {action_label && <Button mt={10}>{action_label}</Button>}
         </Box>
-      </Container>
+      </Contained>
     </Box>
   )
 }

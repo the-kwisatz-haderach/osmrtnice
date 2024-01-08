@@ -6,7 +6,6 @@ import { IMenuItem } from '../../lib/storyblok/types'
 import {
   Box,
   Button,
-  Container,
   Divider,
   Drawer,
   DrawerBody,
@@ -22,6 +21,7 @@ import {
 } from '@chakra-ui/react'
 import { TranslatedLink } from '../TranslatedLink'
 import { useTranslation } from 'next-i18next'
+import { Contained } from 'components/Contained/Contained'
 
 interface Props {
   menuItems?: IMenuItem[]
@@ -50,13 +50,11 @@ export default function MainNavigation({
         borderBottomColor="gray.100"
         height="70px"
       >
-        <Container
+        <Contained
           display="flex"
-          maxW="container.xl"
           justifyContent="space-between"
           alignItems="center"
           height="100%"
-          px={4}
         >
           <TranslatedLink href={homeLink.href} passHref>
             {logoSrc && (
@@ -100,7 +98,7 @@ export default function MainNavigation({
             onClick={onOpen}
             aria-label="main menu"
           />
-        </Container>
+        </Contained>
       </Box>
       <Drawer isOpen={isOpen} onClose={onClose} placement="left">
         <DrawerOverlay />

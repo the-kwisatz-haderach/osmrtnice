@@ -1,10 +1,13 @@
 import React, { ReactElement, DetailedHTMLProps } from 'react'
-import { FooterBottom } from './components/FooterBottom'
 import { IMenuItem } from '../../lib/storyblok/types'
-import { Box, Container, Flex, Heading, Text, VStack } from '@chakra-ui/react'
+import { Box, Flex, HStack, Heading, Text, VStack } from '@chakra-ui/react'
 import { useTranslation } from 'next-i18next'
 import ContactInfo from 'components/ContactInfo/ContactInfo'
 import { Link } from 'components/Link'
+import { Contained } from 'components/Contained/Contained'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCopyright } from '@fortawesome/free-solid-svg-icons'
+import { SITE_NAME } from 'lib/domain'
 
 interface Props
   extends DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
@@ -31,16 +34,7 @@ export default function Footer({
       as="footer"
       backgroundColor="gray.200"
     >
-      <Container
-        display="flex"
-        mx="auto"
-        maxW="container.xl"
-        justifyContent="space-between"
-        flexWrap="wrap"
-        pb={10}
-        px={5}
-        pt={10}
-      >
+      <Contained py={10}>
         <Flex width={['100%', '100%', '50%']} flexWrap="wrap">
           <Box mr={[0, 8, 8, 16]} mb={8}>
             <Heading as="h3" size="xl" mb={4}>
@@ -53,7 +47,7 @@ export default function Footer({
             <Heading as="h3" size="xl" mb={4}>
               {t('pages')}
             </Heading>
-            <VStack alignItems="flex-start">
+            <VStack alignItems="flex-start" spacing={1}>
               {menuItems.map(({ label, href }) => (
                 <Link key={label} href={href}>
                   {label}
@@ -70,14 +64,23 @@ export default function Footer({
         >
           {logoSrc && <Image src={logoSrc} height={60} width={180} />}
         </Flex> */}
-      </Container>
+      </Contained>
       <Box
         flex={1}
         backgroundColor="gray.300"
         borderTopWidth={1}
         borderTopStyle="solid"
       >
-        <FooterBottom />
+        <Contained py={4} display="flex" justifyContent="space-between">
+          <HStack alignItems="center" spacing={2}>
+            <FontAwesomeIcon icon={faCopyright} />
+            <Text>{new Date().getFullYear()}</Text>
+            <Text>{SITE_NAME}</Text>
+          </HStack>
+          {/* <TranslatedLink href="/privacy-policy" passHref>
+            <Link>Politika privatnosti</Link>
+          </TranslatedLink> */}
+        </Contained>
       </Box>
     </Box>
   )
