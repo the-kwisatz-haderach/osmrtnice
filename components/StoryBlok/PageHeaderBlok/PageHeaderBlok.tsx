@@ -3,13 +3,22 @@ import { Box, Button, Heading, Text } from '@chakra-ui/react'
 import { BlokType, IPageHeader } from '../../../lib/storyblok/types'
 import { storyblokEditable } from '@storyblok/react'
 import { Contained } from 'components/Contained/Contained'
+import Image from 'next/image'
 
 export default function PageHeaderBlok({
   blok,
 }: {
   blok: BlokType<IPageHeader>
 }): ReactElement {
-  const { title, align = 'left', subtitle, image, height, action_label } = blok
+  const {
+    title,
+    align = 'left',
+    subtitle,
+    image,
+    height,
+    action_label,
+    prefix = '',
+  } = blok
   return (
     <Box
       {...storyblokEditable(blok)}
@@ -35,14 +44,35 @@ export default function PageHeaderBlok({
         <Box
           textAlign={align}
           width="100%"
+          display="flex"
+          flexDir="column"
+          alignItems={align}
           margin={align === 'center' ? 'auto' : 'unset'}
           maxWidth={{ base: '600px', lg: '800px', xl: '1000px' }}
         >
-          <Heading as="h1" fontSize={['4xl', '6xl', '7xl', '8xl', '9xl']}>
+          {prefix && (
+            <>
+              <Text
+                borderBottomStyle="solid"
+                borderBottomWidth={{ base: 1, md: 2 }}
+                borderBottomColor="rgba(255,255,255,0.7)"
+                width="fit-content"
+                fontWeight="600"
+                mb={[1, 2]}
+                pl={align === 'center' ? 3 : 0}
+                pr={3}
+                pb={1}
+                fontSize={['sm', 'md', 'lg', 'xl', '2xl']}
+              >
+                {prefix}
+              </Text>
+            </>
+          )}
+          <Heading as="h1" fontSize={['5xl', '6xl', '7xl', '8xl', '9xl']}>
             {title}
           </Heading>
           {subtitle && (
-            <Text mt={2} fontSize={['lg', 'lg', 'xl', '2xl', '3xl']}>
+            <Text mt={[0, 1]} fontSize={['md', 'lg', 'xl', '2xl', '3xl']}>
               {subtitle}
             </Text>
           )}

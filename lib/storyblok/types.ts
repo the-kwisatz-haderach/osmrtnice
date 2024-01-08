@@ -106,6 +106,7 @@ export interface ITeaser {
 
 export interface IPageHeader {
   title: string
+  prefix?: string
   subtitle?: string
   align?: 'center' | 'left'
   image?: ImageField
