@@ -31,7 +31,7 @@ export default function PageHeaderBlok({
           : undefined
       }
     >
-      <Contained py={[8, 10, 12, 14]}>
+      <Contained py={[8, 10, 12, 14, 16]}>
         <Box
           textAlign={align}
           width="100%"

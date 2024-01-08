@@ -12,7 +12,9 @@ const RichText = ({ children, richText, ...props }: Props): ReactElement =>
   typeof richText === 'string' ? (
     <>{parse(richText)}</>
   ) : (
-    <Box {...props}>{render(richText)}</Box>
+    <Box as="span" {...props}>
+      {render(richText)}
+    </Box>
   )
 
 export default RichText
