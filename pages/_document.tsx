@@ -6,6 +6,33 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <script
+            id="facebook"
+            async
+            dangerouslySetInnerHTML={{
+              __html: `window.fbAsyncInit = function() {
+              FB.init({
+                appId      : '${process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}',
+                xfbml      : true,
+                version    : 'v18.0'
+              });
+              FB.AppEvents.logPageView();
+            };
+            (function(d, s, id){
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) {return;}
+              js = d.createElement(s); js.id = id;
+              js.src = "https://connect.facebook.net/en_US/sdk.js";
+              fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));`,
+            }}
+          />
+          <script
+            async
+            defer
+            crossOrigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js"
+          />
           {process.env.NODE_ENV === 'production' && (
             <>
               {/* <!-- Google Tag Manager --> */}
@@ -38,27 +65,6 @@ class MyDocument extends Document {
           )}
           <Main />
           <NextScript />
-          <Script
-            id="facebook"
-            async
-            dangerouslySetInnerHTML={{
-              __html: `window.fbAsyncInit = function() {
-              FB.init({
-                appId      : '${process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}',
-                xfbml      : true,
-                version    : 'v12.0'
-              });
-              FB.AppEvents.logPageView();
-            };
-            (function(d, s, id){
-              var js, fjs = d.getElementsByTagName(s)[0];
-              if (d.getElementById(id)) {return;}
-              js = d.createElement(s); js.id = id;
-              js.src = "https://connect.facebook.net/en_US/sdk.js";
-              fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));`,
-            }}
-          />
         </body>
       </Html>
     )

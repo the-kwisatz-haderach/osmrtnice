@@ -16,7 +16,9 @@ declare global {
   interface Window {
     storyblok
     IntersectionObserver: typeof IntersectionObserver
+    fbAsyncInit: () => void
     FB: {
+      init: (options: any) => void
       ui: (options: { display: string; method: string; href: string }) => void
     }
   }

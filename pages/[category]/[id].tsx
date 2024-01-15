@@ -13,6 +13,7 @@ import { ObituaryLarge } from '../../components/Obituary/components/ObituaryLarg
 import { connectToDb } from '../../db'
 import { createMetaTitle } from '../../lib/domain'
 import { IObituary } from '../../lib/domain/types'
+import { stringifyLongText } from 'lib/domain/formatLongText'
 
 const capitalize = (str = '') => str?.[0]?.toLocaleUpperCase() + str.slice(1)
 
@@ -49,8 +50,11 @@ export default function Obituary({
             content={typeof image === 'string' ? image : image.filename}
           />
         )}
-        {typeof long_text === 'string' && (
-          <meta property="og:description" content={long_text} />
+        {long_text && (
+          <meta
+            property="og:description"
+            content={stringifyLongText(long_text)}
+          />
         )}
         <meta
           property="og:title"

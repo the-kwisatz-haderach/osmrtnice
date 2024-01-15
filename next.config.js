@@ -21,6 +21,15 @@ module.exports = (phase, { defaultConfig }) => {
             },
           ],
         },
+        // {
+        //   source: '/',
+        //   headers: [
+        //     {
+        //       key: 'Permissions-Policy',
+        //       value: 'web-share=*',
+        //     },
+        //   ],
+        // },
       ]
     },
     async rewrites() {

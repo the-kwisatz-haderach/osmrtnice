@@ -29,6 +29,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
     initialData: props,
   })
   const {
+    _id,
     firstname,
     name_misc,
     surname,
@@ -51,12 +52,20 @@ export const ObituaryLarge: ObituaryRenderer = ({
   } = data
   const { t } = useTranslation()
 
-  const shareToFacebook = useCallback(() => {
+  const shareToFacebook = useCallback(async () => {
+    const shareUrl = `${window.location.origin}/${type}/${_id}`
     window?.FB?.ui({
       display: 'popup',
       method: 'share',
-      href: window.location.href,
+      href: shareUrl,
     })
+    // if (navigator?.canShare?.()) {
+    //   await navigator.share({
+    //     title: 'Herro',
+    //     text: 'Learn web development on MDN!',
+    //     url: 'https://developer.mozilla.org',
+    //   })
+    // }
   }, [])
 
   return (
