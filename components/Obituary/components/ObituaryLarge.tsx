@@ -41,7 +41,6 @@ export const ObituaryLarge: ObituaryRenderer = ({
     date_created,
     relative,
     additional_information,
-    is_crawled,
     prefix,
     symbol_image,
     image_second,

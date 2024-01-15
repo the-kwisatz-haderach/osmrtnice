@@ -105,6 +105,7 @@ MyApp.getInitialProps = async (
           id: 0,
           name: '',
           title: '',
+          content_type: 'jpg',
         },
         ingress: '',
         infoBlockText: '',
