@@ -14,7 +14,7 @@ export const ObituaryImage = ({ img }: Props) => {
       ? imgSrc.startsWith('http')
         ? imgSrc
         : `https:${imgSrc}`
-      : '/images/placeholder-obit-image.jpeg'
+      : '/images/placeholder-person.png'
   })
   return (
     <NextImage
@@ -26,7 +26,7 @@ export const ObituaryImage = ({ img }: Props) => {
       fill
       placeholder="blur"
       blurDataURL="/images/placeholder-person.png"
-      onError={() => setSrc('/images/placeholder-obit-image.jpeg')}
+      onError={() => setSrc('/images/placeholder-person.png')}
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
     />
   )
