@@ -1,14 +1,10 @@
 import { StoryblokComponent, storyblokEditable } from '@storyblok/react'
 import Head from 'next/head'
 import { ReactElement } from 'react'
-import { BlokType } from '../../../lib/storyblok/types'
+import { BlokType, IPageBlok } from '../../../lib/storyblok/types'
 
 export interface Props {
-  blok: BlokType<{
-    description: string
-    title: string
-    body: BlokType[]
-  }>
+  blok: BlokType<IPageBlok>
 }
 
 export default function Page({ blok }: Props): ReactElement {
@@ -31,6 +27,13 @@ export default function Page({ blok }: Props): ReactElement {
             key="og-description"
             property="og:description"
             content={blok.description}
+          />
+        )}
+        {blok.meta_image?.filename && (
+          <meta
+            key="og-image"
+            property="og:image"
+            content={blok.meta_image.filename}
           />
         )}
       </Head>

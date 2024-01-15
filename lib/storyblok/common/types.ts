@@ -30,6 +30,7 @@ export interface LinkField {
 export interface ImageField {
   alt: string
   copyright: string
+  content_type: 'jpg'
   fieldtype: 'asset'
   filename: string
   focus: null

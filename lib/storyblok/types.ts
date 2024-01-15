@@ -47,6 +47,13 @@ export type PageStory = Story<{
   title?: string
 }>
 
+export interface IPageBlok {
+  body?: StoryBlokComponent[]
+  description?: string
+  title?: string
+  meta_image?: ImageField
+}
+
 export interface IPost {
   title: string
   image: string
