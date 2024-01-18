@@ -43,12 +43,12 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
     if (isStoryblokEvent(event) && isValidSignature(webhookSignature, event)) {
       switch (event.action.toLowerCase()) {
         case 'published': {
-          if (event.full_slug) {
-            const path =
-              event.full_slug === 'home' ? '/' : '/' + event.full_slug
-            await res.revalidate(path)
-            return res.status(200).json({ revalidated: true })
-          }
+          // if (event.full_slug) {
+          //   const path =
+          //     event.full_slug === 'home' ? '/' : '/' + event.full_slug
+          //   await res.revalidate(path)
+          //   return res.status(200).json({ revalidated: true })
+          // }
           const url = `https://api.storyblok.com/v2/cdn/stories/${event.story_id}?token=${STORYBLOK_TOKEN}`
           const storyRes = await fetch(url)
           if (storyRes.ok) {
