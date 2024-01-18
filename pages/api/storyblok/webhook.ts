@@ -83,12 +83,12 @@ router.post(async (req: EnhancedNextApiRequest, res: NextApiResponse) => {
         }
         case 'deleted':
         case 'unpublished': {
-          if (event.full_slug) {
-            const path =
-              event.full_slug === 'home' ? '/' : '/' + event.full_slug
-            await res.revalidate(path)
-            return res.status(200).json({ revalidated: true })
-          }
+          // if (event.full_slug) {
+          //   const path =
+          //     event.full_slug === 'home' ? '/' : '/' + event.full_slug
+          //   await res.revalidate(path)
+          //   return res.status(200).json({ revalidated: true })
+          // }
           const result = await req.db
             .collection('obituaries')
             .deleteOne({ storyId: event.story_id })
