@@ -12,7 +12,6 @@ const isValidSignature = (
   signature: unknown,
   event: IStoryblokEvent
 ): boolean => {
-  console.log({ signature })
   if (typeof signature !== 'string') return false
   try {
     const secret = STORYBLOK_WEBHOOK_SECRET
