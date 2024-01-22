@@ -59,5 +59,7 @@
   "email_subject_contact_form_confirmation": "Preminuli.ba potvrda za",
   "invalid_symbol": "Nevažeći simbol!",
   "invalid_type": "Nevažeći tip!",
-  "invalid_mail": "Nevažeći email!"
+  "invalid_mail": "Nevažeći email!",
+  "show": "Pokazati",
+  "hide": "Sakriti"
 }
