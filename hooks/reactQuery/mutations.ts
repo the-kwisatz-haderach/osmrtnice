@@ -5,6 +5,37 @@ import {
 } from '@tanstack/react-query'
 import { IObituary } from 'lib/domain/types'
 
+export const useUpdateObituary = () => {
+  const queryClient = useQueryClient()
+  return useMutation<
+    IObituary | null,
+    unknown,
+    Pick<IObituary, '_id' | 'disabled'>
+  >(
+    ['disableObituary'],
+    async ({ _id, disabled }) => {
+      const res = await fetch('/api/obituaries/' + _id, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          disabled,
+        }),
+      })
+      if (res.ok) {
+        return res.json()
+      }
+      return null
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['obituariesInfinite'])
+      },
+    }
+  )
+}
+
 export const useIncrementAppreciation = () => {
   const queryClient = useQueryClient()
 

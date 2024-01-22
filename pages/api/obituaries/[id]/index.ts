@@ -5,6 +5,12 @@ import { ObjectId } from 'mongodb'
 
 const router = attachMiddleware()
 
+type UpdateProperties = 'disabled'
+
+const updateProperties: Extract<keyof IObituary, UpdateProperties>[] = [
+  'disabled',
+]
+
 router
   .put(
     async (
@@ -13,16 +19,36 @@ router
     ): Promise<void> => {
       try {
         const id = req.query.id as string
-        const obituaries = req.db.collection<IObituary>('obituaries')
+        const obituaries = req.db.collection<Omit<IObituary, '_id'>>(
+          'obituaries'
+        )
         if (!req.body) {
           res.status(400).end()
+          return
         }
+
+        if (
+          !(
+            typeof req.body === 'object' &&
+            req.body !== null &&
+            Object.keys(req.body).every((key) =>
+              updateProperties.includes(key as UpdateProperties)
+            )
+          )
+        ) {
+          res.status(40).end()
+          return
+        }
+
         const obituary = await obituaries.findOneAndUpdate(
-          { _id: id },
-          req.body,
+          {
+            _id: ObjectId.isValid(id)
+              ? ObjectId.createFromHexString(id)
+              : new ObjectId(id),
+          },
+          { $set: req.body },
           { returnDocument: 'after' }
         )
-        res.setHeader('Cache-Control', 's-maxage=3600, max-age=3600')
         return res.status(200).json(obituary)
       } catch (err) {
         console.error(err)

@@ -6,15 +6,22 @@ const router = attachMiddleware()
 
 router.get(async (req, res) => {
   try {
+    const isAdmin = req.cookies['admin-session'] === 'true'
     const { data, next } = await getObituaries(
       req.db,
-      parseObituaryQuery(req.query)
+      parseObituaryQuery(req.query),
+      isAdmin
     )
-    res.setHeader('Cache-Control', 's-maxage=3600, max-age=3600')
+    if (isAdmin) {
+      res.setHeader('Cache-Control', 'no-cache')
+    } else {
+      res.setHeader('Cache-Control', 's-maxage=3600, max-age=3600')
+    }
     res.status(200).json({
       data,
       next,
     })
+    return
   } catch (err) {
     console.error(err)
     res.status(500).end()

@@ -5,7 +5,8 @@ import { IObituary, IObituaryQuery, ObituaryType } from './types'
 
 type IGetObituaries = (
   db: Db,
-  query: IObituaryQuery
+  query: IObituaryQuery,
+  isAdmin?: boolean
 ) => Promise<{
   data: IObituary[]
   next: string
@@ -13,10 +14,11 @@ type IGetObituaries = (
 
 const withCache = (fn: IGetObituaries): IGetObituaries => async (
   db,
-  { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT }
+  { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT },
+  isAdmin = false
 ) => {
-  if (search === '' || process.env.DISABLE_CACHE === 'true') {
-    return await fn(db, { next, search, category, limit })
+  if (search === '' || isAdmin || process.env.DISABLE_CACHE === 'true') {
+    return await fn(db, { next, search, category, limit }, isAdmin)
   }
   const kvKey = [next, search, category, limit].join('&')
   const cached = await kv.get<ReturnType<IGetObituaries>>(kvKey)
@@ -24,7 +26,7 @@ const withCache = (fn: IGetObituaries): IGetObituaries => async (
     return cached
   }
 
-  const res = await fn(db, { next, search, category, limit })
+  const res = await fn(db, { next, search, category, limit }, isAdmin)
   try {
     await kv.set(kvKey, JSON.stringify(res), {
       px: 60 * 5 * 1000,
@@ -37,7 +39,8 @@ const withCache = (fn: IGetObituaries): IGetObituaries => async (
 
 const getObituaries: IGetObituaries = async (
   db,
-  { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT }
+  { next = '', search = '', category = '', limit = DEFAULT_LIST_LIMIT },
+  isAdmin = false
 ) => {
   const $regex = new RegExp(search.split(/\s+/).join('|'), 'i')
   const obituaries: IObituary[] = JSON.parse(
@@ -46,11 +49,22 @@ const getObituaries: IGetObituaries = async (
         .collection<Omit<IObituary, '_id'>>('obituaries')
         .find(
           {
-            ...(category && {
+            ...((category || !isAdmin) && {
               $and: [
-                {
-                  type: category as ObituaryType,
-                },
+                ...(category
+                  ? [
+                      {
+                        type: category as ObituaryType,
+                      },
+                    ]
+                  : []),
+                ...(isAdmin
+                  ? []
+                  : [
+                      {
+                        disabled: { $ne: true },
+                      },
+                    ]),
               ],
             }),
             ...(search && {
@@ -82,7 +96,7 @@ const getObituaries: IGetObituaries = async (
           },
           {
             limit: limit + 1,
-            sort: { _id: -1 },
+            sort: { _id: 'desc' },
           }
         )
         .toArray()

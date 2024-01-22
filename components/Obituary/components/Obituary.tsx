@@ -1,5 +1,13 @@
 import React, { useCallback } from 'react'
-import { Box, Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+} from '@chakra-ui/react'
 import { Link } from '../../Link'
 import { useTranslation } from 'next-i18next'
 import useModal from '../../../contexts/ModalContext'
@@ -9,10 +17,14 @@ import { ObituaryRenderer } from '../ObituaryContainer'
 import { isMultiObituary } from 'lib/domain/isMultiObituary'
 import { RichText } from 'components/RichText'
 import { Timestamp } from '../../Timestamp'
+import { useUpdateObituary } from 'hooks/reactQuery/mutations'
+import { useAdminContext } from 'contexts/AdminContext'
 
 const htmlTagsRegexp = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g
 
 export const Obituary: ObituaryRenderer = (props) => {
+  const isAdmin = useAdminContext()
+  const { mutate, isLoading } = useUpdateObituary()
   const {
     image = '',
     _id,
@@ -30,6 +42,7 @@ export const Obituary: ObituaryRenderer = (props) => {
     surname_second,
     date_of_birth_second,
     date_of_death_second,
+    disabled,
   } = props
   const { t } = useTranslation()
   const isClicked =
@@ -48,6 +61,10 @@ export const Obituary: ObituaryRenderer = (props) => {
     })
   }, [open, props])
 
+  const handleDisable = () => {
+    mutate({ _id, disabled: !disabled })
+  }
+
   return (
     <Box
       height="100%"
@@ -56,6 +73,7 @@ export const Obituary: ObituaryRenderer = (props) => {
       borderWidth={1}
       borderStyle="solid"
       borderRadius="sm"
+      bg={disabled ? 'gray.100' : 'unset'}
       _hover={{
         boxShadow: `0 20px 25px -5px rgba(${
           isClicked ? '222,135,31,0.2' : '0,0,0,0.1'
@@ -73,7 +91,7 @@ export const Obituary: ObituaryRenderer = (props) => {
         >
           {t(type)}
         </Text>
-        <Flex gap={10}>
+        <Flex gap={10} opacity={disabled ? 0.5 : 1}>
           <VStack textAlign="center" spacing={3}>
             <Box
               borderStyle="solid"
@@ -137,7 +155,7 @@ export const Obituary: ObituaryRenderer = (props) => {
           )}
         </Flex>
         {preamble && (
-          <Text fontSize="sm" fontStyle="italic">
+          <Text fontSize="sm" fontStyle="italic" opacity={disabled ? 0.5 : 1}>
             {preamble}
           </Text>
         )}
@@ -146,6 +164,7 @@ export const Obituary: ObituaryRenderer = (props) => {
             className="capitalize"
             textAlign="justify"
             fontSize="sm"
+            opacity={disabled ? 0.5 : 1}
             sx={{
               display: '-webkit-box',
               WebkitLineClamp: 6,
@@ -163,7 +182,20 @@ export const Obituary: ObituaryRenderer = (props) => {
           </Text>
         )}
         <Divider flex={1} alignSelf="flex-end" />
-        <Flex alignItems="flex-end" justifyContent="flex-end" width="100%">
+        <Flex alignItems="center" justifyContent="space-between" width="100%">
+          {isAdmin ? (
+            <Button
+              onClick={handleDisable}
+              isLoading={isLoading}
+              disabled={isLoading}
+              colorScheme={!disabled ? 'red' : 'green'}
+              size="sm"
+            >
+              {disabled ? t('show') : t('hide')}
+            </Button>
+          ) : (
+            <div />
+          )}
           <Link
             onClick={openModal}
             href={`/${formattedType}/${_id}`}

@@ -60,6 +60,7 @@ export interface IObituary {
   is_crawled: boolean
   appreciations: number
   symbol_image?: string | StoryblokAsset
+  disabled?: boolean
 }
 
 export interface ContactFormInput {
