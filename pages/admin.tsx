@@ -52,6 +52,7 @@ export default function Admin(): ReactElement {
         obituaries={data.pages.flatMap((page) => page.data)}
         hasMore={hasNextPage}
         onLoadMore={fetchNextPage}
+        hasQuery={query !== ''}
       />
     </AdminProvider>
   )
