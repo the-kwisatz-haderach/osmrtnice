@@ -77,6 +77,7 @@ export default function Obituaries({
           obituaries={data.pages.flatMap((page) => page.data)}
           hasMore={hasNextPage}
           onLoadMore={fetchNextPage}
+          hasQuery={query !== ''}
         />
         <TopScroll
           show={data.pages.some((page) => page.data.length > 10)}

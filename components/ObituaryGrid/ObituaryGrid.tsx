@@ -14,6 +14,7 @@ interface Props {
   hasMore: boolean
   isLoading: boolean
   isLoadingNext: boolean
+  hasQuery: boolean
 }
 
 export default function ObituaryGrid({
@@ -22,11 +23,16 @@ export default function ObituaryGrid({
   onLoadMore,
   isLoading,
   isLoadingNext,
+  hasQuery,
 }: Props): ReactElement {
   const { t } = useTranslation()
   return (
     <Contained my={{ base: 0, lg: 8 }}>
-      <ResultsDescription resultsCount={obituaries.length} hasMore={hasMore} />
+      <ResultsDescription
+        resultsCount={obituaries.length}
+        hasMore={hasMore}
+        hasQuery={hasQuery}
+      />
       {isLoading || obituaries.length > 0 ? (
         <SimpleGrid spacing={4} columns={[1, 2, 3, 4]}>
           {isLoading
