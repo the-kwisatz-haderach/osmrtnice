@@ -8,11 +8,11 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { formatDate } from '../../../utils/formatDate'
 import { useTranslation } from 'next-i18next'
 import { ObituaryImage } from './ObituaryImage'
-import { ObituaryRenderer } from '../ObituaryContainer'
+import type { ObituaryRenderer } from '../ObituaryContainer'
 import { formatName } from '../helpers/formatName'
 import { useObituary } from 'hooks/reactQuery/queries'
 import Image from 'next/image'
@@ -25,6 +25,7 @@ export const ObituaryLarge: ObituaryRenderer = ({
   onShowAppreciation,
   ...props
 }) => {
+  const [canShare, setCanShare] = useState(false)
   const { data } = useObituary(props._id, {
     initialData: props,
   })
@@ -66,7 +67,21 @@ export const ObituaryLarge: ObituaryRenderer = ({
     //     url: 'https://developer.mozilla.org',
     //   })
     // }
-  }, [])
+  }, [_id, type])
+
+  const share = useCallback(async () => {
+    const url = `${window.location.origin}/${type}/${_id}`
+    try {
+      await navigator?.share?.({ url })
+    } catch {}
+  }, [_id, type])
+
+  useEffect(() => {
+    const url = `${window.location.origin}/${type}/${_id}`
+    if (navigator?.canShare?.({ url })) {
+      setCanShare(true)
+    }
+  }, [_id, type])
 
   return (
     <>
@@ -230,23 +245,45 @@ export const ObituaryLarge: ObituaryRenderer = ({
           </Text>
           <Text fontSize="small">{formatDate(date_created)}</Text>
         </Box>
-        <Button colorScheme="facebook" onClick={shareToFacebook}>
-          {t('share')}
-          <svg
-            style={{
-              marginLeft: 8,
-              position: 'relative',
-              bottom: 1,
-            }}
-            width={20}
-            height={20}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            fill="white"
+        <div>
+          {canShare && (
+            <Button size={['sm', 'md']} onClick={share} marginRight={2}>
+              {t('share')}
+              <Image
+                alt=""
+                style={{
+                  marginLeft: 8,
+                  position: 'relative',
+                  bottom: 1,
+                }}
+                width={20}
+                height={20}
+                src="/icons/share_icon.png"
+              />
+            </Button>
+          )}
+          <Button
+            size={['sm', 'md']}
+            colorScheme="facebook"
+            onClick={shareToFacebook}
           >
-            <path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z" />
-          </svg>
-        </Button>
+            {t('share')}
+            <svg
+              style={{
+                marginLeft: 8,
+                position: 'relative',
+                bottom: 1,
+              }}
+              width={20}
+              height={20}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              fill="white"
+            >
+              <path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z" />
+            </svg>
+          </Button>
+        </div>
       </HStack>
     </>
   )
