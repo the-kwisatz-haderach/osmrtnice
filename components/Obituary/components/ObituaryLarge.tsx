@@ -53,35 +53,40 @@ export const ObituaryLarge: ObituaryRenderer = ({
   } = data
   const { t } = useTranslation()
 
+  const createShareUrl = useCallback(() => {
+    const translatedType = t(type)
+    if (translatedType && _id) {
+      return `${window.location.origin}/${translatedType}/${_id}`
+    }
+    return ''
+  }, [_id, t, type])
+
   const shareToFacebook = useCallback(async () => {
-    const shareUrl = `${window.location.origin}/${type}/${_id}`
-    window?.FB?.ui({
-      display: 'popup',
-      method: 'share',
-      href: shareUrl,
-    })
-    // if (navigator?.canShare?.()) {
-    //   await navigator.share({
-    //     title: 'Herro',
-    //     text: 'Learn web development on MDN!',
-    //     url: 'https://developer.mozilla.org',
-    //   })
-    // }
-  }, [_id, type])
+    const shareUrl = createShareUrl()
+    if (shareUrl) {
+      window?.FB?.ui({
+        display: 'popup',
+        method: 'share',
+        href: shareUrl,
+      })
+    }
+  }, [createShareUrl])
 
   const share = useCallback(async () => {
-    const url = `${window.location.origin}/${type}/${_id}`
-    try {
-      await navigator?.share?.({ url })
-    } catch {}
-  }, [_id, type])
+    const shareUrl = createShareUrl()
+    if (shareUrl) {
+      try {
+        await navigator?.share?.({ url: shareUrl })
+      } catch {}
+    }
+  }, [createShareUrl])
 
   useEffect(() => {
-    const url = `${window.location.origin}/${type}/${_id}`
-    if (navigator?.canShare?.({ url })) {
+    const shareUrl = createShareUrl()
+    if (shareUrl && navigator?.canShare?.({ url: shareUrl })) {
       setCanShare(true)
     }
-  }, [_id, type])
+  }, [createShareUrl])
 
   return (
     <>
