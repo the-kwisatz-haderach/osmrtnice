@@ -1,6 +1,7 @@
 import App, { AppContext, AppProps } from 'next/app'
 import { ReactElement, useState } from 'react'
 import { appWithTranslation } from 'next-i18next'
+import { Analytics } from '@vercel/analytics/react'
 import {
   AppProvider,
   IAppContext,
@@ -59,6 +60,7 @@ function MyApp({
           <ReactQueryDevtools initialIsOpen={false} />
         </Hydrate>
       </QueryClientProvider>
+      <Analytics />
     </ChakraProvider>
   )
 }
