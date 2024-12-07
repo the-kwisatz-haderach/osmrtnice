@@ -10,9 +10,6 @@ module.exports = (phase, { defaultConfig }) => {
   const config = {
     ...defaultConfig,
     i18n,
-    images: {
-      unoptimized: true,
-    },
     async headers() {
       return [
         {
@@ -44,6 +41,7 @@ module.exports = (phase, { defaultConfig }) => {
       )
     },
     images: {
+      unoptimized: true,
       remotePatterns: [
         {
           hostname: 'picsum.photos',
