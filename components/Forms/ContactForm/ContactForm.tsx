@@ -51,6 +51,7 @@ export default function ContactForm(): ReactElement {
   const { mutate, isLoading } = useMutation(
     async ({ photo, ...input }: ContactFormInput) => {
       const honey = document.getElementById('name') as HTMLInputElement
+      console.debug(honey.value)
       if (honey.value !== '') {
         return
       }
@@ -59,6 +60,7 @@ export default function ContactForm(): ReactElement {
         formData.append('files', file)
       })
       formData.set('input', JSON.stringify(input))
+      console.debug(formData)
       const res = await fetch('/api/obituaries/email', {
         method: 'POST',
         body: formData,
