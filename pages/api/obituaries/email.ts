@@ -47,40 +47,35 @@ export default async function handler(
 
         const formattedFields = formatMessage(parsedFields)
 
-        try {
-          await Promise.all([
-            sendEmail({
-              subject: translations.email_subject_contact_form_admin,
-              html: formattedFields,
-              attachments: files.map((file) => ({
-                filename: file.originalFilename || file.newFilename,
-                path: file.filepath,
-              })),
-            }),
-            sendEmail({
-              to: parsedFields.mail,
-              subject:
-                translations.email_subject_contact_form_confirmation +
-                ' ' +
-                translations[parsedFields.type as TranslationsKey],
-              html: `
-                <h2>Hvala što koristite Preminuli.ba!</h2>
-                <p>Ovaj e-mail je potvrda o primitku ispunjenog kontakt formulara.</p>
-                <p>Informacije koje ste poslali:</p>
-                ${formattedFields}
-                <p>Ukoliko imate dodatnih pitanja, kontaktirajte nas direktno putem telefona ili e-maila. Dostupni smo na Viberu i WhatsAppu.</p>
-                <p><b>Broj telefona</b></br>
-                <a href="tel:+38763028457">+387 63 028 457</a></br>
-                <a href="tel:+38762604705">+387 62 604 705</a></p>
-                <p><b>E-mail</b></br>
-                <a href="mailto:preminuli.ba@gmail.com">preminuli.ba@gmail.com</a></p>
-              `,
-            }),
-          ])
-        } catch (err) {
-          console.error('## EMAIL ERROR ##')
-          console.error(err)
-        }
+        await Promise.all([
+          sendEmail({
+            subject: translations.email_subject_contact_form_admin,
+            html: formattedFields,
+            attachments: files.map((file) => ({
+              filename: file.originalFilename || file.newFilename,
+              path: file.filepath,
+            })),
+          }),
+          sendEmail({
+            to: parsedFields.mail,
+            subject:
+              translations.email_subject_contact_form_confirmation +
+              ' ' +
+              translations[parsedFields.type as TranslationsKey],
+            html: `
+              <h2>Hvala što koristite Preminuli.ba!</h2>
+              <p>Ovaj e-mail je potvrda o primitku ispunjenog kontakt formulara.</p>
+              <p>Informacije koje ste poslali:</p>
+              ${formattedFields}
+              <p>Ukoliko imate dodatnih pitanja, kontaktirajte nas direktno putem telefona ili e-maila. Dostupni smo na Viberu i WhatsAppu.</p>
+              <p><b>Broj telefona</b></br>
+              <a href="tel:+38763028457">+387 63 028 457</a></br>
+              <a href="tel:+38762604705">+387 62 604 705</a></p>
+              <p><b>E-mail</b></br>
+              <a href="mailto:preminuli.ba@gmail.com">preminuli.ba@gmail.com</a></p>
+            `,
+          }),
+        ])
 
         return res.status(200).json({ message: 'form successfully submitted' })
       } catch (err) {

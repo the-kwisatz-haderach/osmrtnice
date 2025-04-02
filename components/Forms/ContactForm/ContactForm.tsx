@@ -50,30 +50,22 @@ export default function ContactForm(): ReactElement {
   })
   const { mutate, isLoading } = useMutation(
     async ({ photo, ...input }: ContactFormInput) => {
-      const honey = document.getElementById('name') as HTMLInputElement
-      console.debug('honey: ', honey.value)
-      // if (honey.value !== '') {
-      //   return
-      // }
       const formData = new FormData()
       Array.from(photo).forEach((file) => {
         formData.append('files', file)
       })
       formData.set('input', JSON.stringify(input))
-      console.debug({ formData })
       const res = await fetch('/api/obituaries/email', {
         method: 'POST',
         body: formData,
       })
       const json = await res.json()
-      console.debug({ json })
       if (!res.ok) {
         throw new Error(json.errors.at(0).error)
       }
     },
     {
-      onSuccess: (...args) => {
-        console.debug('success: ', ...args)
+      onSuccess: () => {
         toast({
           title: t('toast-contact-form-success-title'),
           description: t('toast-contact-form-success-description'),
@@ -126,15 +118,6 @@ export default function ContactForm(): ReactElement {
       borderWidth={{ sm: 2 }}
       borderStyle="solid"
     >
-      <label className="honey" htmlFor="name"></label>
-      <input
-        className="honey"
-        autoComplete="off"
-        type="text"
-        id="name"
-        name="name"
-        placeholder="Your name here"
-      />
       <Flex flexDir={['column', 'row']} wrap="wrap" width="100%">
         <FormField
           flex={1}
