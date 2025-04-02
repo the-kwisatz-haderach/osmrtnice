@@ -64,14 +64,14 @@ export default function ContactForm(): ReactElement {
         body: formData,
       })
       const json = await res.json()
-      console.debug(json)
+      console.debug({ json })
       if (!res.ok) {
         throw new Error(json.errors.at(0).error)
       }
     },
     {
       onSuccess: (...args) => {
-        console.debug(...args)
+        console.debug('success: ', ...args)
         toast({
           title: t('toast-contact-form-success-title'),
           description: t('toast-contact-form-success-description'),
