@@ -83,6 +83,7 @@ export default function ContactForm(): ReactElement {
         })
       },
       onError: (err) => {
+        console.debug(err)
         let description = ''
         if (err instanceof Error) {
           description = err.message
